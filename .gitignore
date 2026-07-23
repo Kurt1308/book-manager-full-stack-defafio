@@ -1,0 +1,17 @@
+# Java / Maven
+backend/target/
+*.jar
+
+# Node / Vue
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Environment
+.env
