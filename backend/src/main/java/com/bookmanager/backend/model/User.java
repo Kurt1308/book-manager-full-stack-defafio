@@ -1,6 +1,11 @@
 package com.bookmanager.backend.model;
 
 import jakarta.persistence.*;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -8,9 +13,14 @@ import java.util.Collection;
 import java.util.List;
 
 
+
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
 public class User implements UserDetails {
+
 
 
     @Id
@@ -18,21 +28,20 @@ public class User implements UserDetails {
     private Long id;
 
 
+
     @Column(nullable = false)
     private String name;
+
 
 
     @Column(nullable = false, unique = true)
     private String email;
 
 
+
     @Column(nullable = false)
     private String password;
 
-
-
-    public User() {
-    }
 
 
 
@@ -41,32 +50,11 @@ public class User implements UserDetails {
             String email,
             String password
     ) {
+
         this.name = name;
         this.email = email;
         this.password = password;
-    }
 
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
 
@@ -75,24 +63,7 @@ public class User implements UserDetails {
     public String getUsername() {
 
         return email;
-    }
 
-
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
 
@@ -101,6 +72,7 @@ public class User implements UserDetails {
     public Collection<SimpleGrantedAuthority> getAuthorities() {
 
         return List.of();
+
     }
 
 
@@ -109,6 +81,7 @@ public class User implements UserDetails {
     public boolean isAccountNonExpired() {
 
         return true;
+
     }
 
 
@@ -117,6 +90,7 @@ public class User implements UserDetails {
     public boolean isAccountNonLocked() {
 
         return true;
+
     }
 
 
@@ -125,6 +99,7 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
 
         return true;
+
     }
 
 
@@ -133,5 +108,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
 
         return true;
+
     }
+
 }
