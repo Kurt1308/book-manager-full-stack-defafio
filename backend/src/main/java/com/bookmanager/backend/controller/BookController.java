@@ -1,7 +1,7 @@
 package com.bookmanager.backend.controller;
 
-import com.bookmanager.backend.dto.BookDTO;
-import com.bookmanager.backend.dto.BookResponse;
+import com.bookmanager.backend.dto.request.BookRequest;
+import com.bookmanager.backend.dto.response.BookResponse;
 import com.bookmanager.backend.service.BookService;
 
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookResponse> save(
-            @RequestBody BookDTO dto,
+            @RequestBody BookRequest dto,
             Authentication authentication
     ) {
 
@@ -76,7 +76,7 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> update(
             @PathVariable Long id,
-            @RequestBody BookDTO dto,
+            @RequestBody BookRequest dto,
             Authentication authentication
     ) {
 

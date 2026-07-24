@@ -1,8 +1,8 @@
 package com.bookmanager.backend.controller;
 
-import com.bookmanager.backend.dto.LoginRequest;
-import com.bookmanager.backend.dto.LoginResponse;
-import com.bookmanager.backend.dto.RegisterRequest;
+import com.bookmanager.backend.dto.response.AuthenticationResponse;
+import com.bookmanager.backend.dto.request.LoginRequest;
+import com.bookmanager.backend.dto.request.RegisterRequest;
 import com.bookmanager.backend.service.AuthService;
 
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class AuthController {
      * Cadastro de usuário
      */
     @PostMapping("/register")
-    public ResponseEntity<LoginResponse> register(
+    public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
 
@@ -36,7 +36,7 @@ public class AuthController {
      * Login
      */
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(
+    public ResponseEntity<AuthenticationResponse> login(
             @RequestBody LoginRequest request
     ) {
 

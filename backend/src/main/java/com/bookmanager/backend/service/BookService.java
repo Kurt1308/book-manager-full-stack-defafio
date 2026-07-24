@@ -1,11 +1,11 @@
 package com.bookmanager.backend.service;
 
-import com.bookmanager.backend.dto.BookDTO;
-import com.bookmanager.backend.dto.BookResponse;
+import com.bookmanager.backend.dto.response.BookResponse;
 import com.bookmanager.backend.model.Book;
 import com.bookmanager.backend.model.User;
 import com.bookmanager.backend.repository.BookRepository;
 import com.bookmanager.backend.repository.UserRepository;
+import com.bookmanager.backend.dto.request.BookRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -34,49 +34,50 @@ public class BookService {
 
 
     public BookResponse save(
-            BookDTO dto,
-            String email
-    ) {
+        BookRequest request,
+        String email
+) {
 
 
-        User user = userRepository
-                .findByEmail(email)
-                .orElseThrow();
-
-
-
-        Book book = new Book();
-
-        book.setTitle(
-                dto.getTitle()
-        );
-
-
-        book.setAuthor(
-                dto.getAuthor()
-        );
-
-
-        book.setYear(
-                dto.getYear()
-        );
-
-
-        book.setUser(user);
+    User user = userRepository
+            .findByEmail(email)
+            .orElseThrow();
 
 
 
-        Book saved = bookRepository.save(book);
+    Book book = new Book();
+
+
+    book.setTitle(
+            request.getTitle()
+    );
+
+
+    book.setAuthor(
+            request.getAuthor()
+    );
+
+
+    book.setYear(
+            request.getYear()
+    );
+
+
+    book.setUser(user);
 
 
 
-        return new BookResponse(
-                saved.getId(),
-                saved.getTitle(),
-                saved.getAuthor(),
-                saved.getYear()
-        );
-    }
+    Book saved = bookRepository.save(book);
+
+
+
+    return new BookResponse(
+            saved.getId(),
+            saved.getTitle(),
+            saved.getAuthor(),
+            saved.getYear()
+    );
+}
 
 
 
@@ -111,7 +112,7 @@ public class BookService {
 
     public BookResponse update(
             Long id,
-            BookDTO dto,
+            BookRequest dto,
             String email
     ) {
 

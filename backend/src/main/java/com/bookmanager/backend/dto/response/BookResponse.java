@@ -1,4 +1,4 @@
-package com.bookmanager.backend.dto;
+package com.bookmanager.backend.dto.response;
 
 public class BookResponse {
 

@@ -1,13 +1,13 @@
-package com.bookmanager.backend.dto;
+package com.bookmanager.backend.dto.response;
 
-public class LoginResponse {
+public class AuthenticationResponse {
 
     private String token;
 
-    public LoginResponse() {
+    public AuthenticationResponse() {
     }
 
-    public LoginResponse(String token) {
+    public AuthenticationResponse(String token) {
         this.token = token;
     }
 
