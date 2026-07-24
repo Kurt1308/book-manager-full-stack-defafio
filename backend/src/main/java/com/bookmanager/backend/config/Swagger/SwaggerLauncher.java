@@ -3,12 +3,16 @@ package com.bookmanager.backend.config.Swagger;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 
+
 @Component
+@Profile("!test")
 public class SwaggerLauncher {
+
 
 
     @Value("${app.swagger.launch:false}")
@@ -21,8 +25,10 @@ public class SwaggerLauncher {
 
 
 
+
     @EventListener(ApplicationReadyEvent.class)
     public void openSwagger() {
+
 
 
         System.out.println(
@@ -39,11 +45,14 @@ public class SwaggerLauncher {
 
         if (!launchSwagger) {
 
+
             System.out.println(
                     "Swagger automático desativado"
             );
 
+
             return;
+
         }
 
 
@@ -51,9 +60,11 @@ public class SwaggerLauncher {
         try {
 
 
+
             String os =
                     System.getProperty("os.name")
                             .toLowerCase();
+
 
 
 
