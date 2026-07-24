@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springdoc.core.annotations.ParameterObject;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +17,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/books")
@@ -78,50 +81,78 @@ public class BookController {
 
 
     @Operation(
-            summary = "Listar livros",
-            description = "Retorna todos os livros do usuário autenticado. Permite busca opcional pelo título."
-    )
-    @ApiResponses(value = {
+        summary = "Listar livros",
+        description =
+                """
+                Retorna livros do usuário autenticado.
 
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Lista de livros retornada com sucesso"
-            ),
+                Permite filtro opcional por título do livro.
 
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Usuário não autenticado"
-            )
+                Suporta paginação:
 
-    })
-    @GetMapping
-    public ResponseEntity<List<BookResponse>> findAll(
+                page = número da página iniciando em 0
 
-            @Parameter(
-                    description = "Filtro opcional pelo título do livro",
-                    example = "Clean Code"
-            )
-            @RequestParam(
-                    required = false
-            )
-            String title,
+                size = quantidade de registros retornados
 
-            Authentication authentication
+                sort = ordenação
 
-    ) {
+                Exemplos:
 
+                /books?page=0&size=10
 
-        List<BookResponse> books =
-                bookService.findAll(
-                        authentication.getName(),
-                        title
-                );
+                /books?title=java&page=0&size=5
 
+                /books?page=0&size=10&sort=title,asc
+                """
+)
+@ApiResponses(value = {
 
-        return ResponseEntity.ok(books);
-    }
+        @ApiResponse(
+                responseCode = "200",
+                description = "Lista de livros retornada com sucesso"
+        ),
+
+        @ApiResponse(
+                responseCode = "401",
+                description = "Usuário não autenticado"
+        )
+
+})
+@GetMapping
+public ResponseEntity<Page<BookResponse>> findAll(
 
 
+        @RequestParam(
+                required = false
+        )
+        String title,
+
+
+        @ParameterObject
+        @PageableDefault(
+                page = 0,
+                size = 10,
+                sort = "title"
+        )
+        Pageable pageable,
+
+
+        Authentication authentication
+
+) {
+
+
+    Page<BookResponse> books =
+            bookService.findAll(
+                    authentication.getName(),
+                    title,
+                    pageable
+            );
+
+
+    return ResponseEntity.ok(books);
+
+}
 
 
 

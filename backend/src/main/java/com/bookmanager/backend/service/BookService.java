@@ -10,7 +10,9 @@ import com.bookmanager.backend.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 @Service
@@ -95,63 +97,69 @@ public class BookService {
 
 
 
-    public List<BookResponse> findAll(
-                String email,
-                String title
-        ) {
+    public Page<BookResponse> findAll(
+        String email,
+        String title,
+        Pageable pageable
+) {
 
 
-        User user = userRepository
-                .findByEmail(email)
-                .orElseThrow();
-
-
-
-        List<Book> books;
+    User user = userRepository
+            .findByEmail(email)
+            .orElseThrow();
 
 
 
-        if(title != null && !title.isBlank()) {
-
-
-                books =
-                        bookRepository
-                                .findByUser_IdAndTitleContainingIgnoreCase(
-                                        user.getId(),
-                                        title
-                                );
-
-
-        } else {
-
-
-                books =
-                        bookRepository
-                                .findByUser_Id(
-                                        user.getId()
-                                );
-
-        }
+    Page<Book> books;
 
 
 
-        return books
-                .stream()
-                .map(book -> new BookResponse(
+    if(title != null && !title.isBlank()) {
 
-                        book.getId(),
 
-                        book.getTitle(),
+        books =
+                bookRepository
+                        .findByUser_IdAndTitleContainingIgnoreCase(
+                                user.getId(),
+                                title,
+                                pageable
+                        );
 
-                        book.getAuthor(),
 
-                        book.getYear(),
+    } else {
 
-                        book.getDescription()
 
-                ))
-                .toList();
-        }
+        books =
+                bookRepository
+                        .findByUser_Id(
+                                user.getId(),
+                                pageable
+                        );
+
+    }
+
+
+
+
+    return books.map(book ->
+
+            new BookResponse(
+
+                    book.getId(),
+
+                    book.getTitle(),
+
+                    book.getAuthor(),
+
+                    book.getYear(),
+
+                    book.getDescription()
+
+            )
+
+    );
+
+}
 
 
 
