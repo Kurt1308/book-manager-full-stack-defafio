@@ -1,8 +1,8 @@
 # BookManager Backend
 
-Backend da aplicação **BookManager**, desenvolvido como uma API REST utilizando Java e Spring Boot.
+Backend da aplicação **BookManager**, desenvolvido como uma API REST utilizando **Java 21 + Spring Boot**.
 
-Este módulo é responsável por:
+O projeto é responsável por:
 
 - Autenticação de usuários;
 - Gerenciamento de usuários;
@@ -17,14 +17,10 @@ Este módulo é responsável por:
 # 1. Tecnologias Utilizadas
 
 
-## Linguagem
+## Backend
 
 - Java 21 LTS
-
-
-## Frameworks
-
-- Spring Boot 4
+- Spring Boot
 - Spring Web
 - Spring Security
 - Spring Data JPA
@@ -59,464 +55,807 @@ Este módulo é responsável por:
 - Maven
 
 
-
 ---
 
-# 2. Arquitetura do Backend
+# 2. Clonar o Repositório
 
 
-O projeto segue uma arquitetura baseada em camadas:
-
-
-
-Controlador
-
-|
-
-|
-
-Serviço
-
-|
-
-|
-
-Repositório
-
-|
-
-|
-
-Entidade / Banco de Dados
-
-
-
-
-Responsabilidades:
-
-
-## Controller
-
-Responsável por:
-
-- Receber requisições HTTP;
-- Validar entrada;
-- Retornar respostas HTTP.
-
-
-## Service
-
-Responsável por:
-
-- Regras de negócio;
-- Processamento das informações;
-- Controle de fluxo.
-
-
-## Repository
-
-Responsável por:
-
-- Comunicação com banco;
-- Consultas utilizando Spring Data JPA.
-
-
-## Entity
-
-Representação das tabelas do banco de dados.
-
-
-
----
-
-# 3. Estrutura do Projeto
-
-
-
-backend
-
-│
-
-├── src/main/java/com/bookmanager/backend
-
-│
-
-├── config
-
-│ ├── JWT
-
-│ └── Confiança
-
-│
-
-├── Controlador
-
-│
-
-├── dto
-
-│ ├── pedido
-
-│ └── Resposta
-
-│
-
-├── modelo
-
-│
-
-├── repositório
-
-│
-
-├── Serviço
-
-│
-
-└── BackendApplication.java
-
-src/test/java
-
-│
-
-├── controllerTeste
-
-│
-
-└── serviceTeste
-
-
-
-
----
-
-# 4. Pré-requisitos
-
-
-Antes de executar o backend instale:
-
-
-## Java
-
-
-Versão utilizada:
-
-
-
-Java 21 LTS
-
-
-
-Verificar:
+Para baixar o projeto, execute:
 
 
 ```bash
-java -version
+git clone https://github.com/Kurt1308/book-manager-full-stack-defafio.git
+```
+
+
+Acesse a pasta do backend:
+
+
+```bash
+cd book-manager-full-stack-defafio/backend
+```
+
+
+---
+
+# 3. Instalação das Ferramentas Necessárias
+
+
+Antes de executar o projeto, realize a instalação dos seguintes softwares:
+
+
+---
+
+## Visual Studio Code
+
+Arquivo:
+
+```
+VSCodeUserSetup-x64-1.130.0
+```
+
+
+Download:
+
+https://code.visualstudio.com/download
+
+
+Instalação:
+
+- Executar o instalador;
+- Aceitar os termos;
+- Manter configurações padrão;
+- Finalizar instalação.
+
+
+Validar:
+
+```bash
+code --version
+```
+
+
+---
+
+## PostgreSQL
+
+Arquivo:
+
+```
+postgresql-18.4-2-windows-x64
+```
+
+
+Download:
+
+https://www.postgresql.org/download/
+
+
+Durante a instalação:
+
+- Definir usuário:
+
+```
+postgres
+```
+
+- Definir senha do banco;
+- Manter porta padrão:
+
+```
+5432
+```
+
+
+Validar:
+
+```bash
+psql --version
+```
+
+
+---
+
+## PgAdmin
+
+Arquivo:
+
+```
+pgadmin4-9.16-x64
+```
+
+
+Download:
+
+https://www.pgadmin.org/download/
+
+
+Utilizado para gerenciamento visual do PostgreSQL.
+
+
+---
+
+## Node.js
+
+Arquivo:
+
+```
+node-v24.18.0-x64
+```
+
+
+Download:
+
+https://nodejs.org/
+
+
+Validar instalação:
+
+```bash
+node -v
+```
+
 
 Resultado esperado:
 
-java version "21.x.x"
-Maven
+```
+v24.18.0
+```
 
-Versão recomendada:
 
-Apache Maven 3.9+
+---
 
-Verificar:
+## Java JDK
 
+Arquivo:
+
+```
+jdk-21.0.11_windows-x64_bin
+```
+
+
+Download:
+
+https://www.oracle.com/java/technologies/downloads/#java21
+
+
+Validar:
+
+```bash
+java -version
+```
+
+
+Resultado esperado:
+
+```
+java version "21.0.11"
+```
+
+
+---
+
+## Eclipse
+
+Arquivo:
+
+```
+eclipse-inst-jre-win64
+```
+
+
+Download:
+
+https://www.eclipse.org/downloads/
+
+
+IDE alternativa para desenvolvimento Java.
+
+
+---
+
+## Apache Maven
+
+Arquivo:
+
+```
+apache-maven-3.9.16-bin
+```
+
+
+Download:
+
+https://maven.apache.org/download.cgi
+
+
+Validar:
+
+```bash
 mvn -version
-PostgreSQL
+```
 
-Versão utilizada:
 
-PostgreSQL 18
+---
 
-Verificar:
+## Git
 
-psql --version
-Docker (opcional)
+Arquivo:
 
-Necessário somente para execução utilizando containers.
+```
+Git-2.55.0.3-64-bit
+```
 
-Verificar:
 
+Download:
+
+https://git-scm.com/downloads
+
+
+Validar:
+
+```bash
+git --version
+```
+
+
+---
+
+## Docker Desktop
+
+Arquivo:
+
+```
+Docker Desktop Installer
+```
+
+
+Download:
+
+https://www.docker.com/products/docker-desktop/
+
+
+Validar:
+
+```bash
 docker --version
 
 docker compose version
-5. Configuração do Banco de Dados
+```
+
+
+---
+
+## Postman
+
+Arquivo:
+
+```
+Postman Agent v0.4.89 (x64)
+```
+
+
+Download:
+
+https://www.postman.com/downloads/
+
+
+Utilizado para testes dos endpoints da API.
+
+
+---
+
+# 4. Configuração do Banco de Dados
+
 
 O backend utiliza PostgreSQL.
 
+
+Criar banco de dados:
+
+
+Acessar PostgreSQL:
+
+
+```bash
+psql -U postgres
+```
+
+
+Criar banco:
+
+
+```sql
+CREATE DATABASE bookmanager;
+```
+
+
+Sair:
+
+
+```sql
+\q
+```
+
+
 Configuração padrão:
 
-Database:
 
+```
+Database:
 bookmanager
 
 
 Porta:
-
 5432
 
 
 Usuário:
-
 postgres
+```
 
-Criar banco:
 
-Acessar PostgreSQL:
+---
 
-psql -U postgres
+# 5. Configuração da Aplicação
 
-Executor:
-
-CREATE DATABASE bookmanager;
-
-Sair:
-
-\q
-6. Configuração da Aplicação
 
 Arquivo:
 
+
+```
 src/main/resources/application.properties
+```
+
 
 Configuração:
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/bookmanager
 
-spring.datasource.username=postgres
+```properties
+spring.application.name=backend
 
-spring.datasource.password=SUA_SENHA
+
+spring.datasource.url=${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bookmanager}
+
+spring.datasource.username=${SPRING_DATASOURCE_USERNAME:postgres}
+
+spring.datasource.password=${SPRING_DATASOURCE_PASSWORD:SUA_SENHA}
+
+
+spring.datasource.driver-class-name=org.postgresql.Driver
 
 
 spring.jpa.hibernate.ddl-auto=update
 
 spring.jpa.show-sql=true
 
+spring.jpa.properties.hibernate.format_sql=true
+
 
 server.port=8080
 
-Substituto:
 
-SUA_SENHA
+jwt.secret=${JWT_SECRET:MyVerySecretKeyForBookManagerApplication123456789}
 
-pela senha configurada no PostgreSQL.
+jwt.expiration=${JWT_EXPIRATION:86400000}
+```
 
-7. Variáveis de Ambiente
+
+---
+
+# 6. Variáveis de Ambiente
+
 
 O projeto suporta configuração utilizando variáveis de ambiente.
 
-Exemplo:
+Abaixo à configuração que utilizei para rodar o projeto na minha máquina, atenção aos caminhos de instalação e configuração que serão necessário para o seu projeto.
 
-SPRING_DATASOURCE_URL
 
-SPRING_DATASOURCE_USERNAME
+Press windows + R e digite sysdm.cpl;
 
-SPRING_DATASOURCE_PASSWORD
+Clique em Avançado;
 
-JWT_SECRET
+Clique em Variáveis de ambiente;
 
-Exemplo:
+Coloque na parte debaixo "Variáveis do sistema"
 
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/bookmanager
 
-SPRING_DATASOURCE_USERNAME=postgres
+JAVA_HOME : 
 
-SPRING_DATASOURCE_PASSWORD=senha
-8. Executar o backend localmente
+```
+C:\Program Files\Java\jdk-21.0.11
+```
 
-Entrar na massa:
 
+MAVEN_HOME : 
+
+```
+C:\Program Files\Apache\Maven\apache-maven-3.9.16
+```
+
+
+PATH:
+
+```
+C:\Program Files\PostgreSQL\18\bin
+C:\Program Files\Git\cmd
+C:\Program Files\Git\bin
+C:\Program Files\Java\jdk-21.0.11\bin
+C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
+C:\Program Files\nodejs
+```
+
+
+---
+
+# 7. Executar o Backend Localmente
+
+
+Abrir terminal na pasta do backend:
+
+
+```bash
 cd backend
+```
 
-Compilador:
 
+Realizar compilação:
+
+
+```bash
 mvn clean install
+```
 
-Executor:
 
+Executar aplicação:
+
+
+```bash
 mvn spring-boot:run
+```
+
 
 Backend iniciado:
 
+
+```
 http://localhost:8080
-9. Executar o Backend utilizando o Docker
+```
 
-A execução completa do ambiente é feita pelo arquivo:
 
-docker-compose.yml
+Swagger:
 
-Localizado na raiz do projeto.
 
-Executor:
+```
+http://localhost:8080/swagger-ui/index.html
+```
 
+
+---
+
+# 8. Testes Automatizados
+
+
+O projeto possui testes utilizando:
+
+
+- JUnit 5;
+- Mockito;
+- Spring Boot Test.
+
+
+Executar todos os testes:
+
+
+```bash
+mvn test
+```
+
+
+## Comandos MVN para execução dos testes:
+
+
+Teste de Serviço de Livros:
+
+
+```bash
+mvn clean test -Dtest=BookServiceTest
+```
+
+
+Teste do Controller de Livros:
+
+
+```bash
+mvn clean test -Dtest=BookControllerTest
+```
+
+
+Teste do Serviço de Autenticação:
+
+
+```bash
+mvn clean test -Dtest=AuthServiceTest
+```
+
+
+Resultado esperado:
+
+
+```
+BUILD SUCCESS
+```
+
+
+---
+
+# 9. Build de Produção
+
+
+Gerar pacote:
+
+
+```bash
+mvn package
+```
+
+
+Arquivo gerado:
+
+
+```
+target/backend.jar
+```
+
+
+Executar:
+
+
+```bash
+java -jar target/backend.jar
+```
+
+
+---
+
+# 10. Executar com Docker
+
+
+Caso deseje executar utilizando containers:
+
+
+```bash
 docker compose up --build
+```
+
 
 O Docker irá iniciar:
 
-PostgreSQL;
-Bota de mola do backend.
-10. Documentação Swagger
+
+- PostgreSQL;
+- Backend Spring Boot.
+
+
+---
+
+# 11. Swagger
+
 
 Após iniciar a aplicação acessar:
 
+
+```
 http://localhost:8080/swagger-ui/index.html
+```
 
-Swagger permite:
 
-Endpoints visualizares;
-Executar chamadas;
-Testar autenticação;
-Validar respostas da API.
-11. Autenticação JWT
+O Swagger permite:
 
-A API utiliza autenticação baseada em token JWT.
 
-Fluxo:
+- Visualizar endpoints;
+- Executar chamadas HTTP;
+- Testar autenticação JWT;
+- Validar respostas da API.
 
-1. Criar usuário
 
-Ponto final:
+---
 
-POST /auth/register
+# 12. Testando com Postman
 
-Exemplo:
 
+Criar uma nova Collection:
+
+
+```
+BookManager API
+```
+
+
+Adicionar a URL base:
+
+
+```
+http://localhost:8080
+```
+
+
+---
+
+## Criar Usuário
+
+
+Método:
+
+
+```
+POST
+```
+
+
+Endpoint:
+
+
+```
+/auth/register
+```
+
+
+Body:
+
+
+```json
 {
     "name":"Lucas Dias",
     "email":"lucas@email.com",
     "password":"123456"
 }
-2. Logar
+```
 
-Ponto final:
 
-POST /auth/login
+---
 
-Exemplo:
+## Login
 
+
+Método:
+
+
+```
+POST
+```
+
+
+Endpoint:
+
+
+```
+/auth/login
+```
+
+
+Body:
+
+
+```json
 {
     "email":"lucas@email.com",
     "password":"123456"
 }
+```
+
 
 Resposta:
 
+
+```json
 {
     "token":"jwt_token"
 }
-3. Autorizar chamadas protegidas
+```
 
-Sem Confiança:
 
-Grupo:
+---
 
-Authorize
+## Configurar Token JWT no Postman
 
-Informe:
 
-Bearer SEU_TOKEN
+Copiar o token retornado no login.
 
-Exemplo:
 
-Bearer eyJhbGciOiJIUzI1NiJ9...
+Na requisição:
 
-Após isso, os endpoints protegidos estarão liberados.
 
-12. Principais Endpoints
-Autenticação
-Registrador usuário
+```
+Authorization
+```
+
+
+Selecionar:
+
+
+```
+Bearer Token
+```
+
+
+Colar:
+
+
+```
+SEU_TOKEN
+```
+
+
+Após isso os endpoints protegidos estarão liberados.
+
+
+---
+
+# 13. Principais Endpoints
+
+
+## Autenticação
+
+
+Registrar usuário:
+
+```
 POST /auth/register
-Logar
+```
+
+
+Login:
+
+```
 POST /auth/login
-Livros
-Listar livros
+```
+
+
+---
+
+## Livros
+
+
+Listar livros:
+
+```
 GET /books
-Buscar livro por ID
+```
+
+
+Buscar livro por ID:
+
+```
 GET /books/{id}
-Criar livro
+```
+
+
+Criar livro:
+
+```
 POST /books
-Atualizar livro
+```
+
+
+Atualizar livro:
+
+```
 PUT /books/{id}
-Excluir livro
+```
+
+
+Excluir livro:
+
+```
 DELETE /books/{id}
-13. Executar Testes Automatizados
+```
 
-O projeto possui testes utilizando:
 
-5 de JULHO;
-Mockito;
-Teste de Bota de Primavera.
+---
 
-Executor:
+# 14. Autor
 
-mvn test
-
-Testes implementados:
-
-Controlador
-Criação de livros;
-Listagem;
-Busca;
-Exclusão.
-Serviços
-Cadastro;
-Login;
-Validação de usuário;
-Regras de negócio;
-Atualização;
-Exclusão.
-
-Resultado esperado:
-
-BUILD SUCCESS
-14. Testículos via CLI
-
-Executor:
-
-mvn test
-
-Executar com detalhes:
-
-mvn test -X
-15. Build de Produção
-
-Gerar pacote:
-
-mvn package
-
-Arquivo gerado:
-
-target/backend.jar
-
-Executor:
-
-java -jar target/backend.jar
-16. Decisões Técnicas
-Bota de Mola
-
-Escolhido pela produtividade, robustez e grande adoção no mercado.
-
-Segurança de Mola + JWT
-
-Escolhido para fornecer autenticação segura e escalável.
-
-PostgreSQL
-
-Escolhido pela estabilidade, performance e compatibilidade com aplicações corporativas.
-
-Spring Data JPA
-
-Utilizado para simplificar persistência e reduzir código SQL manual.
-
-Docker
-
-Utilizado para garantir padronização do ambiente de execução.
-
-Autor
 
 Lucas Dias
+
 
 Backend desenvolvido como parte do desafio técnico Full Stack BookManager.
