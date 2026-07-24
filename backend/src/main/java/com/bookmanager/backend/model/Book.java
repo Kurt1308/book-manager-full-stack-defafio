@@ -10,21 +10,28 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String author;
 
+    @Column(nullable = false)
     private Integer year;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Book() {
     }
 
-    public Book(String title, String author, Integer year) {
+    public Book(String title, String author, Integer year, User user) {
         this.title = title;
         this.author = author;
         this.year = year;
+        this.user = user;
     }
-
 
     public Long getId() {
         return id;
@@ -42,6 +49,9 @@ public class Book {
         return year;
     }
 
+    public User getUser() {
+        return user;
+    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -53,5 +63,9 @@ public class Book {
 
     public void setYear(Integer year) {
         this.year = year;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
