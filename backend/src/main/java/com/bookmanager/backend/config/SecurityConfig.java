@@ -45,64 +45,42 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
 
+    http
+        .csrf(csrf -> csrf.disable())
 
-        http
-                // Desabilita CSRF porque estamos usando API REST + JWT
-                .csrf(csrf -> csrf.disable())
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS
+            )
+        )
 
-                // Configuração CORS para o Vue
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .authorizeHttpRequests(auth -> auth
 
+            .requestMatchers(
+                "/auth/**"
+            ).permitAll()
 
-                // API sem sessão (JWT é stateless)
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
+            .requestMatchers(
+                "/books/**"
+            ).authenticated()
 
+            .anyRequest().authenticated()
+        )
 
-                // Regras de acesso
-                .authorizeHttpRequests(auth -> auth
+        .authenticationProvider(authenticationProvider())
 
-                        // Rotas públicas
-                        .requestMatchers(
-                                "/auth/**"
-                        )
-                        .permitAll()
+        .addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
 
-
-                        // Swagger futuramente
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        )
-                        .permitAll()
-
-
-                        // Todo restante precisa de JWT
-                        .anyRequest()
-                        .authenticated()
-                )
-
-
-                // Provedor de autenticação
-                .authenticationProvider(authenticationProvider())
-
-
-                // Executa o filtro JWT antes do filtro padrão
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class
-                );
-
-
-        return http.build();
-    }
+    return http.build();
+}
 
 
 

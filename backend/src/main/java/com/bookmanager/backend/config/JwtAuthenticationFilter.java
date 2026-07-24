@@ -42,6 +42,9 @@ protected void doFilterInternal(
 ) throws ServletException, IOException {
 
 
+    System.out.println("=== JWT FILTER EXECUTADO ===");
+    System.out.println("URI: " + request.getRequestURI());
+
     String path = request.getServletPath();
 
 
