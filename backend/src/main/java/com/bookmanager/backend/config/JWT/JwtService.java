@@ -1,4 +1,4 @@
-package com.bookmanager.backend.configJWT;
+package com.bookmanager.backend.config.JWT;
 
 import com.bookmanager.backend.model.User;
 import io.jsonwebtoken.Claims;

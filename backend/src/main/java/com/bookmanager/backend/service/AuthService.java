@@ -1,6 +1,6 @@
 package com.bookmanager.backend.service;
 
-import com.bookmanager.backend.configJWT.JwtService;
+import com.bookmanager.backend.config.JWT.JwtService;
 import com.bookmanager.backend.dto.request.LoginRequest;
 import com.bookmanager.backend.dto.request.RegisterRequest;
 import com.bookmanager.backend.model.User;

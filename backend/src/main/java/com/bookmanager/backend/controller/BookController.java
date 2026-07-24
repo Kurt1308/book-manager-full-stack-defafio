@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 
 @RestController
 @RequestMapping("/books")
 @CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearerAuth")
 public class BookController {
 
 

@@ -1,4 +1,5 @@
-package com.bookmanager.backend.configJWT;
+package com.bookmanager.backend.config.JWT;
+
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,8 +23,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import java.util.List;
+
 
 
 @Configuration
@@ -34,92 +36,165 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
 
 
+
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             UserDetailsServiceImpl userDetailsService
     ) {
+
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userDetailsService = userDetailsService;
     }
 
 
 
+
+
     @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http)
-        throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http
+    ) throws Exception {
 
-    http
-        .csrf(csrf -> csrf.disable())
 
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        http
 
-        .sessionManagement(session ->
-            session.sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS
+            // API REST não utiliza CSRF
+            .csrf(csrf ->
+                    csrf.disable()
             )
-        )
 
-        .authorizeHttpRequests(auth -> auth
 
-            .requestMatchers(
-                "/auth/**"
-            ).permitAll()
+            // Configuração CORS
+            .cors(cors ->
+                    cors.configurationSource(
+                            corsConfigurationSource()
+                    )
+            )
 
-            .requestMatchers(
-                "/books/**"
-            ).authenticated()
 
-            .anyRequest().authenticated()
-        )
+            // JWT é stateless
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(
+                            SessionCreationPolicy.STATELESS
+                    )
+            )
 
-        .authenticationProvider(authenticationProvider())
 
-        .addFilterBefore(
-            jwtAuthenticationFilter,
-            UsernamePasswordAuthenticationFilter.class
+            .authorizeHttpRequests(auth -> auth
+
+
+                    // Rotas públicas
+                    .requestMatchers(
+                            "/auth/**"
+                    ).permitAll()
+
+
+
+                    // Swagger público
+                    .requestMatchers(
+                            "/swagger-ui/**",
+                            "/swagger-ui.html",
+                            "/v3/api-docs/**",
+                            "/v3/api-docs.yaml",
+                            "/webjars/**"
+                    ).permitAll()
+
+
+
+                    // Rotas protegidas
+                    .requestMatchers(
+                            "/books/**"
+                    ).authenticated()
+
+
+
+                    // Qualquer outra rota exige autenticação
+                    .anyRequest().authenticated()
+            )
+
+
+
+            .authenticationProvider(
+                    authenticationProvider()
+            )
+
+
+
+            .addFilterBefore(
+                    jwtAuthenticationFilter,
+                    UsernamePasswordAuthenticationFilter.class
+            );
+
+
+        return http.build();
+    }
+
+
+
+
+
+
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+
+
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider(
+                        userDetailsService
+                );
+
+
+        provider.setPasswordEncoder(
+                passwordEncoder()
         );
 
-    return http.build();
-}
+
+        return provider;
+    }
 
 
 
-    @Bean
-public AuthenticationProvider authenticationProvider() {
 
-    DaoAuthenticationProvider provider =
-            new DaoAuthenticationProvider(userDetailsService);
-
-    provider.setPasswordEncoder(
-            passwordEncoder()
-    );
-
-    return provider;
-}
 
 
 
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config
+            AuthenticationConfiguration configuration
     ) throws Exception {
 
-        return config.getAuthenticationManager();
+
+        return configuration.getAuthenticationManager();
     }
+
+
+
+
+
 
 
 
     @Bean
     public PasswordEncoder passwordEncoder() {
 
+
         return new BCryptPasswordEncoder();
     }
 
 
 
+
+
+
+
     /**
-     * Configuração para permitir comunicação
-     * Vue (5173) -> Spring Boot (8080)
+     * Configuração CORS
+     *
+     * Vue.js (localhost:5173)
+     *          |
+     *          v
+     * Spring Boot (localhost:8080)
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -129,11 +204,13 @@ public AuthenticationProvider authenticationProvider() {
                 new CorsConfiguration();
 
 
+
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:5173"
                 )
         );
+
 
 
         configuration.setAllowedMethods(
@@ -147,6 +224,7 @@ public AuthenticationProvider authenticationProvider() {
         );
 
 
+
         configuration.setAllowedHeaders(
                 List.of(
                         "*"
@@ -154,11 +232,16 @@ public AuthenticationProvider authenticationProvider() {
         );
 
 
-        configuration.setAllowCredentials(true);
+
+        configuration.setAllowCredentials(
+                true
+        );
+
 
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
+
 
 
         source.registerCorsConfiguration(
@@ -167,6 +250,8 @@ public AuthenticationProvider authenticationProvider() {
         );
 
 
+
         return source;
     }
+
 }
