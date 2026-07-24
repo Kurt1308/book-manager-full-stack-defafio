@@ -346,6 +346,16 @@ Utilizado para testes dos endpoints da API.
 
 # 4. Configuração do Banco de Dados
 
+## Criação das Tabelas
+
+As tabelas do banco de dados não precisam ser criadas manualmente.
+
+O projeto utiliza Hibernate/JPA para realizar o mapeamento das entidades existentes na camada Model e criar automaticamente as tabelas necessárias no banco PostgreSQL.
+
+A criação automática ocorre através da configuração:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
 
 O backend utiliza PostgreSQL.
 
