@@ -59,6 +59,30 @@ O projeto é responsável por:
 
 # 2. Clonar o Repositório
 
+## Git
+
+Versão:
+
+```
+Git-2.55.0.3-64-bit
+```
+
+
+Download:
+
+https://git-scm.com/downloads
+
+Instale o arquivo.exe baixado
+
+
+Validar:
+
+```bash
+git --version
+```
+
+
+---
 
 Para baixar o projeto, execute:
 
@@ -273,30 +297,6 @@ Validar:
 ```bash
 mvn -version
 ```
-
-
----
-
-## Git
-
-Arquivo:
-
-```
-Git-2.55.0.3-64-bit
-```
-
-
-Download:
-
-https://git-scm.com/downloads
-
-
-Validar:
-
-```bash
-git --version
-```
-
 
 ---
 
