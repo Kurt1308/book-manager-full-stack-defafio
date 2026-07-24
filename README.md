@@ -1,89 +1,280 @@
-# 📘 Book Manager — Desafio Técnico Full-Stack
+# BookManager - Full Stack Application
 
-O objetivo do desafio é criar uma aplicação simples para gerenciamento de livros com autenticação JWT e CRUD completo.
+Aplicação Full Stack para gerenciamento de livros, desenvolvida como desafio técnico.
 
-## Objetivo
-Construir uma aplicação full-stack chamada Book Manager, onde o usuário poderá:
+O projeto possui:
 
-- Criar conta
-- Fazer login
-- Listar livros
-- Criar livros
-- Editar livros
-- Excluir livros
+- **Backend:** Java 21 + Spring Boot 4 + Spring Data JPA + PostgreSQL
+- **Frontend:** Vue.js 3 + TypeScript + Vite
+- **Banco de dados:** PostgreSQL 18
+- **Gerenciamento de dependências:**
+  - Maven (Backend)
+  - npm (Frontend)
 
-As páginas internas devem ser protegidas por autenticação.
+---
 
-## Tecnologias Obrigatórias
-- Java + Spring Boot (backend)
-- Livre escolha (frontend)
-- Postgres ou MySQL
-  
-## Requisitos do Backend
+# Estrutura do Projeto
 
-### Autenticação
-Implementar JWT com os endpoints:
 
-- /auth/register — Criar usuário
-- /auth/login — Retornar token JWT
 
-Rotas de livros devem exigir autenticação.
+book-manager-full-stack │
+├── backend
+│ ├── src
+│ ├── pom.xml
+│ └── MVNW
+│
+├── frontend
+│ ├── SRC
+│ ├── package.json
+└── vite.co
 
-### CRUD de Livros
 
-Rota      | Descrição |
------------|------------|
- /books    | Listar livros (com busca opcional por título) |
- /books/create    | Criar livro |
- /books/:id| Buscar por ID |
- /books/:id| Atualizar livro |
- /books/:id| Remover livro |
+---
 
-### Modelo Book
-- title — string, obrigatório
-- author — string, obrigatório
-- year — number, opcional
-- description — string, opcional
+# Pré-requisitos
 
-### Banco
-- Usar Postgres ou MySQL
-- A estrutura do banco deve estar versionada no repositório:
-  - Um arquivo SQL com a criação das tabelas (ex: `schema.sql`)
+Antes de executar o projeto, instale:
 
-## Requisitos do Frontend
+## Java
 
-Criar interface contendo:
+Versão utilizada:
 
-### Páginas obrigatórias
-- /login
-- /books — listagem
-- /books/new — criação
-- /books/[id]/edit — edição
 
-### Funcionalidades
-- Autenticação e armazenamento do token
-- Proteção das páginas internas
-- Formulários funcionais
-- Busca de livros por título
+Java 21 LTS
 
-## O que será avaliado
-- Funcionamento do CRUD e autenticação
-- Organização e clareza do código
-- Boas práticas
-- Uso correto das tecnologias solicitadas
-- Estrutura de pastas backend/frontend
 
-### Diferenciais
-- Dockerização do frontend e/ou backend
-- Deploy funcional da aplicação (com link)
-- Paginação no endpoint de listagem de livros
-- Documentação da API via Swagger/OpenAPI
-  
+Verificar instalação:
 
-```
+```bash
+java -version
 
-## Entrega
-Enviar o link do repositório contendo:
+Esperado:
 
-- Código do frontend e backend
-- README com instruções de execução
+java version "21.x.x"
+Maven
+
+Versão utilizada:
+
+Apache Maven 3.9+
+
+Verificar:
+
+mvn -version
+Node.js
+
+Versão recomendada:
+
+Node.js 20+
+
+Verificar:
+
+node -v
+NPM
+
+Verificar:
+
+npm -v
+PostgreSQL
+
+Versão utilizada:
+
+PostgreSQL 18
+
+Verificar:
+
+psql --version
+Configuração do Banco de Dados
+1. Criar banco PostgreSQL
+
+Acesse o PostgreSQL:
+
+psql -U postgres
+
+Crie o banco:
+
+CREATE DATABASE bookmanager;
+
+Sair:
+
+\q
+Configuração Backend
+
+Entre na massa:
+
+cd backend
+
+ou:
+
+cd backend/backend
+
+(dependendo da estrutura após extração)
+
+Configurar conexão com banco
+
+Arquivo:
+
+backend/src/main/resources/application.properties
+
+Exemplo:
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/bookmanager
+spring.datasource.username=postgres
+spring.datasource.password=SUA_SENHA
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+server.port=8080
+
+Altere:
+
+SUA_SENHA
+
+pela senha do seu PostgreSQL.
+
+Executar Backend
+
+Dentro da pasta que contém o arquivo:
+
+pom.xml
+
+Executar:
+
+mvn clean install
+
+Depois:
+
+mvn spring-boot:run
+
+Backend iniciado:
+
+http://localhost:8080
+Testar Backend
+
+Acesso:
+
+http://localhost:8080
+
+Resposta esperada:
+
+BookManager API funcionando!
+Configuração Frontend
+
+Entre na massa:
+
+cd frontend
+
+Instale as dependências:
+
+npm install
+Executar Frontend
+
+Execute:
+
+npm run dev
+
+Aplicação disponível em:
+
+http://localhost:5173
+Comunicação Frontend / Backend
+
+Frontend:
+
+http://localhost:5173
+
+Backend:
+
+http://localhost:8080
+
+O frontend consome as APIs disponibilizadas pelo backend Spring Boot.
+
+Comandos úteis
+Backend
+
+Compilador:
+
+mvn clean install
+
+Executor:
+
+mvn spring-boot:run
+
+Gerar pacote:
+
+mvn package
+Frontend
+
+Instalar dependências:
+
+npm install
+
+Executar ambiente desenvolvimento:
+
+npm run dev
+
+Build Gerar:
+
+npm run build
+Tecnologias utilizadas
+Backend
+Java 21
+Bota Mola 4
+Spring Web
+Spring Data JPA
+Hibernar
+PostgreSQL
+Maven
+Frontend
+Vue.js 3
+TypeScript
+Vite
+NPM
+Banco
+PostgreSQL 18
+Arquitetura
+
+O projeto segue uma arquitetura separada:
+
+Frontend (Vue.js)
+        |
+        |
+ REST API HTTP
+        |
+        |
+Backend (Spring Boot)
+        |
+        |
+ PostgreSQL Database
+Controle de Versão
+
+Git utilizado para versionamento.
+
+Clonar o projeto:
+
+git clone https://github.com/Kurt1308/book-manager-full-stack-defafio.git
+
+Entrar no projeto:
+
+cd book-manager-full-stack-defafio
+Autor
+
+Kurt1308
+
+Projeto desenvolvido como desafio técnico Full Stack.
+
+
+Depois de salvar:
+
+```powershell
+git add README.md
+git commit -m "Add complete project installation documentation"
+git push
+
+Esse README já fica adequado para avaliação técnica porque documenta:
+
+instalação;
+execução;
+tecnologias;
+arquitetura;
+banco;
+Comandos Principais.
