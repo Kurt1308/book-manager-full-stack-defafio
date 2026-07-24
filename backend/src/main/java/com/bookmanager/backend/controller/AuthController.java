@@ -10,11 +10,13 @@ import com.bookmanager.backend.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 import jakarta.validation.Valid;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:5173")
+@Tag(
+        name = "Authentication",
+        description = "Endpoints responsáveis por cadastro e autenticação de usuários"
+)
 public class AuthController {
 
 
@@ -43,20 +49,30 @@ public class AuthController {
 
 
 
+
     @Operation(
-            summary = "Cadastrar novo usuário",
-            description = "Cria um usuário e retorna um JWT para autenticação"
+            summary = "Cadastrar usuário",
+            description =
+                    """
+                    Cria um novo usuário no sistema.
+                    
+                    Após o cadastro, um token JWT é gerado 
+                    e retornado para autenticação nas rotas protegidas.
+                    """
     )
     @ApiResponses(value = {
 
+
             @ApiResponse(
-                    responseCode = "200",
-                    description = "Usuário criado com sucesso"
+                    responseCode = "201",
+                    description = "Usuário criado com sucesso e JWT gerado"
             ),
+
 
             @ApiResponse(
                     responseCode = "400",
-                    description = "Email já cadastrado"
+                    description =
+                            "Dados inválidos ou email já cadastrado"
             )
 
     })
@@ -65,14 +81,21 @@ public class AuthController {
 
 
             @Valid
-            @RequestBody RegisterRequest request
+            @RequestBody
+            RegisterRequest request
 
     ) {
 
 
-        return ResponseEntity.ok(
-                authService.register(request)
-        );
+        AuthenticationResponse response =
+                authService.register(request);
+
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
+
     }
 
 
@@ -84,19 +107,36 @@ public class AuthController {
 
 
     @Operation(
-            summary = "Realizar login",
-            description = "Autentica usuário e retorna JWT"
+            summary = "Login do usuário",
+            description =
+                    """
+                    Autentica um usuário utilizando email e senha.
+                    
+                    Caso as credenciais sejam válidas,
+                    retorna um JWT para acesso às rotas protegidas.
+                    """
     )
     @ApiResponses(value = {
 
+
             @ApiResponse(
                     responseCode = "200",
-                    description = "Login realizado com sucesso"
+                    description =
+                            "Usuário autenticado e JWT retornado"
             ),
+
 
             @ApiResponse(
                     responseCode = "401",
-                    description = "Credenciais inválidas"
+                    description =
+                            "Email ou senha inválidos"
+            ),
+
+
+            @ApiResponse(
+                    responseCode = "400",
+                    description =
+                            "Dados obrigatórios não informados"
             )
 
     })
@@ -105,14 +145,20 @@ public class AuthController {
 
 
             @Valid
-            @RequestBody LoginRequest request
+            @RequestBody
+            LoginRequest request
 
     ) {
 
 
-        return ResponseEntity.ok(
-                authService.login(request)
-        );
+
+        AuthenticationResponse response =
+                authService.login(request);
+
+
+
+        return ResponseEntity.ok(response);
+
     }
 
 }
