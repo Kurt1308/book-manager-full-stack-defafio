@@ -11,10 +11,11 @@ import com.bookmanager.backend.service.BookService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,12 +27,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 
 
+@ExtendWith(MockitoExtension.class)
 class BookServiceTest {
 
 
@@ -57,11 +59,10 @@ class BookServiceTest {
 
 
 
+
+
     @BeforeEach
     void setup() {
-
-
-        MockitoAnnotations.openMocks(this);
 
 
 
@@ -103,9 +104,9 @@ class BookServiceTest {
 
 
 
-
     @Test
     void shouldCreateBookSuccessfully() {
+
 
 
         BookRequest request =
@@ -134,7 +135,6 @@ class BookServiceTest {
 
 
 
-
         BookResponse response =
                 bookService.save(
                         request,
@@ -144,6 +144,7 @@ class BookServiceTest {
 
 
         assertNotNull(response);
+
 
         assertEquals(
                 "Clean Code",
@@ -163,6 +164,7 @@ class BookServiceTest {
         );
 
 
+
         verify(
                 bookRepository,
                 times(1)
@@ -175,12 +177,9 @@ class BookServiceTest {
 
 
 
-
-
-
-
     @Test
     void shouldReturnBooksByUser() {
+
 
 
         Pageable pageable =
@@ -233,6 +232,7 @@ class BookServiceTest {
         );
 
 
+
         assertEquals(
                 "Clean Code",
                 response.getContent()
@@ -241,10 +241,6 @@ class BookServiceTest {
         );
 
     }
-
-
-
-
 
 
 
@@ -290,7 +286,6 @@ class BookServiceTest {
 
 
 
-
         Page<BookResponse> response =
                 bookService.findAll(
                         "lucas@email.com",
@@ -306,6 +301,7 @@ class BookServiceTest {
         );
 
 
+
         verify(
                 bookRepository
         )
@@ -316,10 +312,6 @@ class BookServiceTest {
         );
 
     }
-
-
-
-
 
 
 
@@ -342,7 +334,6 @@ class BookServiceTest {
 
 
 
-
         BookResponse response =
                 bookService.findById(
                         10L,
@@ -357,17 +348,13 @@ class BookServiceTest {
         );
 
 
+
         assertEquals(
                 "Clean Code",
                 response.getTitle()
         );
 
-
     }
-
-
-
-
 
 
 
@@ -390,7 +377,6 @@ class BookServiceTest {
 
 
 
-
         RuntimeException exception =
                 assertThrows(
                         RuntimeException.class,
@@ -409,10 +395,6 @@ class BookServiceTest {
         );
 
     }
-
-
-
-
 
 
 
@@ -463,7 +445,6 @@ class BookServiceTest {
 
 
 
-
         BookResponse response =
                 bookService.update(
                         10L,
@@ -486,10 +467,6 @@ class BookServiceTest {
         .save(book);
 
     }
-
-
-
-
 
 
 
@@ -523,7 +500,6 @@ class BookServiceTest {
 
 
 
-
         bookService.delete(
                 10L,
                 "lucas@email.com"
@@ -538,10 +514,6 @@ class BookServiceTest {
         .delete(book);
 
     }
-
-
-
-
 
 
 

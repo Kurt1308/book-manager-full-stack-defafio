@@ -8,11 +8,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 
-
 @Component
 @Profile("!test")
 public class SwaggerLauncher {
-
 
 
     @Value("${app.swagger.launch:false}")
@@ -25,40 +23,21 @@ public class SwaggerLauncher {
 
 
 
-
     @EventListener(ApplicationReadyEvent.class)
     public void openSwagger() {
 
 
-
-        System.out.println(
-                "=== Swagger Launcher iniciado ==="
-        );
-
-
-        System.out.println(
-                "Swagger launch configurado: "
-                + launchSwagger
-        );
-
-
-
         if (!launchSwagger) {
-
 
             System.out.println(
                     "Swagger automático desativado"
             );
 
-
             return;
-
         }
 
 
-
         try {
-
 
 
             String os =
@@ -67,14 +46,17 @@ public class SwaggerLauncher {
 
 
 
-
             if (os.contains("win")) {
 
 
                 Runtime.getRuntime()
                         .exec(
-                                "cmd /c start "
-                                + SWAGGER_URL
+                                new String[]{
+                                        "cmd",
+                                        "/c",
+                                        "start",
+                                        SWAGGER_URL
+                                }
                         );
 
 
@@ -83,8 +65,10 @@ public class SwaggerLauncher {
 
                 Runtime.getRuntime()
                         .exec(
-                                "open "
-                                + SWAGGER_URL
+                                new String[]{
+                                        "open",
+                                        SWAGGER_URL
+                                }
                         );
 
 
@@ -93,12 +77,13 @@ public class SwaggerLauncher {
 
                 Runtime.getRuntime()
                         .exec(
-                                "xdg-open "
-                                + SWAGGER_URL
+                                new String[]{
+                                        "xdg-open",
+                                        SWAGGER_URL
+                                }
                         );
 
             }
-
 
 
             System.out.println(
@@ -106,12 +91,11 @@ public class SwaggerLauncher {
             );
 
 
-
         } catch (Exception e) {
 
 
-            System.out.println(
-                    "Erro ao abrir Swagger:"
+            System.err.println(
+                    "Erro ao abrir Swagger"
             );
 
 
