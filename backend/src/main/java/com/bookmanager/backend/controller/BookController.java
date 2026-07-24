@@ -2,10 +2,7 @@ package com.bookmanager.backend.controller;
 
 import com.bookmanager.backend.dto.BookDTO;
 import com.bookmanager.backend.dto.BookResponse;
-import com.bookmanager.backend.model.Book;
-import com.bookmanager.backend.model.User;
-import com.bookmanager.backend.repository.BookRepository;
-import com.bookmanager.backend.repository.UserRepository;
+import com.bookmanager.backend.service.BookService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,55 +17,35 @@ import java.util.List;
 public class BookController {
 
 
-    private final BookRepository repository;
-    private final UserRepository userRepository;
+    private final BookService bookService;
+
 
 
     public BookController(
-            BookRepository repository,
-            UserRepository userRepository
+            BookService bookService
     ) {
-        this.repository = repository;
-        this.userRepository = userRepository;
+        this.bookService = bookService;
     }
 
 
 
+
+
     @PostMapping
-    public BookResponse save(
+    public ResponseEntity<BookResponse> save(
             @RequestBody BookDTO dto,
             Authentication authentication
     ) {
 
 
-        User user = userRepository
-                .findByEmail(authentication.getName())
-                .orElseThrow();
+        BookResponse response =
+                bookService.save(
+                        dto,
+                        authentication.getName()
+                );
 
 
-
-        Book book = new Book();
-
-        book.setTitle(dto.getTitle());
-
-        book.setAuthor(dto.getAuthor());
-
-        book.setYear(dto.getYear());
-
-        book.setUser(user);
-
-
-
-        Book saved = repository.save(book);
-
-
-
-        return new BookResponse(
-                saved.getId(),
-                saved.getTitle(),
-                saved.getAuthor(),
-                saved.getYear()
-        );
+        return ResponseEntity.ok(response);
     }
 
 
@@ -76,28 +53,20 @@ public class BookController {
 
 
     @GetMapping
-    public List<BookResponse> findAll(
+    public ResponseEntity<List<BookResponse>> findAll(
             Authentication authentication
     ) {
 
 
-        User user = userRepository
-                .findByEmail(authentication.getName())
-                .orElseThrow();
+        List<BookResponse> books =
+                bookService.findAll(
+                        authentication.getName()
+                );
 
 
-
-        return repository
-                .findByUser_Id(user.getId())
-                .stream()
-                .map(book -> new BookResponse(
-                        book.getId(),
-                        book.getTitle(),
-                        book.getAuthor(),
-                        book.getYear()
-                ))
-                .toList();
+        return ResponseEntity.ok(books);
     }
+
 
 
 
@@ -107,63 +76,20 @@ public class BookController {
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> update(
             @PathVariable Long id,
-            @RequestBody BookDTO request,
+            @RequestBody BookDTO dto,
             Authentication authentication
     ) {
 
 
-        User user = userRepository
-                .findByEmail(authentication.getName())
-                .orElseThrow();
-
-
-
-        Book book = repository
-                .findByIdAndUser_Id(
+        BookResponse response =
+                bookService.update(
                         id,
-                        user.getId()
-                )
-                .orElse(null);
+                        dto,
+                        authentication.getName()
+                );
 
 
-
-        if(book == null){
-
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
-
-
-
-        book.setTitle(
-                request.getTitle()
-        );
-
-
-        book.setAuthor(
-                request.getAuthor()
-        );
-
-
-        book.setYear(
-                request.getYear()
-        );
-
-
-
-        Book updated = repository.save(book);
-
-
-
-        return ResponseEntity.ok(
-                new BookResponse(
-                        updated.getId(),
-                        updated.getTitle(),
-                        updated.getAuthor(),
-                        updated.getYear()
-                )
-        );
+        return ResponseEntity.ok(response);
     }
 
 
@@ -173,42 +99,21 @@ public class BookController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(
+    public ResponseEntity<String> delete(
             @PathVariable Long id,
             Authentication authentication
     ) {
 
 
-        User user = userRepository
-                .findByEmail(authentication.getName())
-                .orElseThrow();
-
-
-
-        Book book = repository
-                .findByIdAndUser_Id(
-                        id,
-                        user.getId()
-                )
-                .orElse(null);
-
-
-
-        if(book == null){
-
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
-
-
-
-        repository.delete(book);
-
+        bookService.delete(
+                id,
+                authentication.getName()
+        );
 
 
         return ResponseEntity.ok(
                 "Livro removido com sucesso"
         );
     }
+
 }
