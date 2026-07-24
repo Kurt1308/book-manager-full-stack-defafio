@@ -1,5 +1,8 @@
 package com.bookmanager.backend.configJWT;
 
+import com.bookmanager.backend.model.User;
+import com.bookmanager.backend.repository.UserRepository;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,93 +11,73 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     private final JwtService jwtService;
-
     private final UserDetailsServiceImpl userDetailsService;
-
+    private final UserRepository userRepository;
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
-            UserDetailsServiceImpl userDetailsService
+            UserDetailsServiceImpl userDetailsService,
+            UserRepository userRepository
     ) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.userRepository = userRepository;
     }
-
 
     @Override
-protected void doFilterInternal(
-        HttpServletRequest request,
-        HttpServletResponse response,
-        FilterChain filterChain
-) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
+        System.out.println("=== JWT FILTER EXECUTADO ===");
+        System.out.println("URI: " + request.getRequestURI());
 
-    System.out.println("=== JWT FILTER EXECUTADO ===");
-    System.out.println("URI: " + request.getRequestURI());
+        String path = request.getServletPath();
 
-    String path = request.getServletPath();
+        // Não aplica o filtro nas rotas públicas
+        if (path.startsWith("/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
+        final String authHeader = request.getHeader("Authorization");
 
-    // Não aplica JWT nas rotas de autenticação
-    if (path.startsWith("/auth")) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-        filterChain.doFilter(request, response);
-        return;
-    }
+        String jwt = authHeader.substring(7);
 
+        try {
 
-    final String authHeader =
-            request.getHeader("Authorization");
+            // O Subject do token agora é o ID do usuário
+            String userId = jwtService.extractUserId(jwt);
 
+            Long id = Long.parseLong(userId);
 
-    if (authHeader == null ||
-            !authHeader.startsWith("Bearer ")) {
-
-        filterChain.doFilter(request, response);
-        return;
-    }
-
-
-    String jwt =
-            authHeader.substring(7);
-
-
-    try {
-
-
-        String userEmail =
-                jwtService.extractUsername(jwt);
-
-
-        if (userEmail != null &&
-                SecurityContextHolder.getContext()
-                        .getAuthentication() == null) {
-
+            User user = userRepository
+                    .findById(id)
+                    .orElseThrow();
 
             UserDetails userDetails =
                     userDetailsService.loadUserByUsername(
-                            userEmail
+                            user.getEmail()
                     );
 
-
-            if (jwtService.isTokenValid(
-                    jwt,
-                    userDetails
-            )) {
-
+            if (jwtService.isTokenValid(jwt, userDetails)) {
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
@@ -103,27 +86,21 @@ protected void doFilterInternal(
                                 userDetails.getAuthorities()
                         );
 
-
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource()
                                 .buildDetails(request)
                 );
 
-
                 SecurityContextHolder.getContext()
                         .setAuthentication(authToken);
             }
+
+        } catch (Exception e) {
+
+            System.out.println("Erro JWT: " + e.getMessage());
+
         }
 
-
-    } catch (Exception e) {
-
-        System.out.println(
-                "Erro JWT: " + e.getMessage()
-        );
+        filterChain.doFilter(request, response);
     }
-
-
-    filterChain.doFilter(request, response);
-}
 }
