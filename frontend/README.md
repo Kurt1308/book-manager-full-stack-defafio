@@ -1,182 +1,379 @@
-# BookManager - Full Stack Application
+# BookManager Frontend
 
-Aplicação Full Stack para gerenciamento de livros, desenvolvida como desafio técnico.
+Frontend da aplicação **BookManager**, desenvolvido utilizando Vue.js 3 e TypeScript.
 
-O projeto possui:
+Este módulo é responsável pela interface gráfica da aplicação, permitindo que usuários interajam com o sistema através de uma aplicação web moderna e responsiva.
 
-- **Backend:** Java 21 + Spring Boot 4 + Spring Data JPA + PostgreSQL
-- **Frontend:** Vue.js 3 + TypeScript + Vite
-- **Banco de dados:** PostgreSQL 18
-- **Gerenciamento de dependências:**
-  - Maven (Backend)
-  - npm (Frontend)
+O frontend realiza comunicação com o Backend Spring Boot através de uma API REST utilizando HTTP/JSON.
+
 
 ---
 
-# Estrutura do Projeto
+# 1. Tecnologias Utilizadas
+
+
+## Framework
+
+- Vue.js 3
+
+
+## Linguagem
+
+- TypeScript
+
+
+## Build Tool
+
+- Vite
+
+
+## Comunicação HTTP
+
+- Axios
+
+
+## Interface
+
+- HTML5
+- CSS3
+
+
+## Gerenciamento de Dependências
+
+- npm
 
 
 
-book-manager-full-stack │
-├── backend
-│ ├── src
-│ ├── pom.xml
-│ └── MVNW
+---
+
+# 2. Arquitetura do Frontend
+
+
+O frontend segue uma arquitetura baseada em componentes:
+
+
+             Usuário
+
+                |
+
+                |
+
+         Vue Application
+
+                |
+
+                |
+
+          Components
+
+                |
+
+                |
+
+          Services/API
+
+                |
+
+                |
+
+      Backend Spring Boot API
+
+
+
+Responsabilidades:
+
+
+## Components
+
+Responsáveis por:
+
+- Construção das telas;
+- Interação com usuário;
+- Exibição dos dados.
+
+
+## Services
+
+Responsáveis por:
+
+- Comunicação com API;
+- Envio de requisições HTTP;
+- Tratamento de respostas.
+
+
+## Stores / Estado
+
+Responsáveis por:
+
+- Controle de dados compartilhados;
+- Informações do usuário autenticado.
+
+
+---
+
+# 3. Estrutura do Projeto
+
+
+
+Frontend
+
 │
-├── frontend
-│ ├── SRC
-│ ├── package.json
-└── vite.co
+
+├── src
+
+│ │
+
+│ ├── ativos
+
+│ │
+
+│ ├── Componentes
+
+│ │
+
+│ ├── Vistas
+
+│ │
+
+│ ├── Serviços
+
+│ │
+
+│ ├── roteador
+
+│ │
+
+│ └── main.ts
+
+│
+
+├── público
+
+│
+
+├── package.json
+
+├── vite.config.ts
+
+└── README.md
+
+
 
 
 ---
 
-# Pré-requisitos
-
-Antes de executar o projeto, instale:
-
-## Java
-
-Versão utilizada:
+# 4. Pré-requisitos
 
 
-Java 21 LTS
+Antes de executar o frontend instale:
+
+
+## Node.js
+
+
+Versão recomendada:
+
+
+
+Node.js 20+
+
 
 
 Verificar instalação:
 
+
 ```bash
-java -version
-
-Esperado:
-
-java version "21.x.x"
-Maven
-
-Versão utilizada:
-
-Apache Maven 3.9+
-
-Verificar:
-
-mvn -version
-Node.js
-
-Versão recomendada:
-
-Node.js 20+
-
-Verificar:
-
 node -v
+
+Exemplo:
+
+v20.x.x
 NPM
 
 Verificar:
 
 npm -v
-PostgreSQL
+5. Instalação das Dependências
 
-Versão utilizada:
-
-PostgreSQL 18
-
-Verificar:
-
-psql --version
-Configuração do Banco de Dados
-1. Criar banco PostgreSQL
-
-Acesse o PostgreSQL:
-
-psql -U postgres
-
-Crie o banco:
-
-CREATE DATABASE bookmanager;
-
-Sair:
-
-\q
-Configuração Backend
-
-Entre na massa:
-
-cd backend
-
-ou:
-
-cd backend/backend
-
-(dependendo da estrutura após extração)
-
-Configurar conexão com banco
-
-Arquivo:
-
-backend/src/main/resources/application.properties
-
-Exemplo:
-
-spring.datasource.url=jdbc:postgresql://localhost:5432/bookmanager
-spring.datasource.username=postgres
-spring.datasource.password=SUA_SENHA
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-server.port=8080
-
-Altere:
-
-SUA_SENHA
-
-pela senha do seu PostgreSQL.
-
-Executar Backend
-
-Dentro da pasta que contém o arquivo:
-
-pom.xml
-
-Executar:
-
-mvn clean install
-
-Depois:
-
-mvn spring-boot:run
-
-Backend iniciado:
-
-http://localhost:8080
-Testar Backend
-
-Acesso:
-
-http://localhost:8080
-
-Resposta esperada:
-
-BookManager API funcionando!
-Configuração Frontend
-
-Entre na massa:
+Entrar na pasta frontend:
 
 cd frontend
 
-Instale as dependências:
+Instalar dependências:
 
 npm install
-Executar Frontend
 
-Execute:
+O comando irá instalar todas as bibliotecas definidas no arquivo:
+
+package.json
+6. Configuração da API Backend
+
+O frontend depende do Backend Spring Boot.
+
+Backend esperado:
+
+http://localhost:8080
+
+A URL da API deve ser configurada através de variável de ambiente.
+
+Criar arquivo:
+
+.env
+
+Adicionar:
+
+VITE_API_URL=http://localhost:8080
+
+Exemplo:
+
+frontend
+
+│
+
+├── .env
+
+├── package.json
+
+└── src
+
+7. Executar Ambiente de Desenvolvimento
+
+Executor:
 
 npm run dev
 
-Aplicação disponível em:
+Após iniciar, será exibido:
+
+Local:
+http://localhost:5173/
+
+Acessar:
 
 http://localhost:5173
-Comunicação Frontend / Backend
+8. Comunicação com Backend
+
+O frontend realiza chamadas para a API REST.
+
+Fluxo:
+
+Usuário
+
+   |
+
+   |
+
+Vue Component
+
+   |
+
+   |
+
+Axios Service
+
+   |
+
+   |
+
+Spring Boot API
+
+   |
+
+   |
+
+PostgreSQL
+9. Autenticação JWT
+
+O sistema utiliza autenticação através de token JWT.
+
+Fluxo:
+
+Logar
+
+Usuário informa:
+
+{
+    "email":"usuario@email.com",
+    "password":"123456"
+}
+
+O retorno do backend:
+
+{
+    "token":"jwt_token"
+}
+
+Frontend O:
+
+Armazena o token;
+Envia o token nas próximas requisições;
+Libera acesso às funcionalidades protegidas.
+
+Formato enviado:
+
+Authorization:
+
+Bearer TOKEN
+10. Funcionalidades Disponíveis
+Usuário
+Cadastro;
+Login;
+Controle de sessão.
+Livros
+
+Usuário autenticado pode:
+
+Visualizar livros cadastrados;
+Criar novos livros;
+Editar livros;
+Excluir livros;
+Buscar informações.
+11. Executar Build de Produção
+
+Gerar arquivos otimizados:
+
+npm run build
+
+Resultado:
+
+dist/
+
+A pasta gerada contém os arquivos necessários para publicação.
+
+12. Visualizar Build Localmente
+
+Instalar servidor:
+
+npm install -g serve
+
+Executor:
+
+serve -s dist
+
+A aplicação estará disponível em:
+
+http://localhost:3000
+13. Comandos Principais
+Instalar dependências
+npm install
+Executar desenvolvimento
+npm run dev
+Construção Gerar
+npm run build
+Verificar projeto
+npm run lint
+14. Executar a Frontend via Docker
+
+Caso utilize o ambiente completo:
+
+Na raiz do projeto:
+
+docker compose up --build
+
+O Docker será responsável por iniciar os serviços configurados.
+
+15. Integração com Backend
+
+Configuração esperada:
 
 Frontend:
 
@@ -186,95 +383,63 @@ Backend:
 
 http://localhost:8080
 
-O frontend consome as APIs disponibilizadas pelo backend Spring Boot.
+Banco:
 
-Comandos úteis
-Backend
+PostgreSQL 18
+16. Solução de Problemas
+Erro de conexão com API
 
-Compilador:
+Verificar:
 
-mvn clean install
+Backend está iniciado;
+Porta 8080 disponível;
+Variável VITE_API_URL configurada.
+Erro no npm install
 
 Executor:
 
-mvn spring-boot:run
+npm cache clean --force
 
-Gerar pacote:
-
-mvn package
-Frontend
-
-Instalar dependências:
+Depois:
 
 npm install
+Porta 5173 ocupada
 
-Executar ambiente desenvolvimento:
+Executor:
 
-npm run dev
-
-Build Gerar:
-
-npm run build
-Tecnologias utilizadas
-Backend
-Java 21
-Bota Mola 4
-Spring Web
-Spring Data JPA
-Hibernar
-PostgreSQL
-Maven
-Frontend
+npm run dev -- --port 5174
+17. Decisões Técnicas
 Vue.js 3
+
+Escolhido por:
+
+Componentização;
+apresentação de jiboias;
+Grande adoção no mercado;
+Facilidade de manutenção.
 TypeScript
+
+Utilizado para:
+
+Maior segurança durante desenvolvimento;
+Melhor manutenção;
+Redução de erros.
 Vite
-NPM
-Banco
-PostgreSQL 18
-Arquitetura
 
-O projeto segue uma arquitetura separada:
+Escolhido por:
 
-Frontend (Vue.js)
-        |
-        |
- REST API HTTP
-        |
-        |
-Backend (Spring Boot)
-        |
-        |
- PostgreSQL Database
-Controle de Versão
+Inicialização rápida;
+Build otimizado;
+Excelente integração com Vue.
+Axios
 
-Git utilizado para versionamento.
+Utilizado para:
 
-Clonar o projeto:
-
-git clone https://github.com/Kurt1308/book-manager-full-stack-defafio.git
-
-Entrar no projeto:
-
-cd book-manager-full-stack-defafio
+Comunicação HTTP;
+Interceptação de requisições;
+Integração com autenticação JWT.
 Autor
 
-Kurt1308
+Lucas Dias
 
-Projeto desenvolvido como desafio técnico Full Stack.
-
-
-Depois de salvar:
-
-```powershell
-git add README.md
-git commit -m "Add complete project installation documentation"
-git push
-
-Esse README já fica adequado para avaliação técnica porque documenta:
-
-instalação;
-execução;
-tecnologias;
-arquitetura;
-banco;
-Comandos Principais.
+Frontend desenvolvido como parte do desafio técnico Full Stack BookManager.

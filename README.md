@@ -1189,7 +1189,7 @@ Resposta:
 "author":"Robert C. Martin",
 "year":2017
 }
-Listar Livros Carteiro
+Listar Livros Postman
 
 Método:
 
@@ -1419,7 +1419,7 @@ Testes Técnicos
 Possui validação completa utilizando:
 
 PowerShell;
-Carteiro;
+Postman;
 Confiança;
 Autenticação JWT.
 
