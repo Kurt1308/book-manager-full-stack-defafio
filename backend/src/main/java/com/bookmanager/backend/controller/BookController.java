@@ -21,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/books")
 @CrossOrigin(origins = "*")
@@ -62,6 +64,7 @@ public class BookController {
     })
     @PostMapping
     public ResponseEntity<BookResponse> save(
+            @Valid
             @RequestBody BookRequest dto,
             Authentication authentication
     ) {
@@ -186,7 +189,7 @@ public ResponseEntity<Page<BookResponse>> findAll(
                     example = "1"
             )
             @PathVariable Long id,
-
+            @Valid
             @RequestBody BookRequest dto,
 
             Authentication authentication
