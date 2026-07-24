@@ -12,6 +12,9 @@ import org.springdoc.core.annotations.ParameterObject;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,17 +36,13 @@ import jakarta.validation.Valid;
 )
 public class BookController {
 
-
     private final BookService bookService;
-
 
     public BookController(
             BookService bookService
     ) {
         this.bookService = bookService;
     }
-
-
 
     @Operation(
             summary = "Criar um novo livro",
@@ -57,6 +56,11 @@ public class BookController {
             ),
 
             @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados inválidos"
+            ),
+
+            @ApiResponse(
                     responseCode = "401",
                     description = "Usuário não autenticado"
             )
@@ -64,11 +68,31 @@ public class BookController {
     })
     @PostMapping
     public ResponseEntity<BookResponse> save(
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do livro",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = BookRequest.class),
+                            examples = @ExampleObject(
+                                    name = "Livro",
+                                    value = """
+                                    {
+                                      "title": "Clean Code",
+                                      "author": "Robert C. Martin",
+                                      "year": 2008,
+                                      "description": "Livro sobre boas práticas de programação."
+                                    }
+                                    """
+                            )
+                    )
+            )
             @Valid
             @RequestBody BookRequest dto,
-            Authentication authentication
-    ) {
 
+            Authentication authentication
+
+    ) {
 
         BookResponse response =
                 bookService.save(
@@ -76,98 +100,87 @@ public class BookController {
                         authentication.getName()
                 );
 
-
         return ResponseEntity.ok(response);
     }
 
-
-
-
     @Operation(
-        summary = "Listar livros",
-        description =
-                """
-                Retorna livros do usuário autenticado.
+            summary = "Listar livros",
+            description =
+                    """
+                    Retorna os livros do usuário autenticado.
 
-                Permite filtro opcional por título do livro.
+                    Permite filtro opcional pelo título.
 
-                Suporta paginação:
+                    Suporta paginação.
 
-                page = número da página iniciando em 0
+                    Exemplos:
 
-                size = quantidade de registros retornados
+                    /books?page=0&size=10
 
-                sort = ordenação
+                    /books?title=java&page=0&size=5
 
-                Exemplos:
+                    /books?page=0&size=10&sort=title,asc
+                    """
+    )
+    @ApiResponses(value = {
 
-                /books?page=0&size=10
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista retornada com sucesso"
+            ),
 
-                /books?title=java&page=0&size=5
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Usuário não autenticado"
+            )
 
-                /books?page=0&size=10&sort=title,asc
-                """
-)
-@ApiResponses(value = {
+    })
+    @GetMapping
+    public ResponseEntity<Page<BookResponse>> findAll(
 
-        @ApiResponse(
-                responseCode = "200",
-                description = "Lista de livros retornada com sucesso"
-        ),
+            @Parameter(
+                    description = "Filtro opcional pelo título",
+                    example = "Clean Code"
+            )
+            @RequestParam(required = false)
+            String title,
 
-        @ApiResponse(
-                responseCode = "401",
-                description = "Usuário não autenticado"
-        )
+            @ParameterObject
+            @PageableDefault(
+                    page = 0,
+                    size = 10,
+                    sort = "title"
+            )
+            Pageable pageable,
 
-})
-@GetMapping
-public ResponseEntity<Page<BookResponse>> findAll(
+            Authentication authentication
 
+    ) {
 
-        @RequestParam(
-                required = false
-        )
-        String title,
+        Page<BookResponse> books =
+                bookService.findAll(
+                        authentication.getName(),
+                        title,
+                        pageable
+                );
 
-
-        @ParameterObject
-        @PageableDefault(
-                page = 0,
-                size = 10,
-                sort = "title"
-        )
-        Pageable pageable,
-
-
-        Authentication authentication
-
-) {
-
-
-    Page<BookResponse> books =
-            bookService.findAll(
-                    authentication.getName(),
-                    title,
-                    pageable
-            );
-
-
-    return ResponseEntity.ok(books);
-
-}
-
-
+        return ResponseEntity.ok(books);
+    }
 
     @Operation(
             summary = "Atualizar livro",
-            description = "Atualiza os dados de um livro pertencente ao usuário autenticado."
+            description = "Atualiza um livro pertencente ao usuário autenticado."
     )
     @ApiResponses(value = {
 
             @ApiResponse(
                     responseCode = "200",
                     description = "Livro atualizado com sucesso"
+            ),
+
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Dados inválidos"
             ),
 
             @ApiResponse(
@@ -189,13 +202,30 @@ public ResponseEntity<Page<BookResponse>> findAll(
                     example = "1"
             )
             @PathVariable Long id,
+
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Novos dados do livro",
+                    required = true,
+                    content = @Content(
+                            schema = @Schema(implementation = BookRequest.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                    {
+                                      "title": "Clean Architecture",
+                                      "author": "Robert C. Martin",
+                                      "year": 2017,
+                                      "description": "Livro atualizado."
+                                    }
+                                    """
+                            )
+                    )
+            )
             @Valid
             @RequestBody BookRequest dto,
 
             Authentication authentication
 
     ) {
-
 
         BookResponse response =
                 bookService.update(
@@ -204,13 +234,8 @@ public ResponseEntity<Page<BookResponse>> findAll(
                         authentication.getName()
                 );
 
-
         return ResponseEntity.ok(response);
     }
-
-
-
-
 
     @Operation(
             summary = "Excluir livro",
@@ -247,25 +272,19 @@ public ResponseEntity<Page<BookResponse>> findAll(
 
     ) {
 
-
         bookService.delete(
                 id,
                 authentication.getName()
         );
-
 
         return ResponseEntity.ok(
                 "Livro removido com sucesso"
         );
     }
 
-
-
-
-
     @Operation(
             summary = "Buscar livro por ID",
-            description = "Retorna os detalhes de um livro específico pertencente ao usuário autenticado."
+            description = "Retorna um livro pertencente ao usuário autenticado."
     )
     @ApiResponses(value = {
 
@@ -298,13 +317,11 @@ public ResponseEntity<Page<BookResponse>> findAll(
 
     ) {
 
-
         BookResponse response =
                 bookService.findById(
                         id,
                         authentication.getName()
                 );
-
 
         return ResponseEntity.ok(response);
     }
