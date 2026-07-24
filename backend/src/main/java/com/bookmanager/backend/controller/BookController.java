@@ -12,6 +12,8 @@ import java.util.List;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/books")
@@ -48,19 +50,31 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BookResponse>> findAll(
-            Authentication authentication
-    ) {
+        public ResponseEntity<List<BookResponse>> findAll(
+
+                @RequestParam(
+                        required = false
+                )
+                String title,
+
+                Authentication authentication
+
+        ) {
 
 
         List<BookResponse> books =
                 bookService.findAll(
-                        authentication.getName()
+
+                        authentication.getName(),
+
+                        title
+
                 );
 
 
+
         return ResponseEntity.ok(books);
-    }
+        }
 
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> update(

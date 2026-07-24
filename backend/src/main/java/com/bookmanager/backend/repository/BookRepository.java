@@ -27,4 +27,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             String email
     );
 
+    List<Book> findByUser_IdAndTitleContainingIgnoreCase(
+                Long userId,
+                String title
+        );
 }

@@ -96,8 +96,9 @@ public class BookService {
 
 
     public List<BookResponse> findAll(
-            String email
-    ) {
+                String email,
+                String title
+        ) {
 
 
         User user = userRepository
@@ -106,8 +107,35 @@ public class BookService {
 
 
 
-        return bookRepository
-                .findByUser_Id(user.getId())
+        List<Book> books;
+
+
+
+        if(title != null && !title.isBlank()) {
+
+
+                books =
+                        bookRepository
+                                .findByUser_IdAndTitleContainingIgnoreCase(
+                                        user.getId(),
+                                        title
+                                );
+
+
+        } else {
+
+
+                books =
+                        bookRepository
+                                .findByUser_Id(
+                                        user.getId()
+                                );
+
+        }
+
+
+
+        return books
                 .stream()
                 .map(book -> new BookResponse(
 
@@ -123,7 +151,7 @@ public class BookService {
 
                 ))
                 .toList();
-    }
+        }
 
 
 
