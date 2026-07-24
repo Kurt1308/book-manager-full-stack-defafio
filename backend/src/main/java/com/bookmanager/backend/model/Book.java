@@ -1,18 +1,10 @@
 package com.bookmanager.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 
 @Entity
 @Table(name = "books")
-@Getter
-@Setter
-@NoArgsConstructor
 public class Book {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +19,12 @@ public class Book {
     private String author;
 
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Integer year;
+
+
+    @Column(nullable = true, length = 1000)
+    private String description;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,17 +33,80 @@ public class Book {
 
 
 
+    public Book() {
+    }
+
+
+
     public Book(
             String title,
             String author,
             Integer year,
+            String description,
             User user
     ) {
 
         this.title = title;
         this.author = author;
         this.year = year;
+        this.description = description;
         this.user = user;
     }
 
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+
+    public String getAuthor() {
+        return author;
+    }
+
+
+    public Integer getYear() {
+        return year;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

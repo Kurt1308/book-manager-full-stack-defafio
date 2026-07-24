@@ -30,10 +30,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-
-
-
-
     @PostMapping
     public ResponseEntity<BookResponse> save(
             @RequestBody BookRequest dto,
@@ -51,10 +47,6 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
-
-
-
-
     @GetMapping
     public ResponseEntity<List<BookResponse>> findAll(
             Authentication authentication
@@ -69,12 +61,6 @@ public class BookController {
 
         return ResponseEntity.ok(books);
     }
-
-
-
-
-
-
 
     @PutMapping("/{id}")
     public ResponseEntity<BookResponse> update(
@@ -95,12 +81,6 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
-
-
-
-
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(
             @PathVariable Long id,
@@ -118,5 +98,22 @@ public class BookController {
                 "Livro removido com sucesso"
         );
     }
+
+    @GetMapping("/{id}")
+                public ResponseEntity<BookResponse> findById(
+                        @PathVariable Long id,
+                        Authentication authentication
+                ) {
+
+
+                BookResponse response =
+                        bookService.findById(
+                                id,
+                                authentication.getName()
+                        );
+
+
+                return ResponseEntity.ok(response);
+        }
 
 }
