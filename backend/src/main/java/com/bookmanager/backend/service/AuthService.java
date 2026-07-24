@@ -1,5 +1,7 @@
 package com.bookmanager.backend.service;
 
+import com.bookmanager.backend.config.Exception.DuplicateResourceException;
+import com.bookmanager.backend.config.Exception.ResourceNotFoundException;
 import com.bookmanager.backend.config.JWT.JwtService;
 import com.bookmanager.backend.dto.request.LoginRequest;
 import com.bookmanager.backend.dto.request.RegisterRequest;
@@ -41,7 +43,7 @@ public class AuthService {
     public AuthenticationResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email já cadastrado");
+        throw new DuplicateResourceException("Email já cadastrado");
         }
 
 
@@ -74,8 +76,8 @@ public class AuthService {
         User user = userRepository
                 .findByEmail(request.getEmail())
                 .orElseThrow(() ->
-                        new RuntimeException("Usuário não encontrado")
-                );
+                new ResourceNotFoundException("Usuário não encontrado")
+        );
 
 
         String token = jwtService.generateToken(user);
