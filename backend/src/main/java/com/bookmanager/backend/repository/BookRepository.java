@@ -9,10 +9,10 @@ import java.util.Optional;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
 
-    List<Book> findByUserId(Long userId);
+    List<Book> findByUser_Id(Long userId);
 
 
-    Optional<Book> findByIdAndUserId(
+    Optional<Book> findByIdAndUser_Id(
             Long id,
             Long userId
     );
