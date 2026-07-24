@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config;
+package com.bookmanager.backend.configJWT;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

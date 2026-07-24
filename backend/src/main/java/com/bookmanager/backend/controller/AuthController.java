@@ -1,11 +1,11 @@
 package com.bookmanager.backend.controller;
 
+import com.bookmanager.backend.configJWT.JwtService;
 import com.bookmanager.backend.dto.LoginRequest;
 import com.bookmanager.backend.dto.LoginResponse;
 import com.bookmanager.backend.dto.RegisterRequest;
 import com.bookmanager.backend.model.User;
 import com.bookmanager.backend.repository.UserRepository;
-import com.bookmanager.backend.config.JwtService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

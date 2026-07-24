@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config;
+package com.bookmanager.backend.configJWT;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
