@@ -346,14 +346,10 @@ async function handleRegister(){
     }
 
 
-    catch {
+    catch(error) {
 
 
-        await alertService.error(
-
-            'Erro ao cadastrar usuário'
-
-        )
+    await alertService.apiError(error)
 
 
     }

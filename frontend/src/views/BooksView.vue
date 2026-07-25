@@ -355,7 +355,7 @@ import {
 } from '@/services/book.service'
 
 
-
+import alertService from '@/services/alert.service'
 
 
 
@@ -441,19 +441,16 @@ async function removeBook(id:number) {
 
 
 
-    const confirmed = confirm(
+    const result = await alertService.confirm(
 
-        'Deseja excluir este livro?'
+    'Deseja excluir este livro?'
 
     )
 
 
-
-    if(!confirmed){
-
+    if(!result.isConfirmed){
 
         return
-
 
     }
 
