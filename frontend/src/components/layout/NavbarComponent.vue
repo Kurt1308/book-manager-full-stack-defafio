@@ -89,17 +89,17 @@
           <li class="nav-item">
 
 
-            <button
+              <button
 
-              class="nav-link btn btn-link"
+                class="nav-link btn btn-link px-0"
 
-              @click="logout"
+                @click="logout"
 
-            >
+              >
 
-              Sair
+                Sair
 
-            </button>
+              </button>
 
 
           </li>
