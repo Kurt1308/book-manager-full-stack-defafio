@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 
+import { useAuthStore } from '@/stores/auth'
+
+
 import LoginView from '@/views/LoginView.vue'
 
 import RegisterView from '@/views/RegisterView.vue'
@@ -16,6 +19,10 @@ import BooksView from '@/views/BooksView.vue'
 import BookCreateView from '@/views/BookCreateView.vue'
 
 import BookEditView from '@/views/BookEditView.vue'
+
+
+
+
 
 const routes = [
 
@@ -75,6 +82,7 @@ const routes = [
         children: [
 
 
+
             {
 
                 path: 'home',
@@ -86,26 +94,42 @@ const routes = [
             },
 
 
+
+
             {
+
                 path: 'books',
 
                 name: 'books',
-                
+
                 component: BooksView
+
             },
 
 
+
+
             {
+
                 path: 'books/new',
+
                 name: 'book-create',
+
                 component: BookCreateView
+
             },
 
 
+
+
             {
+
                 path: 'books/:id/edit',
+
                 name: 'book-edit',
+
                 component: BookEditView
+
             }
 
 
@@ -135,6 +159,7 @@ const routes = [
 
 
 
+
 const router = createRouter({
 
 
@@ -152,10 +177,11 @@ const router = createRouter({
 
 
 
+
 router.beforeEach((to, from, next) => {
 
 
-    const token = localStorage.getItem('token')
+    const authStore = useAuthStore()
 
 
 
@@ -171,7 +197,9 @@ router.beforeEach((to, from, next) => {
 
     if (
 
-        requiresAuth && !token
+        requiresAuth &&
+
+        !authStore.isAuthenticated
 
     ) {
 
@@ -182,6 +210,8 @@ router.beforeEach((to, from, next) => {
         return
 
     }
+
+
 
 
 

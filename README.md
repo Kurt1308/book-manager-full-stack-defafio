@@ -81,7 +81,7 @@ BookManager
 - Cadastro de livros
 - Edição de livros
 - Exclusão de livros
-- Consulta por ID
+- Consulta por Título
 
 ---
 
