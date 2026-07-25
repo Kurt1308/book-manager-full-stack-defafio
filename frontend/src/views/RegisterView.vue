@@ -1,109 +1,279 @@
 <template>
 
-  <div class="container mt-5">
+
+<div class="container mt-5">
+
 
     <div class="row justify-content-center">
 
-      <div class="col-md-6">
 
-        <div class="card shadow">
-
-          <div class="card-body">
-
-            <h2 class="text-center mb-4">
-              Criar Conta
-            </h2>
+        <div class="col-md-6">
 
 
-            <form>
-
-              <div class="mb-3">
-
-                <label class="form-label">
-                  Nome
-                </label>
-
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Digite seu nome"
-                />
-
-              </div>
+            <div class="card shadow">
 
 
-              <div class="mb-3">
-
-                <label class="form-label">
-                  Email
-                </label>
-
-                <input
-                  type="email"
-                  class="form-control"
-                  placeholder="Digite seu email"
-                />
-
-              </div>
+                <div class="card-body">
 
 
-              <div class="mb-3">
+                    <h2 class="text-center mb-4">
 
-                <label class="form-label">
-                  Senha
-                </label>
+                        Criar Conta
 
-                <input
-                  type="password"
-                  class="form-control"
-                  placeholder="Digite sua senha"
-                />
-
-              </div>
+                    </h2>
 
 
-              <button
-                type="submit"
-                class="btn btn-primary w-100"
-              >
-                Registrar
-              </button>
 
 
-            </form>
+                    <form @submit.prevent="handleRegister">
 
 
-            <hr>
 
 
-            <RouterLink
-              to="/login"
-              class="btn btn-outline-secondary w-100"
-            >
-              Já tenho uma conta
-            </RouterLink>
+
+                        <div class="mb-3">
 
 
-          </div>
+                            <label class="form-label">
+
+                                Nome
+
+                            </label>
+
+
+
+                            <input
+
+                                class="form-control"
+
+                                v-model="name"
+
+                                required
+
+                            />
+
+
+                        </div>
+
+
+
+
+
+                        <div class="mb-3">
+
+
+                            <label class="form-label">
+
+                                Email
+
+                            </label>
+
+
+
+                            <input
+
+                                type="email"
+
+                                class="form-control"
+
+                                v-model="email"
+
+                                required
+
+                            />
+
+
+                        </div>
+
+
+
+
+
+                        <div class="mb-3">
+
+
+                            <label class="form-label">
+
+                                Senha
+
+                            </label>
+
+
+
+                            <input
+
+                                type="password"
+
+                                class="form-control"
+
+                                v-model="password"
+
+                                minlength="6"
+
+                                required
+
+                            />
+
+
+                        </div>
+
+
+
+
+
+                        <button
+
+                            class="btn btn-primary w-100"
+
+                            type="submit"
+
+                        >
+
+                            Registrar
+
+                        </button>
+
+
+
+
+                    </form>
+
+
+
+
+                    <hr>
+
+
+
+
+                    <RouterLink
+
+                        to="/login"
+
+                        class="btn btn-outline-secondary w-100"
+
+                    >
+
+                        Voltar para login
+
+                    </RouterLink>
+
+
+
+                </div>
+
+
+            </div>
+
 
         </div>
 
-      </div>
 
     </div>
 
-  </div>
+
+</div>
+
+
 
 </template>
 
 
+
+
 <script setup lang="ts">
+
+
+import { ref } from 'vue'
+
+import { useRouter } from 'vue-router'
 
 import { RouterLink } from 'vue-router'
 
+
+import { register } from '@/services/auth.service'
+
+import { useAuthStore } from '@/stores/auth'
+
+
+
+
+
+const router = useRouter()
+
+
+const authStore = useAuthStore()
+
+
+
+
+const name = ref('')
+
+
+const email = ref('')
+
+
+const password = ref('')
+
+
+
+
+
+
+
+async function handleRegister(){
+
+
+    try {
+
+
+        const response = await register({
+
+
+            name: name.value,
+
+
+            email: email.value,
+
+
+            password: password.value
+
+
+        })
+
+
+
+
+        authStore.setToken(
+
+            response.token
+
+        )
+
+
+
+        router.push('/home')
+
+
+
+    }
+
+
+    catch {
+
+
+        alert(
+
+            'Erro ao cadastrar usuário'
+
+        )
+
+
+    }
+
+
+}
+
+
+
 </script>
-
-
-<style scoped>
-
-</style>
