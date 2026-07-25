@@ -1,28 +1,35 @@
 package com.bookmanager.backend.config.JWT;
 
+
 import com.bookmanager.backend.model.User;
 import com.bookmanager.backend.repository.UserRepository;
+
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.http.HttpStatus;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+
 import org.springframework.stereotype.Component;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import java.io.IOException;
+
 
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
 
 
     private final JwtService jwtService;
@@ -30,6 +37,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
 
     private final UserRepository userRepository;
+
+
 
 
 
@@ -50,6 +59,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -64,10 +75,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-        // Rotas públicas
+
+        /*
+         * Rotas públicas
+         */
         if(path.startsWith("/auth")) {
 
-            filterChain.doFilter(request, response);
+
+            filterChain.doFilter(
+                    request,
+                    response
+            );
 
             return;
 
@@ -77,19 +95,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-        final String authHeader =
+
+
+
+        String authHeader =
                 request.getHeader("Authorization");
 
 
 
 
+
+        /*
+         * Sem token continua o fluxo.
+         * O Spring Security bloqueará se necessário.
+         */
         if(
                 authHeader == null ||
                 !authHeader.startsWith("Bearer ")
         ) {
 
 
-            filterChain.doFilter(request, response);
+            filterChain.doFilter(
+                    request,
+                    response
+            );
 
             return;
 
@@ -101,7 +130,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-        String jwt = authHeader.substring(7);
+
+        String jwt =
+                authHeader.substring(7);
+
+
 
 
 
@@ -109,66 +142,86 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
 
-
-            String userId =
-                    jwtService.extractUserId(jwt);
-
-
-
-            Long id =
-                    Long.parseLong(userId);
+            /*
+             * Evita substituir uma autenticação já existente
+             */
+            if(SecurityContextHolder
+                    .getContext()
+                    .getAuthentication() == null) {
 
 
 
-
-            User user =
-                    userRepository
-                            .findById(id)
-                            .orElseThrow();
+                String userId =
+                        jwtService.extractUserId(jwt);
 
 
 
 
+                Long id =
+                        Long.parseLong(userId);
 
-            UserDetails userDetails =
-                    userDetailsService
-                            .loadUserByUsername(
-                                    user.getEmail()
+
+
+
+
+
+                User user =
+                        userRepository
+                                .findById(id)
+                                .orElseThrow(
+                                        () -> new RuntimeException(
+                                                "Usuário não encontrado"
+                                        )
+                                );
+
+
+
+
+
+
+
+                UserDetails userDetails =
+                        userDetailsService
+                                .loadUserByUsername(
+                                        user.getEmail()
+                                );
+
+
+
+
+
+
+
+                if(jwtService.isTokenValid(jwt, userDetails)) {
+
+
+
+                    UsernamePasswordAuthenticationToken authToken =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
                             );
 
 
 
 
+                    authToken.setDetails(
 
+                            new WebAuthenticationDetailsSource()
+                                    .buildDetails(request)
 
-
-            if(jwtService.isTokenValid(jwt, userDetails)) {
-
-
-
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+                    );
 
 
 
 
-                authToken.setDetails(
-
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-
-                );
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authToken);
 
 
-
-
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authToken);
+                }
 
 
 
@@ -177,51 +230,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-            filterChain.doFilter(request, response);
-
-
-
 
 
         }
-        catch(Exception e) {
-
+        catch(Exception exception) {
 
 
             SecurityContextHolder
                     .clearContext();
 
 
-
-
-            response.setStatus(
-                    HttpStatus.UNAUTHORIZED.value()
-            );
-
-
-
-            response.setContentType(
-                    "application/json"
-            );
-
-
-
-            response.getWriter()
-                    .write("""
-                    {
-                        "status":401,
-                        "error":"Unauthorized",
-                        "message":"Token inválido ou expirado"
-                    }
-                    """);
-
-
-
         }
 
 
 
+
+
+
+
+        filterChain.doFilter(
+                request,
+                response
+        );
+
+
+
     }
+
 
 
 }
