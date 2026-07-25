@@ -23,7 +23,7 @@
       >
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/">
+            <RouterLink class="nav-link" to="/home">
               Home
             </RouterLink>
           </li>
