@@ -53,4 +53,65 @@ api.interceptors.request.use(
 
 
 
+
+
+
+// Intercepta respostas da API
+api.interceptors.response.use(
+
+
+    response => {
+
+
+        return response
+
+
+    },
+
+
+
+    error => {
+
+
+
+        if(error.response){
+
+
+
+            const status = error.response.status
+
+
+
+
+            // Token inválido ou expirado
+            if(status === 401){
+
+
+
+                localStorage.removeItem('token')
+
+
+
+                window.location.href = '/login'
+
+
+            }
+
+
+        }
+
+
+
+        return Promise.reject(error)
+
+
+    }
+
+
+)
+
+
+
+
+
 export default api

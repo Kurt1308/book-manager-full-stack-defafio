@@ -231,7 +231,7 @@ import { login } from '@/services/auth.service'
 
 import { useAuthStore } from '@/stores/auth'
 
-
+import alertService from '@/services/alert.service'
 
 
 
@@ -271,49 +271,41 @@ const error = ref('')
 async function handleLogin(){
 
 
-
     try {
-
 
 
         const response = await login({
 
 
-
             email: email.value,
 
 
-
             password: password.value
-
 
 
         })
 
 
 
-
-
-
         authStore.setToken(
 
 
-
             response.token
-
 
 
         )
 
 
 
+        await alertService.success(
+
+            'Login realizado com sucesso'
+
+        )
 
 
 
         router.push('/home')
-
-
-
 
 
 
@@ -322,17 +314,14 @@ async function handleLogin(){
     catch {
 
 
-
-        error.value =
-
-
+        await alertService.error(
 
             'Email ou senha inválidos'
 
+        )
 
 
     }
-
 
 
 }
