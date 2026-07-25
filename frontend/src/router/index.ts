@@ -15,7 +15,7 @@ import BooksView from '@/views/BooksView.vue'
 
 import BookCreateView from '@/views/BookCreateView.vue'
 
-
+import BookEditView from '@/views/BookEditView.vue'
 
 const routes = [
 
@@ -95,11 +95,18 @@ const routes = [
             },
 
 
-        {
-            path: 'books/new',
-            name: 'book-create',
-            component: BookCreateView
-        }
+            {
+                path: 'books/new',
+                name: 'book-create',
+                component: BookCreateView
+            },
+
+
+            {
+                path: 'books/:id/edit',
+                name: 'book-edit',
+                component: BookEditView
+            }
 
 
         ]
