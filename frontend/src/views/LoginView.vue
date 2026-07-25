@@ -311,17 +311,11 @@ async function handleLogin(){
 
     }
 
-    catch {
+    catch(error) {
 
+    await alertService.apiError(error)
 
-        await alertService.error(
-
-            'Email ou senha inválidos'
-
-        )
-
-
-    }
+}
 
 
 }

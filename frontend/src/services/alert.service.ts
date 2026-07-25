@@ -86,6 +86,51 @@ const alertService = {
         })
 
 
+    },
+
+
+
+
+
+
+    apiError(error: any) {
+
+
+        let message = 'Ocorreu um erro inesperado'
+
+
+
+        if(error?.response?.data?.message) {
+
+
+            message = error.response.data.message
+
+
+        }
+
+
+        else if(error?.response?.status === 401) {
+
+
+            message = 'Usuário não autorizado'
+
+
+        }
+
+
+        else if(error?.response?.status === 404) {
+
+
+            message = 'Recurso não encontrado'
+
+
+        }
+
+
+
+        return this.error(message)
+
+
     }
 
 
