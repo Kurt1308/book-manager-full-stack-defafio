@@ -262,7 +262,7 @@ import { register } from '@/services/auth.service'
 
 import { useAuthStore } from '@/stores/auth'
 
-
+import alertService from '@/services/alert.service'
 
 
 
@@ -302,50 +302,40 @@ const password = ref('')
 async function handleRegister(){
 
 
-
     try {
-
 
 
         const response = await register({
 
 
-
-
             name: name.value,
-
 
 
             email: email.value,
 
 
-
             password: password.value
-
-
 
 
         })
 
 
 
-
-
-
-
         authStore.setToken(
 
 
-
             response.token
-
 
 
         )
 
 
 
+        await alertService.success(
 
+            'Usuário cadastrado com sucesso'
+
+        )
 
 
 
@@ -353,26 +343,17 @@ async function handleRegister(){
 
 
 
-
-
-
-
     }
+
 
     catch {
 
 
-
-        alert(
-
-
+        await alertService.error(
 
             'Erro ao cadastrar usuário'
 
-
-
         )
-
 
 
     }
