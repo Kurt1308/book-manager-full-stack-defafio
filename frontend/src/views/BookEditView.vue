@@ -20,7 +20,32 @@
 
 
 
-            <form @submit.prevent="updateBook">
+            <div
+
+                v-if="loading"
+
+                class="loading-state"
+
+            >
+
+                Carregando livro...
+
+
+            </div>
+
+
+
+
+
+
+
+            <form
+
+                v-else
+
+                @submit.prevent="updateBook"
+
+            >
 
 
 
@@ -51,6 +76,7 @@
 
 
                 </div>
+
 
 
 
@@ -181,15 +207,20 @@
 
 
 
+
+
                     <button
 
                         type="submit"
 
                         class="btn btn-primary"
 
+                        :disabled="saving"
+
                     >
 
-                        Atualizar
+                        {{ saving ? 'Atualizando...' : 'Atualizar' }}
+
 
                     </button>
 
@@ -228,7 +259,7 @@
 <script setup lang="ts">
 
 
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 
 import { useRoute, useRouter } from 'vue-router'
 
@@ -243,6 +274,10 @@ import {
 
 
 import type { BookRequest } from '@/types/book'
+
+
+import alertService from '@/services/alert.service'
+
 
 
 
@@ -261,6 +296,16 @@ const router = useRouter()
 
 
 const bookId = Number(route.params.id)
+
+
+
+
+
+const loading = ref(false)
+
+
+const saving = ref(false)
+
 
 
 
@@ -293,25 +338,56 @@ const form = reactive<BookRequest>({
 
 
 
-
 async function loadBook() {
 
 
 
-    const book = await getBookById(bookId)
+    try {
 
 
 
-    form.title = book.title
+        loading.value = true
 
 
-    form.author = book.author
+
+        const book = await getBookById(bookId)
 
 
-    form.year = book.year
+
+        form.title = book.title
 
 
-    form.description = book.description
+        form.author = book.author
+
+
+        form.year = book.year
+
+
+        form.description = book.description
+
+
+
+    } catch(error) {
+
+
+
+        await alertService.apiError(error)
+
+
+
+        router.push('/books')
+
+
+
+    } finally {
+
+
+
+        loading.value = false
+
+
+
+    }
 
 
 
@@ -329,17 +405,53 @@ async function updateBook() {
 
 
 
-    await updateBookService(
-
-        bookId,
-
-        form
-
-    )
+    try {
 
 
 
-    router.push('/books')
+        saving.value = true
+
+
+
+        await updateBookService(
+
+            bookId,
+
+            form
+
+        )
+
+
+
+        await alertService.success(
+
+            'Livro atualizado com sucesso'
+
+        )
+
+
+
+        router.push('/books')
+
+
+
+    } catch(error) {
+
+
+
+        await alertService.apiError(error)
+
+
+
+    } finally {
+
+
+
+        saving.value = false
+
+
+
+    }
 
 
 

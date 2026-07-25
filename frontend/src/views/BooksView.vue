@@ -40,6 +40,8 @@
 
 
 
+
+
         <div class="search-box">
 
 
@@ -105,7 +107,6 @@
 
             Carregando livros...
 
-
         </div>
 
 
@@ -125,7 +126,6 @@
         >
 
             Nenhum livro encontrado.
-
 
         </div>
 
@@ -206,6 +206,8 @@
 
 
 
+
+
                         <p
 
                             v-if="book.year"
@@ -220,6 +222,8 @@
 
 
                         </p>
+
+
 
 
 
@@ -265,6 +269,7 @@
 
 
                             </RouterLink>
+
 
 
 
@@ -359,17 +364,17 @@ import alertService from '@/services/alert.service'
 
 
 
-const books = ref<Book[]>([])
 
+
+
+
+const books = ref<Book[]>([])
 
 
 const loading = ref(false)
 
 
-
 const search = ref('')
-
-
 
 
 
@@ -405,13 +410,7 @@ async function loadBooks() {
 
 
 
-        console.error(
-
-            'Erro ao buscar livros:',
-
-            error
-
-        )
+        await alertService.apiError(error)
 
 
 
@@ -443,16 +442,20 @@ async function removeBook(id:number) {
 
     const result = await alertService.confirm(
 
-    'Deseja excluir este livro?'
+        'Deseja excluir este livro?'
 
     )
 
 
+
     if(!result.isConfirmed){
+
 
         return
 
+
     }
+
 
 
 
@@ -467,6 +470,14 @@ async function removeBook(id:number) {
 
 
 
+        await alertService.success(
+
+            'Livro removido com sucesso'
+
+        )
+
+
+
         await loadBooks()
 
 
@@ -476,22 +487,7 @@ async function removeBook(id:number) {
 
 
 
-        console.error(
-
-            'Erro ao excluir livro:',
-
-            error
-
-        )
-
-
-
-
-        alert(
-
-            'Erro ao excluir o livro.'
-
-        )
+        await alertService.apiError(error)
 
 
 
@@ -500,8 +496,6 @@ async function removeBook(id:number) {
 
 
 }
-
-
 
 
 
