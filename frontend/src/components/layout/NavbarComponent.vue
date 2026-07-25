@@ -97,21 +97,35 @@
 
           <li class="nav-item">
 
+    <span class="nav-link user-name">
 
-            <button
+        Olá, {{ authStore.getName }} 👋
 
-              class="nav-link btn btn-link logout-button"
+    </span>
 
-              @click="logout"
+</li>
 
-            >
+
+
+
+
+<li class="nav-item">
+
+
+    <button
+
+        class="nav-link btn btn-link logout-button"
+
+        @click="logout"
+
+          >
 
               Sair
 
-            </button>
+          </button>
 
 
-          </li>
+      </li>
 
 
 

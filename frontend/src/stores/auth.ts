@@ -1,15 +1,30 @@
 import { defineStore } from 'pinia'
 
 
+interface AuthState {
+
+    token: string | null
+
+    name: string | null
+
+}
+
+
+
 export const useAuthStore = defineStore(
+
     'auth',
+
     {
 
 
-        state: () => ({
+        state: (): AuthState => ({
 
 
-            token: localStorage.getItem('token') as string | null
+            token: localStorage.getItem('token'),
+
+
+            name: localStorage.getItem('name')
 
 
         }),
@@ -19,6 +34,7 @@ export const useAuthStore = defineStore(
 
 
         getters: {
+
 
 
             isAuthenticated(state) {
@@ -32,10 +48,23 @@ export const useAuthStore = defineStore(
 
 
 
+
             getToken(state) {
 
 
                 return state.token
+
+
+            },
+
+
+
+
+
+            getName(state) {
+
+
+                return state.name
 
 
             }
@@ -53,7 +82,11 @@ export const useAuthStore = defineStore(
 
 
 
-            setToken(token:string) {
+            setToken(
+
+                token: string
+
+            ) {
 
 
 
@@ -70,7 +103,34 @@ export const useAuthStore = defineStore(
                 )
 
 
+
+                const payload = JSON.parse(
+
+                    atob(
+
+                        token.split('.')[1]
+
+                    )
+
+                )
+
+
+
+                this.name = payload.name
+
+
+
+                localStorage.setItem(
+
+                    'name',
+
+                    payload.name
+
+                )
+
+
             },
+
 
 
 
@@ -85,10 +145,21 @@ export const useAuthStore = defineStore(
                 this.token = null
 
 
+                this.name = null
+
+
 
                 localStorage.removeItem(
 
                     'token'
+
+                )
+
+
+
+                localStorage.removeItem(
+
+                    'name'
 
                 )
 
