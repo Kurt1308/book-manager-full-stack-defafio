@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+import alertService from '@/services/alert.service'
+
+
 
 const api = axios.create({
 
@@ -17,12 +20,17 @@ const api = axios.create({
 
 
 
+
+
+// Interceptor antes de enviar requisições
 api.interceptors.request.use(
+
 
     config => {
 
 
         const token = localStorage.getItem('token')
+
 
 
         if(token){
@@ -35,10 +43,12 @@ api.interceptors.request.use(
         }
 
 
+
         return config
 
 
     },
+
 
 
     error => {
@@ -49,6 +59,7 @@ api.interceptors.request.use(
 
     }
 
+
 )
 
 
@@ -57,7 +68,11 @@ api.interceptors.request.use(
 
 
 
+
+
+// Interceptor para tratar respostas da API
 api.interceptors.response.use(
+
 
 
     response => {
@@ -70,7 +85,8 @@ api.interceptors.response.use(
 
 
 
-    error => {
+
+    async error => {
 
 
 
@@ -84,7 +100,25 @@ api.interceptors.response.use(
 
 
 
+
+
             localStorage.removeItem('token')
+
+
+
+
+
+
+            await alertService.warning(
+
+                'Sua sessão expirou. Faça login novamente.'
+
+            )
+
+
+
+
+
 
 
 
@@ -95,11 +129,38 @@ api.interceptors.response.use(
                 window.location.replace('/login')
 
 
+
             }
 
 
 
         }
+
+
+
+
+
+        else if(status === 403){
+
+
+
+
+
+            await alertService.error(
+
+                'Você não possui permissão para realizar esta ação.'
+
+            )
+
+
+
+
+
+        }
+
+
+
+
 
 
 
@@ -110,6 +171,9 @@ api.interceptors.response.use(
 
 
 )
+
+
+
 
 
 
