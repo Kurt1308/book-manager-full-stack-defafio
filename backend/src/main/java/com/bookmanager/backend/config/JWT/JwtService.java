@@ -33,12 +33,33 @@ public class JwtService {
      */
     public String generateToken(User user) {
 
-        return Jwts.builder()
-                .subject(user.getId().toString())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey())
-                .compact();
+    return Jwts.builder()
+
+            .subject(
+                    user.getId().toString()
+            )
+
+            .claim(
+                    "name",
+                    user.getName()
+            )
+
+            .issuedAt(
+                    new Date()
+            )
+
+            .expiration(
+                    new Date(
+                            System.currentTimeMillis()
+                                    + expiration
+                    )
+            )
+
+            .signWith(
+                    getSigningKey()
+            )
+
+            .compact();
     }
 
     /**
