@@ -111,7 +111,7 @@ Banco utilizado:
 PostgreSQL
 ```
 
-A estrutura das tabelas está versionada no arquivo:
+A estrutura das tabelas está versionada em:
 
 ```
 backend/src/main/resources/schema.sql
@@ -132,7 +132,7 @@ Cada livro pertence ao usuário autenticado.
 
 ---
 
-# ▶️ Executando localmente
+# ▶️ Execução local (sem Docker)
 
 ## Pré-requisitos
 
@@ -143,11 +143,36 @@ Instalar:
 - Node.js
 - PostgreSQL
 
+
 ---
 
-# Backend
+# Configuração do Banco
 
-Acesse a pasta:
+Criar um banco PostgreSQL:
+
+```
+bookmanager
+```
+
+Configurar usuário e senha no arquivo:
+
+```
+backend/src/main/resources/application.properties
+```
+
+Exemplo:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/bookmanager
+spring.datasource.username=postgres
+spring.datasource.password=SUA_SENHA
+```
+
+---
+
+# Executando o Backend
+
+Acesse:
 
 ```bash
 cd backend
@@ -159,13 +184,13 @@ Instale as dependências:
 mvn clean install
 ```
 
-Execute a aplicação:
+Execute:
 
 ```bash
 mvn spring-boot:run
 ```
 
-Backend disponível em:
+Backend disponível:
 
 ```
 http://localhost:8080
@@ -179,9 +204,9 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-# Frontend
+# Executando o Frontend
 
-Acesse a pasta:
+Acesse:
 
 ```bash
 cd frontend
@@ -199,7 +224,7 @@ Execute:
 npm run dev
 ```
 
-Frontend disponível em:
+Frontend disponível:
 
 ```
 http://localhost:5173
@@ -207,9 +232,7 @@ http://localhost:5173
 
 ---
 
-# 🌎 Variáveis de ambiente
-
-## Desenvolvimento local
+# Variáveis de ambiente Frontend
 
 Arquivo:
 
@@ -225,25 +248,17 @@ VITE_API_URL=http://localhost:8080
 
 ---
 
-## Docker
+# 🐳 Execução utilizando Docker
 
-Arquivo:
+## Pré-requisitos
 
-```
-frontend/.env.production
-```
+Instalar:
 
-Conteúdo:
-
-```env
-VITE_API_URL=http://backend:8080
-```
+- Docker Desktop
 
 ---
 
-# 🐳 Executando com Docker
-
-Certifique-se que o Docker Desktop está instalado.
+# Construindo as imagens
 
 Na raiz do projeto:
 
@@ -251,13 +266,17 @@ Na raiz do projeto:
 cd BookManager
 ```
 
-Criar as imagens:
+Executar:
 
 ```bash
 docker compose build
 ```
 
-Executar os containers:
+---
+
+# Subindo os containers
+
+Executar:
 
 ```bash
 docker compose up
@@ -321,6 +340,22 @@ Porta:
 
 ---
 
+# Variáveis de ambiente Docker
+
+Arquivo:
+
+```
+frontend/.env.production
+```
+
+Conteúdo:
+
+```env
+VITE_API_URL=http://backend:8080
+```
+
+---
+
 # Acessos
 
 Frontend:
@@ -343,19 +378,31 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
+# Parando os containers
+
+```bash
+docker compose down
+```
+
+Removendo containers e volumes:
+
+```bash
+docker compose down -v
+```
+
+---
+
 # 📌 Endpoints principais
 
 ## Authentication
 
-### Registrar usuário
+Registrar usuário:
 
 ```
 POST /auth/register
 ```
 
----
-
-### Login
+Login:
 
 ```
 POST /auth/login
@@ -365,7 +412,7 @@ POST /auth/login
 
 # Books
 
-### Listar livros
+Listar livros:
 
 ```
 GET /books
@@ -377,33 +424,25 @@ Busca por título:
 GET /books?title=java
 ```
 
----
-
-### Criar livro
+Criar livro:
 
 ```
 POST /books
 ```
 
----
-
-### Buscar por ID
+Buscar por ID:
 
 ```
 GET /books/{id}
 ```
 
----
-
-### Atualizar livro
+Atualizar:
 
 ```
 PUT /books/{id}
 ```
 
----
-
-### Remover livro
+Excluir:
 
 ```
 DELETE /books/{id}
@@ -476,6 +515,7 @@ src
 - CRUD completo de livros
 - Busca por título
 - Persistência PostgreSQL
+- Execução local
 - Execução completa via Docker Compose
 
 ---
