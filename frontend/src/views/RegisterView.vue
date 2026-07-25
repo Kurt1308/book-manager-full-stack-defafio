@@ -316,7 +316,7 @@ async function handleRegister() {
 
 
 
-        router.push('/home')
+        router.push('/login')
 
 
 
