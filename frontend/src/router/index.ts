@@ -13,7 +13,7 @@ import AuthLayout from '@/components/layout/AuthLayout.vue'
 
 import BooksView from '@/views/BooksView.vue'
 
-
+import BookCreateView from '@/views/BookCreateView.vue'
 
 
 
@@ -92,7 +92,14 @@ const routes = [
                 name: 'books',
                 
                 component: BooksView
-            }
+            },
+
+
+        {
+            path: 'books/new',
+            name: 'book-create',
+            component: BookCreateView
+        }
 
 
         ]
