@@ -279,9 +279,12 @@ async function loadBooks() {
 async function removeBook(id:number) {
 
 
-    if(
-        !confirm('Deseja excluir este livro?')
-    ){
+    const confirmed = confirm(
+        'Deseja excluir este livro?'
+    )
+
+
+    if(!confirmed){
 
         return
 
@@ -289,12 +292,31 @@ async function removeBook(id:number) {
 
 
 
-
-    await deleteBook(id)
-
+    try {
 
 
-    await loadBooks()
+        await deleteBook(id)
+
+
+        await loadBooks()
+
+
+
+    } catch(error) {
+
+
+        console.error(
+            'Erro ao excluir livro:',
+            error
+        )
+
+
+        alert(
+            'Erro ao excluir o livro.'
+        )
+
+
+    }
 
 
 }
