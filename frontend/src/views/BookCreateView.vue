@@ -1,150 +1,153 @@
 <template>
 
 
-    <main class="container py-5">
+    <main class="page-container">
 
 
-        <div class="row justify-content-center">
+        <div class="form-wrapper">
 
 
-            <div class="col-md-8">
+            <div class="card">
 
 
-                <div class="card shadow-sm">
+                <div class="card-body">
 
 
-                    <div class="card-body">
+                    <h1 class="page-title">
+                        📚 Novo Livro
+                    </h1>
 
 
-                        <h1 class="mb-4">
 
-                            📚 Novo Livro
 
-                        </h1>
 
+                    <form @submit.prevent="saveBook">
 
 
 
 
-                        <form @submit.prevent="saveBook">
 
+                        <div class="form-group">
 
 
+                            <label class="form-label">
 
+                                Título
 
-                            <div class="mb-3">
+                            </label>
 
 
-                                <label class="form-label">
+                            <input
 
-                                    Título
+                                v-model="form.title"
 
-                                </label>
+                                type="text"
 
+                                class="form-control"
 
-                                <input
+                                placeholder="Digite o título do livro"
 
-                                    v-model="form.title"
+                                required
 
-                                    type="text"
+                            />
 
-                                    class="form-control"
 
-                                    required
+                        </div>
 
-                                />
 
 
-                            </div>
 
 
 
 
+                        <div class="form-group">
 
 
+                            <label class="form-label">
 
-                            <div class="mb-3">
+                                Autor
 
+                            </label>
 
-                                <label class="form-label">
 
-                                    Autor
+                            <input
 
-                                </label>
+                                v-model="form.author"
 
+                                type="text"
 
-                                <input
+                                class="form-control"
 
-                                    v-model="form.author"
+                                placeholder="Digite o autor"
 
-                                    type="text"
+                                required
 
-                                    class="form-control"
+                            />
 
-                                    required
 
-                                />
+                        </div>
 
 
-                            </div>
 
 
 
 
 
+                        <div class="form-group">
 
 
-                            <div class="mb-3">
+                            <label class="form-label">
 
+                                Ano
 
-                                <label class="form-label">
+                            </label>
 
-                                    Ano
 
-                                </label>
+                            <input
 
+                                v-model.number="form.year"
 
-                                <input
+                                type="number"
 
-                                    v-model.number="form.year"
+                                class="form-control"
 
-                                    type="number"
+                                placeholder="Ano de publicação"
 
-                                    class="form-control"
+                            />
 
-                                />
 
+                        </div>
 
-                            </div>
 
 
 
 
 
 
+                        <div class="form-group">
 
-                            <div class="mb-3">
 
+                            <label class="form-label">
 
-                                <label class="form-label">
+                                Descrição
 
-                                    Descrição
+                            </label>
 
-                                </label>
 
+                            <textarea
 
-                                <textarea
+                                v-model="form.description"
 
-                                    v-model="form.description"
+                                class="form-control"
 
-                                    class="form-control"
+                                rows="5"
 
-                                    rows="4"
+                                placeholder="Digite uma descrição do livro"
 
-                                ></textarea>
+                            ></textarea>
 
 
-                            </div>
+                        </div>
 
 
 
@@ -152,51 +155,49 @@
 
 
 
-                            <div class="d-flex gap-2">
 
+                        <div class="form-actions">
 
 
-                                <button
 
-                                    type="submit"
+                            <button
 
-                                    class="btn btn-primary"
+                                type="submit"
 
-                                >
+                                class="btn btn-primary"
 
-                                    Salvar
+                            >
 
-                                </button>
+                                Salvar
 
+                            </button>
 
 
 
 
-                                <RouterLink
 
-                                    to="/books"
+                            <RouterLink
 
-                                    class="btn btn-secondary"
+                                to="/books"
 
-                                >
+                                class="btn btn-secondary"
 
-                                    Cancelar
+                            >
 
-                                </RouterLink>
+                                Cancelar
 
+                            </RouterLink>
 
 
-                            </div>
 
+                        </div>
 
 
 
 
-                        </form>
 
+                    </form>
 
-
-                    </div>
 
 
                 </div>
@@ -282,6 +283,5 @@ async function saveBook() {
 
 
 <style scoped>
-
 
 </style>

@@ -1,13 +1,17 @@
 <template>
 
 
-    <main class="container py-5">
+    <main class="home-container">
 
 
-        <div class="text-center">
+
+        <section class="home-content">
 
 
-            <h1 class="display-4 fw-bold mb-3">
+
+
+
+            <h1 class="home-title">
 
                 📚 BookManager
 
@@ -15,7 +19,10 @@
 
 
 
-            <p class="lead text-secondary mb-4">
+
+
+
+            <p class="home-description">
 
                 Gerencie sua biblioteca de forma simples,
                 rápida e segura.
@@ -24,11 +31,16 @@
 
 
 
+
+
+
+
+
             <RouterLink
 
                 to="/books"
 
-                class="btn btn-primary btn-lg"
+                class="btn btn-primary btn-large"
 
             >
 
@@ -38,12 +50,17 @@
 
 
 
-        </div>
+
+
+
+
+        </section>
+
+
 
 
 
     </main>
-
 
 
 </template>
@@ -52,11 +69,17 @@
 
 
 
+
+
 <script setup lang="ts">
+
 
 import { RouterLink } from 'vue-router'
 
+
 </script>
+
+
 
 
 

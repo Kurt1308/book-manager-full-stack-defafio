@@ -1,0 +1,741 @@
+/* ==========================
+   Global Cards
+========================== */
+
+
+.card {
+
+    border: none;
+
+    border-radius:
+        var(--border-radius-md);
+
+    box-shadow:
+        var(--shadow-sm);
+
+    background:
+        var(--card-background);
+
+    transition:
+        var(--transition);
+
+}
+
+
+
+.card:hover {
+
+    transform:
+        translateY(-4px);
+
+
+    box-shadow:
+        var(--shadow-md);
+
+}
+
+
+
+
+
+/* ==========================
+   Buttons
+========================== */
+
+
+.btn {
+
+    border-radius:
+        var(--border-radius-sm);
+
+    transition:
+        var(--transition);
+
+}
+
+
+
+.btn:hover {
+
+    opacity:
+        .9;
+
+}
+
+
+
+
+
+.btn-large {
+
+    padding:
+        .8rem 2rem;
+
+    font-size:
+        1.1rem;
+
+}
+
+
+
+
+
+
+/* ==========================
+   Page Layout
+========================== */
+
+
+.page-container {
+
+    padding:
+        3rem 1rem;
+
+}
+
+
+
+
+
+
+
+/* ==========================
+   Titles
+========================== */
+
+
+.page-title {
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        2rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Forms
+========================== */
+
+
+.form-group {
+
+    margin-bottom:
+        1.5rem;
+
+}
+
+
+
+
+
+.form-label {
+
+    display:
+        block;
+
+
+    font-weight:
+        600;
+
+
+    margin-bottom:
+        .5rem;
+
+}
+
+
+
+
+
+.form-control {
+
+    border-radius:
+        var(--border-radius-sm);
+
+}
+
+
+
+.form-control:focus {
+
+    border-color:
+        var(--primary-color);
+
+
+    box-shadow:
+        0 0 0 .2rem rgba(13,110,253,.25);
+
+}
+
+
+
+
+
+.form-actions {
+
+    display:
+        flex;
+
+
+    justify-content:
+        space-between;
+
+
+    align-items:
+        center;
+
+
+    margin-top:
+        2rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Page Header
+========================== */
+
+
+.page-header {
+
+    display:
+        flex;
+
+
+    justify-content:
+        space-between;
+
+
+    align-items:
+        center;
+
+
+    margin-bottom:
+        3rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Search
+========================== */
+
+
+.search-box {
+
+    display:
+        flex;
+
+
+    gap:
+        1rem;
+
+
+    max-width:
+        700px;
+
+
+    margin-bottom:
+        3rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Books Grid
+========================== */
+
+
+.book-grid {
+
+    display:
+        grid;
+
+
+    grid-template-columns:
+
+        repeat(
+            auto-fill,
+            minmax(280px,1fr)
+        );
+
+
+    gap:
+        2rem;
+
+
+    margin-top:
+        2rem;
+
+}
+
+
+
+
+
+.book-card {
+
+    height:
+        100%;
+
+}
+
+
+
+
+
+.book-card .card {
+
+    height:
+        100%;
+
+}
+
+
+
+
+
+.book-card .card-body {
+
+    display:
+        flex;
+
+
+    flex-direction:
+        column;
+
+}
+
+
+
+
+
+.book-card .card-title {
+
+    font-size:
+        1.2rem;
+
+
+    font-weight:
+        700;
+
+}
+
+
+
+
+
+.book-card .card-subtitle {
+
+    color:
+        var(--text-secondary);
+
+
+    margin-bottom:
+        1rem;
+
+}
+
+
+
+
+
+.book-card .card-text {
+
+    margin-bottom:
+        1rem;
+
+}
+
+
+
+
+
+.action-buttons {
+
+    display:
+        flex;
+
+
+    gap:
+        1rem;
+
+
+    margin-top:
+        auto;
+
+
+    padding-top:
+        1.5rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Empty / Loading States
+========================== */
+
+
+.loading-state {
+
+    text-align:
+        center;
+
+
+    padding:
+        2rem;
+
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+
+
+
+.empty-state {
+
+    background:
+        var(--card-background);
+
+
+    padding:
+        2rem;
+
+
+    text-align:
+        center;
+
+
+    border-radius:
+        var(--border-radius-md);
+
+
+    box-shadow:
+        var(--shadow-sm);
+
+}
+
+
+
+
+
+/* ==========================
+   Authentication
+========================== */
+
+
+.auth-container {
+
+    min-height:
+        100vh;
+
+
+    display:
+        flex;
+
+
+    justify-content:
+        center;
+
+
+    align-items:
+        center;
+
+
+    padding:
+        2rem 1rem;
+
+}
+
+
+
+
+
+.auth-card {
+
+    width:
+        100%;
+
+
+    max-width:
+        450px;
+
+
+    background:
+        var(--card-background);
+
+
+    padding:
+        2.5rem;
+
+
+    border-radius:
+        var(--border-radius-md);
+
+
+    box-shadow:
+        var(--shadow-sm);
+
+}
+
+
+
+
+
+.auth-title {
+
+    text-align:
+        center;
+
+
+    font-size:
+        2rem;
+
+
+    font-weight:
+        700;
+
+
+    margin-bottom:
+        2rem;
+
+
+    color:
+        var(--primary-color);
+
+}
+
+
+
+
+
+.auth-button {
+
+    width:
+        100%;
+
+
+    margin-top:
+        1rem;
+
+}
+
+
+
+
+
+.auth-divider {
+
+    height:
+        1px;
+
+
+    background:
+        var(--border-color);
+
+
+    margin:
+        1.5rem 0;
+
+}
+
+
+
+
+
+.error-message {
+
+    background:
+        #f8d7da;
+
+
+    color:
+        #842029;
+
+
+    padding:
+        .75rem 1rem;
+
+
+    border-radius:
+        var(--border-radius-sm);
+
+
+    margin-bottom:
+        1rem;
+
+}
+
+
+
+
+
+/* ==========================
+   Home
+========================== */
+
+
+.home-container {
+
+    min-height:
+        calc(100vh - 80px);
+
+
+    display:
+        flex;
+
+
+    justify-content:
+        center;
+
+
+    align-items:
+        center;
+
+
+    padding:
+        3rem 1rem;
+
+}
+
+
+
+
+
+.home-content {
+
+    text-align:
+        center;
+
+
+    max-width:
+        700px;
+
+}
+
+
+
+
+
+.home-title {
+
+    font-size:
+        3rem;
+
+
+    font-weight:
+        700;
+
+
+    margin-bottom:
+        1.5rem;
+
+
+    color:
+        var(--primary-color);
+
+}
+
+
+
+
+
+.home-description {
+
+    font-size:
+        1.25rem;
+
+
+    color:
+        var(--text-secondary);
+
+
+    margin-bottom:
+        2.5rem;
+
+
+    line-height:
+        1.6;
+
+}
+
+
+
+
+
+/* ==========================
+   Responsive
+========================== */
+
+
+@media(max-width:768px){
+
+
+    .page-header {
+
+
+        flex-direction:
+            column;
+
+
+        gap:
+            1rem;
+
+
+        align-items:
+            stretch;
+
+
+    }
+
+
+
+
+    .search-box {
+
+
+        flex-direction:
+            column;
+
+
+        max-width:
+            100%;
+
+
+    }
+
+
+
+
+    .action-buttons {
+
+
+        flex-direction:
+            column;
+
+
+    }
+
+
+}

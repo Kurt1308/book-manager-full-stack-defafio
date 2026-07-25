@@ -1,158 +1,216 @@
 <template>
 
-<div class="container mt-5">
 
+    <main class="auth-container">
 
-    <div class="row justify-content-center">
 
 
-        <div class="col-md-5">
 
 
-            <div class="card shadow">
+        <section class="auth-card">
 
 
-                <div class="card-body">
 
 
-                    <h2 class="text-center mb-4">
 
-                        📚 BookManager
+            <h1 class="auth-title">
 
-                    </h2>
+                📚 BookManager
 
+            </h1>
 
 
-                    <form @submit.prevent="handleLogin">
 
 
-                        <div class="mb-3">
 
 
-                            <label class="form-label">
 
-                                Email
 
-                            </label>
+            <form
 
+                class="auth-form"
 
+                @submit.prevent="handleLogin"
 
-                            <input
+            >
 
-                                type="email"
 
-                                class="form-control"
 
-                                v-model="email"
 
-                                required
 
-                            />
+                <div class="form-group">
 
 
-                        </div>
 
+                    <label class="form-label">
 
+                        Email
 
+                    </label>
 
 
-                        <div class="mb-3">
 
 
-                            <label class="form-label">
+                    <input
 
-                                Senha
+                        type="email"
 
-                            </label>
+                        class="form-control"
 
+                        v-model="email"
 
+                        required
 
-                            <input
-
-                                type="password"
-
-                                class="form-control"
-
-                                v-model="password"
-
-                                required
-
-                            />
-
-
-                        </div>
-
-
-
-
-
-                        <div
-                            v-if="error"
-                            class="alert alert-danger"
-                        >
-
-                            {{ error }}
-
-                        </div>
-
-
-
-
-
-                        <button
-
-                            type="submit"
-
-                            class="btn btn-primary w-100"
-
-                        >
-
-                            Entrar
-
-                        </button>
-
-
-
-                    </form>
-
-
-
-
-                    <hr>
-
-
-
-
-                    <RouterLink
-
-                        to="/register"
-
-                        class="btn btn-outline-secondary w-100"
-
-                    >
-
-                        Criar uma conta
-
-                    </RouterLink>
+                    />
 
 
 
                 </div>
 
 
-            </div>
 
 
-        </div>
 
 
-    </div>
 
 
-</div>
+
+                <div class="form-group">
+
+
+
+                    <label class="form-label">
+
+                        Senha
+
+                    </label>
+
+
+
+
+                    <input
+
+                        type="password"
+
+                        class="form-control"
+
+                        v-model="password"
+
+                        required
+
+                    />
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <div
+
+                    v-if="error"
+
+                    class="error-message"
+
+                >
+
+                    {{ error }}
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <button
+
+
+                    type="submit"
+
+
+                    class="btn btn-primary auth-button"
+
+
+                >
+
+                    Entrar
+
+
+                </button>
+
+
+
+
+
+
+            </form>
+
+
+
+
+
+
+
+
+            <div class="auth-divider"></div>
+
+
+
+
+
+
+
+
+            <RouterLink
+
+
+                to="/register"
+
+
+                class="btn btn-outline-secondary auth-button"
+
+
+            >
+
+                Criar uma conta
+
+
+            </RouterLink>
+
+
+
+
+
+
+
+        </section>
+
+
+
+
+
+
+    </main>
+
 
 
 </template>
+
+
+
+
+
 
 
 
@@ -161,14 +219,20 @@
 
 import { ref } from 'vue'
 
+
 import { useRouter } from 'vue-router'
+
 
 import { RouterLink } from 'vue-router'
 
 
 import { login } from '@/services/auth.service'
 
+
 import { useAuthStore } from '@/stores/auth'
+
+
+
 
 
 
@@ -177,14 +241,20 @@ import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
 
 
+
 const authStore = useAuthStore()
+
+
+
 
 
 
 const email = ref('')
 
 
+
 const password = ref('')
+
 
 
 const error = ref('')
@@ -194,31 +264,56 @@ const error = ref('')
 
 
 
+
+
+
+
 async function handleLogin(){
+
 
 
     try {
 
 
+
         const response = await login({
+
+
 
             email: email.value,
 
+
+
             password: password.value
+
+
 
         })
 
 
 
+
+
+
         authStore.setToken(
 
+
+
             response.token
+
+
 
         )
 
 
 
+
+
+
         router.push('/home')
+
+
+
 
 
 
@@ -227,16 +322,34 @@ async function handleLogin(){
     catch {
 
 
+
         error.value =
 
-        'Email ou senha inválidos'
+
+
+            'Email ou senha inválidos'
+
 
 
     }
+
 
 
 }
 
 
 
+
 </script>
+
+
+
+
+
+
+
+
+<style scoped>
+
+
+</style>
