@@ -1,4 +1,15 @@
 target
 .git
 .idea
+.vscode
 *.iml
+
+# Maven Wrapper (opcional)
+.mvn
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
