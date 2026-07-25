@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 
+
 interface AuthState {
 
     token: string | null
@@ -8,6 +9,49 @@ interface AuthState {
     name: string | null
 
 }
+
+
+
+
+
+
+function decodeToken(token: string) {
+
+
+    try {
+
+
+        const payload = token.split('.')[1]
+
+
+        if(!payload){
+
+            return null
+
+        }
+
+
+
+        return JSON.parse(
+
+            atob(payload)
+
+        )
+
+
+    } catch(error) {
+
+
+        return null
+
+
+    }
+
+}
+
+
+
+
 
 
 
@@ -33,6 +77,8 @@ export const useAuthStore = defineStore(
 
 
 
+
+
         getters: {
 
 
@@ -49,6 +95,7 @@ export const useAuthStore = defineStore(
 
 
 
+
             getToken(state) {
 
 
@@ -56,6 +103,8 @@ export const useAuthStore = defineStore(
 
 
             },
+
+
 
 
 
@@ -78,7 +127,11 @@ export const useAuthStore = defineStore(
 
 
 
+
+
         actions: {
+
+
 
 
 
@@ -104,32 +157,53 @@ export const useAuthStore = defineStore(
 
 
 
-                const payload = JSON.parse(
 
-                    atob(
 
-                        token.split('.')[1]
+
+                const payload = decodeToken(token)
+
+
+
+
+
+
+                if(payload?.name) {
+
+
+
+                    this.name = payload.name
+
+
+
+                    localStorage.setItem(
+
+                        'name',
+
+                        payload.name
 
                     )
 
-                )
+
+                }
+
+                else {
 
 
-
-                this.name = payload.name
-
+                    this.name = null
 
 
-                localStorage.setItem(
+                    localStorage.removeItem(
 
-                    'name',
+                        'name'
 
-                    payload.name
+                    )
 
-                )
+
+                }
 
 
             },
+
 
 
 
@@ -142,10 +216,14 @@ export const useAuthStore = defineStore(
 
 
 
+
                 this.token = null
 
 
                 this.name = null
+
+
+
 
 
 
@@ -157,6 +235,8 @@ export const useAuthStore = defineStore(
 
 
 
+
+
                 localStorage.removeItem(
 
                     'name'
@@ -165,6 +245,10 @@ export const useAuthStore = defineStore(
 
 
             }
+
+
+
+
 
 
         }
