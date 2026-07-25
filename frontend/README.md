@@ -1,445 +1,261 @@
-# BookManager Frontend
+# 📚 BookManager - Frontend
 
-Frontend da aplicação **BookManager**, desenvolvido utilizando Vue.js 3 e TypeScript.
+Frontend da aplicação **BookManager**, um sistema de gerenciamento de livros desenvolvido em Vue.js.
 
-Este módulo é responsável pela interface gráfica da aplicação, permitindo que usuários interajam com o sistema através de uma aplicação web moderna e responsiva.
+A aplicação permite que usuários:
 
-O frontend realiza comunicação com o Backend Spring Boot através de uma API REST utilizando HTTP/JSON.
+- Criem uma conta
+- Realizem login
+- Acessem áreas protegidas utilizando autenticação JWT
+- Visualizem seus livros
+- Cadastrem novos livros
+- Atualizem livros existentes
+- Removam livros
+- Pesquisem livros por título
 
 
 ---
 
-# 1. Tecnologias Utilizadas
+# 🚀 Tecnologias utilizadas
 
+## Frontend
 
-## Framework
-
-- Vue.js 3
-
-
-## Linguagem
-
+- Vue 3
 - TypeScript
-
-
-## Build Tool
-
 - Vite
-
-
-## Comunicação HTTP
-
+- Vue Router
+- Pinia
 - Axios
+- Bootstrap 5
+- Bootstrap Icons
 
 
-## Interface
+## Comunicação com API
 
-- HTML5
-- CSS3
+A aplicação consome uma API REST desenvolvida em:
+
+- Java
+- Spring Boot
+- PostgreSQL
+- JWT Authentication
 
 
-## Gerenciamento de Dependências
+---
 
+# 📁 Estrutura do projeto
+
+
+src
+│
+├── API
+│ └── axios.ts # Configuração do cliente HTTP
+│
+├── assets
+│ │
+│ │ ├── CSS
+│ ├── main.css # Estilos globais
+│ │ │ ├── variables.css # Variáveis CSS
+│ │ └── components.css # Componentes globais
+│ │
+│ │ └�─ imagens
+
+│ ├── componentes
+│ │
+├── livros # Componentes relacionados aos livros
+│ ├── Layout
+
+
+
+---
+
+# ⚙️ Pré-requisitos
+
+Antes de executar o projeto, certifique-se de possuir instalado:
+
+- Node.js 18+
 - npm
 
 
-
----
-
-# 2. Arquitetura do Frontend
-
-
-O frontend segue uma arquitetura baseada em componentes:
-
-
-             Usuário
-
-                |
-
-                |
-
-         Vue Application
-
-                |
-
-                |
-
-          Components
-
-                |
-
-                |
-
-          Services/API
-
-                |
-
-                |
-
-      Backend Spring Boot API
-
-
-
-Responsabilidades:
-
-
-## Components
-
-Responsáveis por:
-
-- Construção das telas;
-- Interação com usuário;
-- Exibição dos dados.
-
-
-## Services
-
-Responsáveis por:
-
-- Comunicação com API;
-- Envio de requisições HTTP;
-- Tratamento de respostas.
-
-
-## Stores / Estado
-
-Responsáveis por:
-
-- Controle de dados compartilhados;
-- Informações do usuário autenticado.
-
-
----
-
-# 3. Estrutura do Projeto
-
-
-
-Frontend
-
-│
-
-├── src
-
-│ │
-
-│ ├── ativos
-
-│ │
-
-│ ├── Componentes
-
-│ │
-
-│ ├── Vistas
-
-│ │
-
-│ ├── Serviços
-
-│ │
-
-│ ├── roteador
-
-│ │
-
-│ └── main.ts
-
-│
-
-├── público
-
-│
-
-├── package.json
-
-├── vite.config.ts
-
-└── README.md
-
-
-
-
----
-
-# 4. Pré-requisitos
-
-
-Antes de executar o frontend instale:
-
-
-## Node.js
-
-
-Versão recomendada:
-
-
-
-Node.js 20+
-
-
-
-Verificar instalação:
-
+Verifique:
 
 ```bash
 node -v
 
-Exemplo:
-
-v20.x.x
-NPM
-
-Verificar:
-
 npm -v
-5. Instalação das Dependências
+📦 Instalação
 
-Entrar na pasta frontend:
+Clone o repositório:
+
+git clone SEU_REPOSITORIO
+
+Acesse a pasta do frontend:
 
 cd frontend
 
-Instalar dependências:
+Instale as dependências:
 
 npm install
+🔧 Configuração da API
 
-O comando irá instalar todas as bibliotecas definidas no arquivo:
-
-package.json
-6. Configuração da API Backend
-
-O frontend depende do Backend Spring Boot.
-
-Backend esperado:
-
-http://localhost:8080
-
-A URL da API deve ser configurada através de variável de ambiente.
-
-Criar arquivo:
+Crie um arquivo:
 
 .env
 
-Adicionar:
+Na raiz do frontend:
 
 VITE_API_URL=http://localhost:8080
 
+Essa variável define a URL da API backend.
+
 Exemplo:
 
-frontend
+Frontend
+http://localhost:5173
 
-│
 
-├── .env
+Backend
+http://localhost:8080
+▶️ Executando o projeto
 
-├── package.json
-
-└── src
-
-7. Executar Ambiente de Desenvolvimento
-
-Executor:
+Execute:
 
 npm run dev
-
-Após iniciar, será exibido:
-
-Local:
-http://localhost:5173/
-
-Acessar:
-
-http://localhost:5173
-8. Comunicação com Backend
-
-O frontend realiza chamadas para a API REST.
-
-Fluxo:
-
-Usuário
-
-   |
-
-   |
-
-Vue Component
-
-   |
-
-   |
-
-Axios Service
-
-   |
-
-   |
-
-Spring Boot API
-
-   |
-
-   |
-
-PostgreSQL
-9. Autenticação JWT
-
-O sistema utiliza autenticação através de token JWT.
-
-Fluxo:
-
-Logar
-
-Usuário informa:
-
-{
-    "email":"usuario@email.com",
-    "password":"123456"
-}
-
-O retorno do backend:
-
-{
-    "token":"jwt_token"
-}
-
-Frontend O:
-
-Armazena o token;
-Envia o token nas próximas requisições;
-Libera acesso às funcionalidades protegidas.
-
-Formato enviado:
-
-Authorization:
-
-Bearer TOKEN
-10. Funcionalidades Disponíveis
-Usuário
-Cadastro;
-Login;
-Controle de sessão.
-Livros
-
-Usuário autenticado pode:
-
-Visualizar livros cadastrados;
-Criar novos livros;
-Editar livros;
-Excluir livros;
-Buscar informações.
-11. Executar Build de Produção
-
-Gerar arquivos otimizados:
-
-npm run build
-
-Resultado:
-
-dist/
-
-A pasta gerada contém os arquivos necessários para publicação.
-
-12. Visualizar Build Localmente
-
-Instalar servidor:
-
-npm install -g serve
-
-Executor:
-
-serve -s dist
 
 A aplicação estará disponível em:
 
-http://localhost:3000
-13. Comandos Principais
-Instalar dependências
-npm install
-Executar desenvolvimento
-npm run dev
-Construção Gerar
-npm run build
-Verificar projeto
-npm run lint
-14. Executar a Frontend via Docker
-
-Caso utilize o ambiente completo:
-
-Na raiz do projeto:
-
-docker compose up --build
-
-O Docker será responsável por iniciar os serviços configurados.
-
-15. Integração com Backend
-
-Configuração esperada:
-
-Frontend:
-
 http://localhost:5173
+🔐 Autenticação
 
-Backend:
+A autenticação utiliza JWT.
 
-http://localhost:8080
+Fluxo:
 
-Banco:
+Usuário realiza login.
+Backend retorna um token JWT.
 
-PostgreSQL 18
-16. Solução de Problemas
-Erro de conexão com API
+Exemplo:
 
-Verificar:
+{
+    "token": "eyJhbGciOiJIUzI1..."
+}
+O frontend armazena o token utilizando Pinia e LocalStorage.
+Todas as requisições protegidas enviam:
+Authorization: Bearer TOKEN
+🌐 Rotas da aplicação
+Rota	Descrição	Protegida
+/login	Login do usuário	Não
+/register	Cadastro de usuário	Não
+/home	Página inicial	Sim
+/books	Listagem de livros	Sim
+/books/new	Cadastro de livro	Sim
+/books/:id/edit	Edição de livro	Sim
+📚 Funcionalidades
+Autenticação
+Login utilizando email e senha
+Cadastro de usuário
+Armazenamento JWT
+Desconectar
+Proteção de rotas
+Gerenciamento de livros
+Listagem paginada
+Busca por título
+Cadastro
+Atualização
+Exclusão
+🔎 Busca de livros
 
-Backend está iniciado;
-Porta 8080 disponível;
-Variável VITE_API_URL configurada.
-Erro no npm install
+A tela de livros permite pesquisar utilizando o título:
 
-Executor:
+Exemplo:
 
-npm cache clean --force
+Clean Code
 
-Depois:
+O frontend envia:
 
-npm install
-Porta 5173 ocupada
+GET /books?title=Clean Code
+🎨 Estilização
 
-Executor:
+A aplicação utiliza:
 
-npm run dev -- --port 5174
-17. Decisões Técnicas
-Vue.js 3
+Bootstrap 5
+CSS global personalizado
 
-Escolhido por:
+Arquivos:
 
-Componentização;
-apresentação de jiboias;
-Grande adoção no mercado;
-Facilidade de manutenção.
-TypeScript
+assets/css
 
-Utilizado para:
+├── variables.css
+├── main.css
+└── components.css
 
-Maior segurança durante desenvolvimento;
-Melhor manutenção;
-Redução de erros.
-Vite
+Responsáveis por:
 
-Escolhido por:
+Núcleos globais
+Espaçamentos
+Cartas
+Botões
+Formulários
+Layout
+🏗️ Arquitetura adotada
 
-Inicialização rápida;
-Build otimizado;
-Excelente integração com Vue.
-Axios
+O projeto utiliza uma separação baseada em responsabilidades:
 
-Utilizado para:
+Opiniões
 
-Comunicação HTTP;
-Interceptação de requisições;
-Integração com autenticação JWT.
-Autor
+Responsáveis pelas páginas da aplicação.
+
+Exemplo:
+
+views/LoginView.vue
+Componentes
+
+Componentes reutilizáveis.
+
+Exemplo:
+
+components/layout/NavbarComponent.vue
+Serviços
+
+Responsáveis pela comunicação com API.
+
+Exemplo:
+
+services/book.service.ts
+Lojas
+
+Gerenciamento de estado global utilizando Pinia.
+
+Exemplo:
+
+stores/auth.ts
+Tipos
+
+Interfaces TypeScript.
+
+Exemplo:
+
+types/book.ts
+🧪 Build para produção
+
+Build Gerar:
+
+npm run build
+
+Os arquivos serão gerados em:
+
+dist/
+📝 Melhorias futuras
+
+Possíveis evoluções:
+
+Dockerização do frontend
+Deploy em ambiente cloud
+Paginação visual com controles de página
+Componentização dos cards de livros
+Sistema global de mensagens
+Testes automatizados
+👨 💻 Autor
 
 Lucas Dias
 
-Frontend desenvolvido como parte do desafio técnico Full Stack BookManager.
+Projeto desenvolvido como desafio técnico Full-Stack utilizando Vue.js + Spring Boot.
