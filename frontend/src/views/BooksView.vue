@@ -1,6 +1,9 @@
 <template>
 
+
     <main class="page-container">
+
+
 
 
 
@@ -40,7 +43,10 @@
 
 
 
+
         <div class="search-box">
+
+
 
 
 
@@ -59,11 +65,10 @@
                 placeholder="Buscar por título"
 
 
-                @keyup.enter="loadBooks"
+                @keyup.enter="searchBooks"
 
 
             />
-
 
 
 
@@ -76,28 +81,12 @@
                 class="btn btn-primary"
 
 
-                @click="loadBooks"
-
-
-                :disabled="loading"
+                @click="searchBooks"
 
 
             >
 
-
-                <span v-if="loading">
-
-                    Buscando...
-
-                </span>
-
-
-                <span v-else>
-
-                    Buscar
-
-                </span>
-
+                Buscar
 
             </button>
 
@@ -123,6 +112,7 @@
 
             Carregando livros...
 
+
         </div>
 
 
@@ -143,6 +133,7 @@
 
             Nenhum livro encontrado.
 
+
         </div>
 
 
@@ -160,6 +151,7 @@
             class="book-grid"
 
         >
+
 
 
 
@@ -301,24 +293,9 @@
 
                                 @click="removeBook(book.id)"
 
-
-                                :disabled="deleting === book.id"
-
                             >
 
-
-                                <span v-if="deleting === book.id">
-
-                                    Excluindo...
-
-                                </span>
-
-
-                                <span v-else>
-
-                                    Excluir
-
-                                </span>
+                                Excluir
 
 
                             </button>
@@ -342,12 +319,118 @@
 
 
 
-
             </div>
 
 
 
 
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div
+
+            v-if="totalPages > 1"
+
+            class="pagination-container"
+
+        >
+
+
+
+
+
+            <button
+
+
+                class="btn btn-secondary"
+
+
+                :disabled="currentPage === 0"
+
+
+                @click="previousPage"
+
+
+            >
+
+                ← Anterior
+
+            </button>
+
+
+
+
+
+
+
+            <span class="page-info">
+
+
+                Página {{ currentPage + 1 }}
+
+                de {{ totalPages }}
+
+
+            </span>
+
+
+
+
+
+
+
+            <button
+
+
+                class="btn btn-secondary"
+
+
+                :disabled="currentPage >= totalPages - 1"
+
+
+                @click="nextPage"
+
+
+            >
+
+                Próxima →
+
+            </button>
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div
+
+            v-if="totalElements > 0"
+
+            class="total-info"
+
+        >
+
+            Total de livros:
+
+            {{ totalElements }}
 
 
         </div>
@@ -380,15 +463,16 @@ import { RouterLink } from 'vue-router'
 import type { Book } from '@/types/book'
 
 
-
 import {
+
 
     getBooks,
 
+
     deleteBook
 
-} from '@/services/book.service'
 
+} from '@/services/book.service'
 
 
 import alertService from '@/services/alert.service'
@@ -398,16 +482,34 @@ import alertService from '@/services/alert.service'
 
 
 
+
 const books = ref<Book[]>([])
+
 
 
 const loading = ref(false)
 
 
-const deleting = ref<number | null>(null)
-
 
 const search = ref('')
+
+
+
+
+
+const currentPage = ref(0)
+
+
+
+const totalPages = ref(0)
+
+
+
+const totalElements = ref(0)
+
+
+
+const pageSize = ref(10)
 
 
 
@@ -420,7 +522,9 @@ const search = ref('')
 async function loadBooks() {
 
 
+
     try {
+
 
 
         loading.value = true
@@ -428,15 +532,37 @@ async function loadBooks() {
 
 
 
+
         const response = await getBooks(
 
-            search.value.trim()
+
+            search.value.trim(),
+
+
+            currentPage.value,
+
+
+            pageSize.value
+
 
         )
 
 
 
+
+
+
         books.value = response.content
+
+
+
+        totalPages.value = response.totalPages
+
+
+
+        totalElements.value = response.totalElements
+
+
 
 
 
@@ -461,9 +587,82 @@ async function loadBooks() {
 
 
 
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function searchBooks() {
+
+
+
+    currentPage.value = 0
+
+
+
+    loadBooks()
+
+
+
+}
+
+
+
+
+
+
+
+
+
+function nextPage() {
+
+
+
+    if(currentPage.value < totalPages.value - 1){
+
+
+        currentPage.value++
+
+
+        loadBooks()
+
 
     }
 
+
+}
+
+
+
+
+
+
+
+
+
+function previousPage() {
+
+
+
+    if(currentPage.value > 0){
+
+
+        currentPage.value--
+
+
+        loadBooks()
+
+
+    }
 
 
 }
@@ -502,12 +701,9 @@ async function removeBook(id:number) {
 
 
 
+
+
     try {
-
-
-
-        deleting.value = id
-
 
 
 
@@ -527,7 +723,7 @@ async function removeBook(id:number) {
 
 
 
-        await loadBooks()
+        loadBooks()
 
 
 
@@ -537,23 +733,13 @@ async function removeBook(id:number) {
 
 
 
-
         await alertService.apiError(error)
 
 
 
 
 
-    } finally {
-
-
-
-        deleting.value = null
-
-
-
     }
-
 
 
 
@@ -580,8 +766,6 @@ onMounted(() => {
 
 
 
-
-
 </script>
 
 
@@ -593,5 +777,57 @@ onMounted(() => {
 
 
 <style scoped>
+
+
+.pagination-container {
+
+
+    display: flex;
+
+
+    justify-content: center;
+
+
+    align-items: center;
+
+
+    gap: 20px;
+
+
+    margin-top: 30px;
+
+
+}
+
+
+
+
+.page-info {
+
+
+    font-weight: bold;
+
+
+}
+
+
+
+
+
+.total-info {
+
+
+    text-align: center;
+
+
+    margin-top: 15px;
+
+
+    color: #666;
+
+
+}
+
+
 
 </style>
