@@ -16,7 +16,7 @@ const api = axios.create({
 
 
 
-// Intercepta todas as requisições antes de enviar para API
+
 api.interceptors.request.use(
 
     config => {
@@ -56,7 +56,7 @@ api.interceptors.request.use(
 
 
 
-// Intercepta respostas da API
+
 api.interceptors.response.use(
 
 
@@ -74,28 +74,29 @@ api.interceptors.response.use(
 
 
 
-        if(error.response){
-
-
-
-            const status = error.response.status
+        const status = error.response?.status
 
 
 
 
-            // Token inválido ou expirado
-            if(status === 401){
+
+        if(status === 401){
 
 
 
-                localStorage.removeItem('token')
+            localStorage.removeItem('token')
 
 
 
-                window.location.href = '/login'
+            if(window.location.pathname !== '/login'){
+
+
+
+                window.location.replace('/login')
 
 
             }
+
 
 
         }
