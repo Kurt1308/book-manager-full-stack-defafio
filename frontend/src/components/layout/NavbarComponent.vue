@@ -17,6 +17,7 @@
 
 
 
+
       <button
 
         class="navbar-toggler"
@@ -43,6 +44,8 @@
 
 
 
+
+
       <div
         id="navbar"
         class="collapse navbar-collapse"
@@ -50,6 +53,7 @@
 
 
         <ul class="navbar-nav ms-auto">
+
 
 
           <li class="nav-item">
@@ -64,6 +68,8 @@
             </RouterLink>
 
           </li>
+
+
 
 
 
@@ -86,23 +92,28 @@
 
 
 
+
+
+
           <li class="nav-item">
 
 
-              <button
+            <button
 
-                class="nav-link btn btn-link px-0"
+              class="nav-link btn btn-link logout-button"
 
-                @click="logout"
+              @click="logout"
 
-              >
+            >
 
-                Sair
+              Sair
 
-              </button>
+            </button>
 
 
           </li>
+
+
 
 
 
@@ -124,12 +135,16 @@
 
 
 
+
+
 <script setup lang="ts">
 
 
 import { RouterLink, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
+
+import alertService from '@/services/alert.service'
 
 
 
@@ -145,10 +160,39 @@ const authStore = useAuthStore()
 
 
 
-function logout() {
+async function logout() {
+
+
+  const result = await alertService.confirm(
+
+    'Deseja sair do sistema?'
+
+  )
+
+
+
+  if(!result.isConfirmed){
+
+
+    return
+
+  }
+
+
+
+
 
 
   authStore.logout()
+
+
+
+  await alertService.success(
+
+    'Logout realizado com sucesso'
+
+  )
+
 
 
   router.push('/login')
@@ -164,12 +208,36 @@ function logout() {
 
 
 
+
+
 <style scoped>
 
 
 .btn-link {
 
+
   text-decoration: none;
+
+
+}
+
+
+
+.logout-button {
+
+
+  color: white;
+
+
+}
+
+
+
+.logout-button:hover {
+
+
+  color: #ddd;
+
 
 }
 

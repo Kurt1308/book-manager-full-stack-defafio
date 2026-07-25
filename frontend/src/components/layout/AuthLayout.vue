@@ -1,13 +1,19 @@
 <template>
 
-    <NavbarComponent />
+    <div class="auth-layout">
 
 
-    <main>
+        <NavbarComponent />
 
-        <RouterView />
 
-    </main>
+        <main class="layout-content">
+
+            <RouterView />
+
+        </main>
+
+
+    </div>
 
 
 </template>
@@ -25,5 +31,19 @@ import NavbarComponent from './NavbarComponent.vue'
 
 
 <style scoped>
+
+.auth-layout {
+
+    min-height: 100vh;
+
+}
+
+
+
+.layout-content {
+
+    padding: 20px;
+
+}
 
 </style>
