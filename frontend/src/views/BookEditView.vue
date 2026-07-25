@@ -1,6 +1,5 @@
 <template>
 
-
     <main class="page-container">
 
 
@@ -20,6 +19,8 @@
 
 
 
+
+
             <div
 
                 v-if="loading"
@@ -32,6 +33,8 @@
 
 
             </div>
+
+
 
 
 
@@ -62,15 +65,21 @@
 
 
 
+
                     <input
+
 
                         v-model="form.title"
 
+
                         type="text"
+
 
                         class="form-control"
 
+
                         required
+
 
                     />
 
@@ -96,15 +105,21 @@
 
 
 
+
                     <input
+
 
                         v-model="form.author"
 
+
                         type="text"
+
 
                         class="form-control"
 
+
                         required
+
 
                     />
 
@@ -130,13 +145,21 @@
 
 
 
+
                     <input
+
 
                         v-model.number="form.year"
 
+
                         type="number"
 
+
                         class="form-control"
+
+
+                        min="0"
+
 
                     />
 
@@ -162,13 +185,18 @@
 
 
 
+
                     <textarea
+
 
                         v-model="form.description"
 
+
                         class="form-control"
 
+
                         rows="4"
+
 
                     ></textarea>
 
@@ -189,15 +217,20 @@
 
 
 
+
                     <RouterLink
+
 
                         to="/books"
 
+
                         class="btn btn-secondary"
+
 
                     >
 
                         Cancelar
+
 
                     </RouterLink>
 
@@ -211,13 +244,18 @@
 
                     <button
 
+
                         type="submit"
+
 
                         class="btn btn-primary"
 
+
                         :disabled="saving"
 
+
                     >
+
 
                         {{ saving ? 'Atualizando...' : 'Atualizar' }}
 
@@ -234,7 +272,9 @@
 
 
 
+
             </form>
+
 
 
 
@@ -249,6 +289,8 @@
 
 
 </template>
+
+
 
 
 
@@ -284,11 +326,10 @@ import alertService from '@/services/alert.service'
 
 
 
-
 const route = useRoute()
 
-
 const router = useRouter()
+
 
 
 
@@ -301,8 +342,9 @@ const bookId = Number(route.params.id)
 
 
 
-const loading = ref(false)
 
+
+const loading = ref(false)
 
 const saving = ref(false)
 
@@ -313,20 +355,16 @@ const saving = ref(false)
 
 
 
-const form = reactive<BookRequest>({
 
+const form = reactive<BookRequest>({
 
     title: '',
 
-
     author: '',
-
 
     year: undefined,
 
-
     description: ''
-
 
 })
 
@@ -341,12 +379,34 @@ const form = reactive<BookRequest>({
 async function loadBook() {
 
 
+    if(!bookId || isNaN(bookId)){
+
+
+        await alertService.error(
+
+            'Livro inválido'
+
+        )
+
+
+        router.push('/books')
+
+
+        return
+
+
+    }
+
+
+
+
 
     try {
 
 
-
         loading.value = true
+
+
 
 
 
@@ -354,16 +414,17 @@ async function loadBook() {
 
 
 
-        form.title = book.title
 
+
+        form.title = book.title
 
         form.author = book.author
 
-
         form.year = book.year
 
-
         form.description = book.description
+
+
 
 
 
@@ -374,8 +435,9 @@ async function loadBook() {
         await alertService.apiError(error)
 
 
-
         router.push('/books')
+
+
 
 
 
@@ -384,6 +446,7 @@ async function loadBook() {
 
 
         loading.value = false
+
 
 
 
@@ -413,6 +476,8 @@ async function updateBook() {
 
 
 
+
+
         await updateBookService(
 
             bookId,
@@ -420,6 +485,8 @@ async function updateBook() {
             form
 
         )
+
+
 
 
 
@@ -431,7 +498,11 @@ async function updateBook() {
 
 
 
+
+
         router.push('/books')
+
+
 
 
 
@@ -443,11 +514,14 @@ async function updateBook() {
 
 
 
+
+
     } finally {
 
 
 
         saving.value = false
+
 
 
 
@@ -478,6 +552,8 @@ onMounted(() => {
 
 
 
+
+
 </script>
 
 
@@ -486,7 +562,8 @@ onMounted(() => {
 
 
 
-<style scoped>
 
+
+<style scoped>
 
 </style>

@@ -14,14 +14,19 @@
 
 
                     <h1 class="page-title">
+
                         📚 Novo Livro
+
                     </h1>
 
 
 
 
 
+
                     <form @submit.prevent="saveBook">
+
+
 
 
 
@@ -37,22 +42,31 @@
                             </label>
 
 
+
                             <input
+
 
                                 v-model="form.title"
 
+
                                 type="text"
+
 
                                 class="form-control"
 
+
                                 placeholder="Digite o título do livro"
 
+
                                 required
+
 
                             />
 
 
                         </div>
+
+
 
 
 
@@ -70,22 +84,31 @@
                             </label>
 
 
+
                             <input
+
 
                                 v-model="form.author"
 
+
                                 type="text"
+
 
                                 class="form-control"
 
+
                                 placeholder="Digite o autor"
 
+
                                 required
+
 
                             />
 
 
                         </div>
+
+
 
 
 
@@ -103,20 +126,31 @@
                             </label>
 
 
+
                             <input
+
 
                                 v-model.number="form.year"
 
+
                                 type="number"
+
 
                                 class="form-control"
 
+
                                 placeholder="Ano de publicação"
+
+
+                                min="0"
+
 
                             />
 
 
                         </div>
+
+
 
 
 
@@ -134,15 +168,21 @@
                             </label>
 
 
+
                             <textarea
+
 
                                 v-model="form.description"
 
+
                                 class="form-control"
+
 
                                 rows="5"
 
+
                                 placeholder="Digite uma descrição do livro"
+
 
                             ></textarea>
 
@@ -156,19 +196,31 @@
 
 
 
+
                         <div class="form-actions">
+
+
+
 
 
 
                             <button
 
+
                                 type="submit"
+
 
                                 class="btn btn-primary"
 
+
+                                :disabled="saving"
+
+
                             >
 
-                                Salvar
+
+                                {{ saving ? 'Salvando...' : 'Salvar' }}
+
 
                             </button>
 
@@ -176,17 +228,27 @@
 
 
 
+
+
+
+
                             <RouterLink
+
 
                                 to="/books"
 
+
                                 class="btn btn-secondary"
+
 
                             >
 
                                 Cancelar
 
+
                             </RouterLink>
+
+
 
 
 
@@ -196,7 +258,10 @@
 
 
 
+
                     </form>
+
+
 
 
 
@@ -207,6 +272,7 @@
 
 
         </div>
+
 
 
 
@@ -221,10 +287,12 @@
 
 
 
+
+
 <script setup lang="ts">
 
 
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 import { useRouter } from 'vue-router'
 
@@ -232,6 +300,11 @@ import { useRouter } from 'vue-router'
 import { createBook } from '@/services/book.service'
 
 import type { BookRequest } from '@/types/book'
+
+
+import alertService from '@/services/alert.service'
+
+
 
 
 
@@ -243,17 +316,36 @@ const router = useRouter()
 
 
 
+
+
+const saving = ref(false)
+
+
+
+
+
+
+
+
+
 const form = reactive<BookRequest>({
+
 
     title: '',
 
+
     author: '',
+
 
     year: undefined,
 
+
     description: ''
 
+
 })
+
+
 
 
 
@@ -264,17 +356,99 @@ const form = reactive<BookRequest>({
 async function saveBook() {
 
 
-    await createBook(form)
+
+    if(!form.title.trim() || !form.author.trim()) {
 
 
-    router.push('/books')
+        await alertService.warning(
+
+            'Título e autor são obrigatórios'
+
+        )
+
+
+        return
+
+
+    }
+
+
+
+
+
+
+    try {
+
+
+
+        saving.value = true
+
+
+
+
+
+
+        await createBook(form)
+
+
+
+
+
+
+        await alertService.success(
+
+            'Livro cadastrado com sucesso'
+
+        )
+
+
+
+
+
+
+        router.push('/books')
+
+
+
+
+
+
+
+    } catch(error) {
+
+
+
+        await alertService.apiError(error)
+
+
+
+
+
+
+    } finally {
+
+
+
+        saving.value = false
+
+
+
+
+    }
+
 
 
 }
 
 
 
+
+
+
+
 </script>
+
+
 
 
 

@@ -1,6 +1,5 @@
 <template>
 
-
     <main class="page-container">
 
 
@@ -13,6 +12,7 @@
                 📚 Livros
 
             </h1>
+
 
 
 
@@ -32,8 +32,6 @@
 
 
         </div>
-
-
 
 
 
@@ -70,6 +68,8 @@
 
 
 
+
+
             <button
 
 
@@ -79,9 +79,25 @@
                 @click="loadBooks"
 
 
+                :disabled="loading"
+
+
             >
 
-                Buscar
+
+                <span v-if="loading">
+
+                    Buscando...
+
+                </span>
+
+
+                <span v-else>
+
+                    Buscar
+
+                </span>
+
 
             </button>
 
@@ -149,6 +165,7 @@
 
 
 
+
             <div
 
 
@@ -163,6 +180,7 @@
 
 
             >
+
 
 
 
@@ -207,7 +225,6 @@
 
 
 
-
                         <p
 
                             v-if="book.year"
@@ -222,7 +239,6 @@
 
 
                         </p>
-
 
 
 
@@ -262,7 +278,6 @@
 
                                 class="btn btn-warning"
 
-
                             >
 
                                 Editar
@@ -287,9 +302,23 @@
                                 @click="removeBook(book.id)"
 
 
+                                :disabled="deleting === book.id"
+
                             >
 
-                                Excluir
+
+                                <span v-if="deleting === book.id">
+
+                                    Excluindo...
+
+                                </span>
+
+
+                                <span v-else>
+
+                                    Excluir
+
+                                </span>
 
 
                             </button>
@@ -309,6 +338,7 @@
 
 
                 </div>
+
 
 
 
@@ -360,8 +390,8 @@ import {
 } from '@/services/book.service'
 
 
-import alertService from '@/services/alert.service'
 
+import alertService from '@/services/alert.service'
 
 
 
@@ -372,6 +402,9 @@ const books = ref<Book[]>([])
 
 
 const loading = ref(false)
+
+
+const deleting = ref<number | null>(null)
 
 
 const search = ref('')
@@ -394,6 +427,7 @@ async function loadBooks() {
 
 
 
+
         const response = await getBooks(
 
             search.value.trim()
@@ -406,6 +440,8 @@ async function loadBooks() {
 
 
 
+
+
     } catch(error) {
 
 
@@ -414,11 +450,15 @@ async function loadBooks() {
 
 
 
+
+
     } finally {
 
 
 
         loading.value = false
+
+
 
 
 
@@ -448,6 +488,7 @@ async function removeBook(id:number) {
 
 
 
+
     if(!result.isConfirmed){
 
 
@@ -461,12 +502,18 @@ async function removeBook(id:number) {
 
 
 
-
     try {
 
 
 
+        deleting.value = id
+
+
+
+
         await deleteBook(id)
+
+
 
 
 
@@ -478,7 +525,10 @@ async function removeBook(id:number) {
 
 
 
+
+
         await loadBooks()
+
 
 
 
@@ -487,11 +537,23 @@ async function removeBook(id:number) {
 
 
 
+
         await alertService.apiError(error)
 
 
 
+
+
+    } finally {
+
+
+
+        deleting.value = null
+
+
+
     }
+
 
 
 
@@ -518,6 +580,8 @@ onMounted(() => {
 
 
 
+
+
 </script>
 
 
@@ -529,6 +593,5 @@ onMounted(() => {
 
 
 <style scoped>
-
 
 </style>

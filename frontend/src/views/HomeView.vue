@@ -22,6 +22,7 @@
 
 
 
+
             <p class="home-description">
 
                 Gerencie sua biblioteca de forma simples,
@@ -36,17 +37,30 @@
 
 
 
-            <RouterLink
 
-                to="/books"
+            <div class="home-actions">
 
-                class="btn btn-primary btn-large"
 
-            >
 
-                Acessar livros
 
-            </RouterLink>
+
+                <RouterLink
+
+                    to="/books"
+
+                    class="btn btn-primary btn-large"
+
+                >
+
+                    Acessar livros
+
+                </RouterLink>
+
+
+
+
+
+            </div>
 
 
 
@@ -71,10 +85,15 @@
 
 
 
+
+
 <script setup lang="ts">
 
 
 import { RouterLink } from 'vue-router'
+
+
+
 
 
 </script>
@@ -85,7 +104,16 @@ import { RouterLink } from 'vue-router'
 
 
 
+
+
 <style scoped>
+
+
+.home-actions {
+
+    margin-top: 30px;
+
+}
 
 
 </style>
