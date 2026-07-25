@@ -1,16 +1,24 @@
 export interface Book {
 
+
     id: number
+
 
     title: string
 
+
     author: string
 
-    year?: number
 
-    description?: string
+    year?: number | null
+
+
+    description?: string | null
+
 
 }
+
+
 
 
 
@@ -23,10 +31,10 @@ export interface BookRequest {
     author: string
 
 
-    year?: number
+    year?: number | null
 
 
-    description?: string
+    description?: string | null
 
 
 }

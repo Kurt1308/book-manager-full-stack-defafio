@@ -30,8 +30,6 @@
 
 
 
-
-
                         <div class="form-group">
 
 
@@ -56,9 +54,6 @@
 
 
                                 placeholder="Digite o título do livro"
-
-
-                                required
 
 
                             />
@@ -98,9 +93,6 @@
 
 
                                 placeholder="Digite o autor"
-
-
-                                required
 
 
                             />
@@ -203,7 +195,6 @@
 
 
 
-
                             <button
 
 
@@ -223,8 +214,6 @@
 
 
                             </button>
-
-
 
 
 
@@ -314,12 +303,7 @@ const router = useRouter()
 
 
 
-
-
-
-
 const saving = ref(false)
-
 
 
 
@@ -357,20 +341,77 @@ async function saveBook() {
 
 
 
-    if(!form.title.trim() || !form.author.trim()) {
+    if(!form.title.trim()) {
 
 
         await alertService.warning(
 
-            'Título e autor são obrigatórios'
+            'O título do livro é obrigatório.'
 
         )
 
 
         return
 
+    }
+
+
+
+
+
+
+    if(!form.author.trim()) {
+
+
+        await alertService.warning(
+
+            'O autor do livro é obrigatório.'
+
+        )
+
+
+        return
 
     }
+
+
+
+
+
+
+    if(!form.year) {
+
+
+        await alertService.warning(
+
+            'O ano de publicação é obrigatório.'
+
+        )
+
+
+        return
+
+    }
+
+
+
+
+
+
+    if(!form.description?.trim()) {
+
+
+        await alertService.warning(
+
+            'A descrição do livro é obrigatória.'
+
+        )
+
+
+        return
+
+    }
+
 
 
 
@@ -397,7 +438,7 @@ async function saveBook() {
 
         await alertService.success(
 
-            'Livro cadastrado com sucesso'
+            'Livro cadastrado com sucesso.'
 
         )
 
@@ -419,7 +460,6 @@ async function saveBook() {
 
 
         await alertService.apiError(error)
-
 
 
 
