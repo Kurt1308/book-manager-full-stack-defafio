@@ -92,20 +92,38 @@ api.interceptors.response.use(
 
         const status = error.response?.status
 
+        const url = error.config?.url
 
 
 
 
-        if(status === 401){
+
+        /**
+         * Login e registro possuem tratamento próprio.
+         * 401 nestas rotas significa credenciais inválidas,
+         * não sessão expirada.
+         */
+        const isAuthRequest =
+
+            url?.includes('/auth/login') ||
+
+            url?.includes('/auth/register')
 
 
+
+
+
+
+
+
+        /**
+         * Sessão expirada ou token inválido
+         */
+        if(status === 401 && !isAuthRequest){
 
 
 
             localStorage.removeItem('token')
-
-
-
 
 
 
@@ -117,21 +135,13 @@ api.interceptors.response.use(
 
 
 
-
-
-
-
-
             if(window.location.pathname !== '/login'){
-
 
 
                 window.location.replace('/login')
 
 
-
             }
-
 
 
         }
@@ -140,9 +150,13 @@ api.interceptors.response.use(
 
 
 
+
+
+
+        /**
+         * Usuário autenticado porém sem permissão
+         */
         else if(status === 403){
-
-
 
 
 
@@ -151,9 +165,6 @@ api.interceptors.response.use(
                 'Você não possui permissão para realizar esta ação.'
 
             )
-
-
-
 
 
         }

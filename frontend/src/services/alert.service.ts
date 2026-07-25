@@ -7,7 +7,9 @@ const alertService = {
 
     success(message: string) {
 
+
         return Swal.fire({
+
 
             icon: 'success',
 
@@ -17,7 +19,9 @@ const alertService = {
 
             confirmButtonText: 'OK'
 
+
         })
+
 
     },
 
@@ -25,9 +29,12 @@ const alertService = {
 
 
 
+
     error(message: string) {
 
+
         return Swal.fire({
+
 
             icon: 'error',
 
@@ -37,7 +44,9 @@ const alertService = {
 
             confirmButtonText: 'OK'
 
+
         })
+
 
     },
 
@@ -45,9 +54,13 @@ const alertService = {
 
 
 
+
+
     warning(message: string) {
 
+
         return Swal.fire({
+
 
             icon: 'warning',
 
@@ -57,7 +70,9 @@ const alertService = {
 
             confirmButtonText: 'OK'
 
+
         })
+
 
     },
 
@@ -72,6 +87,7 @@ const alertService = {
 
         return Swal.fire({
 
+
             icon: 'warning',
 
             title: 'Confirmação',
@@ -83,6 +99,7 @@ const alertService = {
             confirmButtonText: 'Confirmar',
 
             cancelButtonText: 'Cancelar'
+
 
         })
 
@@ -96,30 +113,58 @@ const alertService = {
 
 
 
+
     apiError(error: any) {
 
 
 
-        let message = 'Ocorreu um erro inesperado'
+        let message =
+            'Ocorreu um erro inesperado'
 
 
 
-        const status = error?.response?.status
+        const status =
+            error?.response?.status
+
+
+
+
+        const responseMessage =
+            error?.response?.data?.message
 
 
 
 
 
 
-        if(status === 401) {
+        /*
+         * Prioriza mensagem enviada pela API
+         */
+        if(responseMessage) {
 
 
-
-            message = 'Sessão expirada. Faça login novamente.'
-
+            message = responseMessage
 
 
         }
+
+
+
+
+
+
+
+        else if(status === 401) {
+
+
+            message =
+                'Usuário não autorizado.'
+
+
+        }
+
+
+
 
 
 
@@ -127,12 +172,14 @@ const alertService = {
         else if(status === 403) {
 
 
-
-            message = 'Você não possui permissão para esta ação.'
-
+            message =
+                'Você não possui permissão para esta ação.'
 
 
         }
+
+
+
 
 
 
@@ -140,12 +187,14 @@ const alertService = {
         else if(status === 404) {
 
 
-
-            message = 'Recurso não encontrado.'
-
+            message =
+                'Recurso não encontrado.'
 
 
         }
+
+
+
 
 
 
@@ -153,16 +202,14 @@ const alertService = {
         else if(status === 400) {
 
 
-
             message =
-
-                error?.response?.data?.message ||
-
                 'Dados inválidos enviados.'
 
 
-
         }
+
+
+
 
 
 
@@ -170,25 +217,14 @@ const alertService = {
         else if(status >= 500) {
 
 
-
-            message = 'Erro interno do servidor.'
-
-
-
-        }
-
-
-
-
-        else if(error?.response?.data?.message) {
-
-
-
-            message = error.response.data.message
-
+            message =
+                'Erro interno do servidor.'
 
 
         }
+
+
+
 
 
 
