@@ -32,20 +32,39 @@
 
             <div class="col-md-6">
 
+                <div class="input-group">
 
-                <input
 
-                    v-model="search"
+                    <input
 
-                    type="text"
+                        v-model="search"
 
-                    class="form-control"
+                        type="text"
 
-                    placeholder="Buscar por título"
+                        class="form-control"
 
-                    @keyup.enter="loadBooks"
+                        placeholder="Buscar por título"
 
-                />
+                        @keyup.enter="loadBooks"
+
+                    />
+
+
+
+                    <button
+
+                        class="btn btn-primary"
+
+                        @click="loadBooks"
+
+                    >
+
+                        Buscar
+
+                    </button>
+
+
+                </div>
 
 
             </div>
@@ -248,7 +267,7 @@ async function loadBooks() {
 
         const response = await getBooks(
 
-            search.value
+            search.value.trim()
 
         )
 
@@ -256,6 +275,15 @@ async function loadBooks() {
 
         books.value = response.content
 
+
+
+    } catch(error) {
+
+
+        console.error(
+            'Erro ao buscar livros:',
+            error
+        )
 
 
     } finally {
