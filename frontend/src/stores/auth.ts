@@ -59,7 +59,7 @@ export const useAuthStore = defineStore(
 
 
 
-            slogout() {
+            logout() {
 
 
                 this.token = null

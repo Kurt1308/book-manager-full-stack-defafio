@@ -11,6 +11,8 @@ import NotFoundView from '@/views/NotFoundView.vue'
 
 import AuthLayout from '@/components/layout/AuthLayout.vue'
 
+import BooksView from '@/views/BooksView.vue'
+
 
 
 
@@ -81,6 +83,15 @@ const routes = [
 
                 component: HomeView
 
+            },
+
+
+            {
+                path: 'books',
+
+                name: 'books',
+                
+                component: BooksView
             }
 
 
