@@ -74,7 +74,7 @@ A aplicação foi desenvolvida utilizando uma arquitetura separada entre backend
 
 ## ✅ Validações
 
-Frontend:
+### Frontend
 
 - Validação de campos obrigatórios
 - Controle de formulário
@@ -83,12 +83,160 @@ Frontend:
 - Controle de carregamento durante requisições
 
 
-Backend:
+### Backend
 
 - Validação dos dados recebidos
 - Controle de autenticação
 - Proteção dos endpoints
-- Tratamento de exceções
+- Tratamento global de exceções
+
+
+---
+
+# 🔒 Segurança JWT
+
+A aplicação utiliza autenticação baseada em **JSON Web Token (JWT)**.
+
+O fluxo de autenticação funciona da seguinte forma:
+
+
+Usuário
+|
+v
+Realiza login
+|
+v
+Backend valida credenciais
+
+Autorização: Token de Portador
+
+
+## Implementações de segurança:
+
+- Token Stateless
+- Expiração configurável
+- Secret configurado através de variável de ambiente
+- Token contendo apenas informações necessárias
+- Subject utilizando o ID do usuário
+- Nome do usuário armazenado como claim
+- Senhas protegidas utilizando BCrypt
+- Filtro JWT utilizando Spring Security
+- Interceptor Axios para envio automático do token
+- Remoção automática do token inválido no frontend
+
+
+---
+
+# 🏗️ Arquitetura da aplicação
+
+O projeto foi desenvolvido utilizando separação de responsabilidades.
+
+A arquitetura segue o padrão de camadas, mantendo baixo acoplamento entre as responsabilidades da aplicação.
+
+---
+
+# Backend
+
+## Arquitetura em camadas
+
+
+Controlador
+|
+v
+Serviço
+|
+v
+Repositório
+|
+v
+Banco de Dados
+
+
+---
+
+## Estrutura de pacotes
+
+O backend está organizado da seguinte forma:
+
+
+backend
+│
+└── src/main/java/com/bookmanager/backend
+│
+├── config
+│ ├── Exceção
+│ │ ├
+
+
+---
+
+## Responsabilidades
+
+### Controller
+
+Responsável por:
+
+- Receber requisições HTTP
+- Validar entradas
+- Encaminhar chamadas para os serviços
+- Retornar respostas HTTP
+
+
+---
+
+### Service
+
+Responsável por:
+
+- Implementar regras de negócio
+- Processar dados
+- Controlar fluxo da aplicação
+- Comunicação entre Controller e Repository
+
+
+---
+
+### Repository
+
+Responsável por:
+
+- Comunicação com banco de dados
+- Operações utilizando Spring Data JPA
+- Consultas utilizando Hibernate
+
+
+---
+
+### DTO
+
+Utilizado para:
+
+- Separação entre entidades e dados expostos pela API
+- Controle dos dados de entrada e saída
+- Evitar exposição direta das entidades JPA
+
+
+---
+
+### Exception Handler
+
+A aplicação possui tratamento global de exceções utilizando:
+
+- `GlobalExceptionHandler`
+- Exceções personalizadas
+- Retornos padronizados para erros da API
+
+
+---
+
+### Swagger / OpenAPI
+
+A documentação da API foi configurada utilizando Swagger/OpenAPI permitindo:
+
+- Visualização dos endpoints
+- Testes das requisições
+- Validação das respostas
+- Autenticação JWT através do Bearer Token
 
 
 ---
@@ -139,238 +287,441 @@ Autorização: Bearer Token
 
 O projeto foi desenvolvido utilizando separação de responsabilidades.
 
-## Backend
+A arquitetura foi organizada buscando facilitar manutenção, escalabilidade e testes automatizados.
 
-Arquitetura em camadas:
+---
+
+# Backend
+
+Arquitetura baseada em camadas:
+
 
 Controlador
 |
-v
-Serviço
-|
-v
-Repositório
-|
-v
-Banco de Dados
 
 
 
-Responsabilidades:
+## Estrutura de pacotes:
 
-### Controller
+
+
+com.bookmanager.backend
+
+├── config
+│
+├──
+
+
+
+---
+
+# Responsabilidades das camadas
+
+
+## Controller
 
 Responsável por:
 
 - Receber requisições HTTP
 - Validar entradas
-- Retornar respostas
+- Mapear DTOs
+- Retornar respostas HTTP adequadas
+- Encaminhar regras de negócio para os Services
 
 
-### Service
+Controllers implementados:
+
+
+### AuthController
+
+Responsável por:
+
+- Cadastro de usuários
+- Autenticação
+- Geração do token JWT
+
+
+Endpoints:
+
+
+POST /auth/register
+
+POST /auth/login
+
+
+
+### BookController
+
+Responsável pelo gerenciamento dos livros:
+
+- Criar livros
+- Listar livros
+- Buscar livros
+- Atualizar livros
+- Excluir livros
+
+
+Endpoints:
+
+
+GET /books
+
+POST /livros
+
+GET /books/{id}
+
+PUT /books/{id}
+
+DELETE /books/{id}
+
+
+
+---
+
+
+## Service
 
 Responsável por:
 
 - Regras de negócio
-- Processamento dos dados
+- Validação das operações
 - Comunicação entre Controller e Repository
+- Controle de acesso aos dados
 
 
-### Repository
+Serviços implementados:
+
+
+### AuthService
+
+Responsável por:
+
+- Cadastro de usuários
+- Criptografia das senhas
+- Autenticação
+- Geração de JWT
+
+
+### BookService
+
+Responsável por:
+
+- Cadastro de livros
+- Consulta de livros
+- Atualização
+- Exclusão
+- Associação entre usuário autenticado e livros
+
+
+---
+
+
+## Repository
 
 Responsável por:
 
 - Comunicação com banco de dados
-- Operações utilizando JPA/Hibernate
+- Operações utilizando Spring Data JPA
+- Consultas utilizando Hibernate
 
 
-### DTO
+Repositories implementados:
 
-Utilizado para:
 
-- Separação entre entidade e dados expostos pela API
-- Controle dos dados de entrada e saída
+### UserRepository
+
+Responsável pelo acesso aos usuários.
+
+
+### BookRepository
+
+Responsável pelo acesso aos livros.
 
 
 ---
 
-# Frontend
 
-Arquitetura baseada em componentes Vue 3:
+## DTO
 
-Src
-|
-v
-Componentes
-|
-v
-Serviços
-|
-v
-Axios API
-|
-v
-API REST de backend
+A aplicação utiliza DTOs para separar as entidades internas dos dados expostos pela API.
 
 
+Benefícios:
 
-Responsabilidades:
-
-### Views
-
-Responsáveis pelas páginas da aplicação:
-
-- Login
-- Cadastro
-- Home
-- Livros
+- Maior segurança dos dados
+- Controle das informações enviadas e recebidas
+- Evita exposição direta das entidades JPA
+- Facilita evolução da API
 
 
-### Components
-
-Componentes reutilizáveis:
-
-- Navbar
-- Formulários
-- Elementos visuais
+DTOs implementados:
 
 
-### Services
+### Request
 
-Responsáveis pela comunicação com backend:
 
+Responsáveis pelos dados recebidos pela API:
+
+
+
+SolicitaçãoRegistrado
+
+LoginRequest
+
+BookRequest
+
+
+
+### Response
+
+
+Responsáveis pelos dados retornados:
+
+
+
+AuthenticationResponse
+
+BookResponse
+
+
+
+---
+
+
+# 🔐 Configuração de Segurança
+
+A segurança da aplicação foi implementada utilizando:
+
+
+- Spring Security
+- JWT Authentication Filter
+- UserDetailsService personalizado
+- BCrypt Password Encoder
+
+
+Fluxo:
+
+
+
+Solicitar HTTP
+
+ |
+
+Filtro de Autenticação JWT
+
+ |
+
+Validação do Token
+
+ |
+
+SecurityContext
+
+ |
+
+Controlador protegido
+
+
+
+A classe:
+
+
+JwtAuthenticationFilter
+
+
+é responsável por interceptar as requisições e validar o token enviado no Header:
+
+
+
+Autorização: Token de Portador
+
+
+
+---
+
+# ⚠️ Tratamento de exceções
+
+A aplicação possui tratamento global de erros utilizando:
+
+
+
+GlobalExceptionHandler
+
+
+
+Responsável por:
+
+- Centralizar respostas de erro
+- Padronizar mensagens da API
+- Evitar repetição de código nos Controllers
+
+
+Exceções personalizadas:
+
+
+## ResourceNotFoundException
+
+Utilizada quando um recurso solicitado não é encontrado.
+
+
+Exemplo:
+
+
+Livro informado não encontrado.
+
+
+
+## DuplicateResourceException
+
+Utilizada quando ocorre tentativa de cadastro duplicado.
+
+
+Exemplo:
+
+
+E-mail já cadastrado.
+
+
+
+---
+
+# 📖 Documentação da API
+
+
+A API possui documentação utilizando:
+
+
+
+Swagger / OpenAPI
+
+
+
+Configuração realizada através:
+
+
+
+OpenApiConfig
+
+
+
+Recursos disponíveis:
+
+
+- Visualização dos endpoints
+- Descrição dos métodos HTTP
+- Testes diretamente pelo navegador
+- Autenticação utilizando JWT Bearer Token
+
+
+Swagger disponível:
+
+
+
+http://localhost:8080/swagger-ui/index.html
+
+
+
+---
+
+# 🧪 Testes automatizados
+
+
+O backend possui testes utilizando:
+
+
+
+Mockito do Teste
+de Bota de Mola da JUnit
+
+
+
+
+Os testes estão organizados:
+
+
+
+src/test/java/com/bookmanager/backend
+
+├── controllerTeste
+
+├── serviceTeste
+
+└── BackendApplicationTests
+
+
+
+Testes implementados:
+
+
+## BookControllerTest
+
+Valida:
+
+- Requisições HTTP dos livros
+- Respostas dos endpoints
+- Fluxo dos controllers
+
+
+## BookServiceTest
+
+Valida:
+
+- Regras de negócio
+- Operações CRUD
+- Tratamentos de exceções
+
+
+## AuthServiceTest
+
+Valida:
+
+- Cadastro de usuários
 - Autenticação
-- Livros
-- Alertas
-
-
-### Stores
-
-Gerenciamento de estado:
-
-- Usuário autenticado
-- Token JWT
-- Dados da sessão
-
-
-### Utils
-
-Funções auxiliares:
-
-- Validação de token
-- Funções compartilhadas
+- Geração de token
 
 
 ---
 
-# 📂 Estrutura do projeto
+# 🐳 Containerização
 
 
-Docs
-│
-├── login.png
-├── register.png
-├── home.png
-├── books-list.png
-├── book-form.png
-├── swagger.png
+O backend possui configuração própria utilizando Docker.
 
 
----
-
-## Tela de Login
-
-Descrição:
-
-> Tela inicial da aplicação exibindo o formulário de autenticação com campos de e-mail e senha, botão de login e opção para cadastro de novo usuário.
-
-
-![Tela de Login](Docs/login.png)
-
-
-Tela de Cadastro
-
-Descrição:
-
-Tela de criação de usuário contendo nome, e-mail, senha e botão de cadastro.
-
-
-![Tela de Cadastro de usuário](Docs/register.png)
-
-
-Tela Home
-
-Descrição:
-
-Tela principal após autenticação mostrando a navegação da aplicação, acesso ao gerenciamento de livros e usuário autenticado.
-
-Inserir:
-
-![Tela Home](Docs/home.png)
-
----
-
-## Tela de Gerenciamento de Livros
-
-Descrição:
-
-Tela responsável pelo gerenciamento da biblioteca pessoal do usuário autenticado.
-
-Funcionalidades apresentadas:
-
-- Visualização dos livros cadastrados
-- Busca por título
-- Acesso à edição
-- Exclusão de livros
-- Botão para cadastro de novos livros
-
-
-![Tela de Gerenciamento de livros](Docs/books-list.png)
+Arquivo:
 
 
 
----
-
-## Tela de Cadastro de Livro
-
-Descrição:
-
-Formulário utilizado para adicionar um novo livro à biblioteca do usuário.
-
-Campos disponíveis:
-
-- Título
-- Autor
-- Ano de publicação
-- Descrição
-
-
-Cadastro de livro:
-
-![Tela de Cadastro](Docs/book-form.png)
+Dockerfile
 
 
 
----
+Responsável por:
 
-## Documentação Swagger / OpenAPI
-
-Descrição:
-
-A API disponibiliza documentação interativa utilizando Swagger/OpenAPI.
-
-Através desta interface é possível:
-
-- Visualizar endpoints disponíveis
-- Testar requisições HTTP
-- Validar respostas da API
-- Testar autenticação JWT utilizando Bearer Token
+- Criar imagem da aplicação Spring Boot
+- Instalar dependências
+- Executar aplicação em ambiente isolado
 
 
-Inserir:
+Arquivos relacionados:
 
-![Swagger](Docs/swagger.png)
 
+
+.dockerignore
+
+Dockerfile
+
+docker-compose.yml
+
+
+
+Benefícios:
+
+
+- Ambiente padronizado
+- Facilidade de execução
+- Isolamento de dependências
+- Integração com PostgreSQL containerizado
 
 
 ---
@@ -379,34 +730,80 @@ Inserir:
 
 O projeto utiliza PostgreSQL como banco de dados principal.
 
+Banco utilizado:
+
+
+Bookmanager
+
+
+
 ## Estrutura principal
 
-Banco de dados: bookmanager
 
-users
+### users
+
+Tabela responsável pelo armazenamento dos usuários cadastrados.
+
+
+Campos:
+
+
+
+Nome
+do ID
+Senha do E-mail
+
+
+
+
+Responsabilidades:
+
+- Armazenar informações de autenticação
+- Manter credenciais protegidas utilizando BCrypt
+- Identificar o proprietário dos livros cadastrados
+
+
+
+---
+
+
+### books
+
+Tabela responsável pelo armazenamento dos livros.
+
+
+Campos:
+
+
 
 id
-name
-email
-password
-
-books
-
-id
-title
-author
-year
-description
+título
+autor
+Descrição
+do ano
 user_id
 
 
-Relacionamento:
+
+Responsabilidades:
+
+- Armazenar informações dos livros
+- Associar cada livro ao usuário autenticado
+- Permitir gerenciamento individual da biblioteca
+
+
+---
+
+
+## Relacionamento
 
 
 
 Usuário
 
 1
+
+|
 
 |
 
@@ -419,7 +816,16 @@ Livro
 Cada usuário possui sua própria biblioteca de livros.
 
 
+O relacionamento é realizado através da chave estrangeira:
+
+
+
+books.user_id
+
+
+
 ---
+
 
 # ⚙️ Configuração do ambiente
 
@@ -450,54 +856,25 @@ JWT_SECRET=SUA_CHAVE_JWT_SEGURA
 JWT_EXPIRATION=300000
 
 APP_SWAGGER_LAUNCH=true
-```
+JWT_SECRET
 
----
+A chave utilizada para assinatura do token JWT deve possuir tamanho seguro para utilização com algoritmo HMAC.
 
-## Variáveis de ambiente Frontend
+Exemplo utilizado no projeto:
+
+JWT_SECRET=BookManagerJWTSecretKey2026ProductionSecureAuthenticationToken256Bits
+
+Recomenda-se utilizar uma chave própria em ambientes reais.
+
+Variáveis de ambiente Frontend
 
 Arquivo:
 
-```
 frontend/.env
-```
 
 Exemplo:
 
-```env
 VITE_API_URL=http://localhost:8080
-```
-
----
-
-## Variáveis de ambiente Windows
-
-Abaixo estão os caminhos que usei no meu projeto. Após o download, verifique o local correto na sua máquina.
-
-JAVA_HOME:
-
-```
-C:\Program Files\Java\jdk-21.0.11
-```
-
-MAVEN_HOME:
-
-```
-C:\Program Files\Apache\Maven\apache-maven-3.9.16
-```
-
-PATH:
-
-```
-C:\Program Files\PostgreSQL\18\bin
-C:\Program Files\Git\cmd
-C:\Program Files\Git\bin
-C:\Program Files\Java\jdk-21.0.11\bin
-C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
-C:\Program Files\nodejs
-```
-
-![Variáveis de ambiente Windows](./Docs/Variaveis_Ambiente_Windows.png)
 
 Para execução utilizando Docker:
 
@@ -508,6 +885,34 @@ frontend/.env.production
 Conteúdo:
 
 VITE_API_URL=http://backend:8080
+🖥️ Configuração das variáveis de ambiente Windows
+
+Abaixo estão os caminhos utilizados durante o desenvolvimento.
+
+Após instalar as ferramentas, confirme os caminhos existentes na sua máquina.
+
+JAVA_HOME
+C:\Program Files\Java\jdk-21.0.11
+MAVEN_HOME
+C:\Program Files\Apache\Maven\apache-maven-3.9.16
+PATH
+
+Adicionar:
+
+C:\Program Files\PostgreSQL\18\bin
+
+C:\Program Files\Git\cmd
+
+C:\Program Files\Git\bin
+
+C:\Program Files\Java\jdk-21.0.11\bin
+
+C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
+
+C:\Program Files\nodejs
+
+Imagem de referência:
+
 ▶️ Execução local
 Pré-requisitos
 
@@ -520,7 +925,7 @@ PostgreSQL
 Docker (opcional)
 Executando Backend
 
-Acesso:
+Acesse:
 
 cd backend
 
@@ -539,10 +944,9 @@ http://localhost:8080
 Swagger:
 
 http://localhost:8080/swagger-ui/index.html
-
 Executando Frontend
 
-Acesso:
+Acesse:
 
 cd frontend
 
@@ -557,8 +961,6 @@ npm run dev
 Frontend disponível:
 
 http://localhost:5173
-
-
 🐳 Execução utilizando Docker
 
 O projeto possui configuração completa utilizando Docker Compose.
@@ -570,7 +972,7 @@ PostgreSQL	PostgreSQL 18	5432
 Backend	Bota de Mola	8080
 Frontend	Vue + Nginx	5173
 
-Execute:
+Executor:
 
 docker compose up -d
 
@@ -588,7 +990,7 @@ Backend:
 
 http://localhost:8080
 
-Swagger:
+Confiança:
 
 http://localhost:8080/swagger-ui/index.html
 
@@ -599,12 +1001,9 @@ docker compose down
 Volumes de removedores:
 
 docker compose down -v
-
-Inserir print:
-
 📌 Endpoints principais
 Autenticação
-Registrador usuário
+Cadastro de usuário
 POST /auth/register
 
 Pedido:
@@ -629,8 +1028,7 @@ Resposta:
 {
   "token": "JWT_TOKEN"
 }
-
-Livros
+📚 Livros
 Listar livros
 GET /books
 Buscar por título
@@ -673,6 +1071,11 @@ Foram realizados testes funcionais contemplando:
 
 ✅ Comunicação entre containers
 
+Além dos testes funcionais, o backend possui testes automatizados utilizando:
+
+JUnit
+Mockito
+Teste de Bota de Mola
 📈 Melhorias futuras
 
 Possíveis evoluções:
@@ -681,10 +1084,12 @@ Paginação avançada no backend
 Refresh Token JWT
 Recuperação de senha
 Upload de capa dos livros
-Testes automatizados com JUnit e Vitest
+Testes automatizados no frontend utilizando Vitest
 Deploy em ambiente cloud
 Pipeline CI/CD
-
+Monitoramento da aplicação
+Logs estruturados
+Cache utilizando Redis
 👨 💻 Autor
 
 Lucas Dias
