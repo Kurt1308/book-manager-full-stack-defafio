@@ -295,7 +295,7 @@ Descrição:
 Tela de criação de usuário contendo nome, e-mail, senha e botão de cadastro.
 
 
-![Tela de Login](Docs/register.png)
+![Tela de Cadastro de usuário](Docs/register.png)
 
 
 Tela Home
@@ -306,7 +306,7 @@ Tela principal após autenticação mostrando a navegação da aplicação, aces
 
 Inserir:
 
-![Tela de Login](Docs/home.png)
+![Tela Home](Docs/home.png)
 
 ---
 
@@ -325,7 +325,7 @@ Funcionalidades apresentadas:
 - Botão para cadastro de novos livros
 
 
-![Tela de Login](Docs/books-list.png)
+![Tela de Gerenciamento de livros](Docs/books-list.png)
 
 
 
@@ -347,7 +347,7 @@ Campos disponíveis:
 
 Cadastro de livro:
 
-![Tela de Login](Docs/book-form.png)
+![Tela de Cadastro](Docs/book-form.png)
 
 
 
@@ -369,7 +369,7 @@ Através desta interface é possível:
 
 Inserir:
 
-![Tela de Login](Docs/swagger.png)
+![Swagger](Docs/swagger.png)
 
 
 
@@ -484,6 +484,8 @@ PATH
   C:\Program Files\Java\jdk-21.0.11\bin
   C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
   C:\Program Files\nodejs
+
+  ![Variáveis de ambiente Windows](Docs/Variaveis_Ambiente_Windows.png)
 
 Para execução utilizando Docker:
 
