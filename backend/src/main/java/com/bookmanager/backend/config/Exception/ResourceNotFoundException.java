@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config.Exception;
+package com.bookmanager.backend.config.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

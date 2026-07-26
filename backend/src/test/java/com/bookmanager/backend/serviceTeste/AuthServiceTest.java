@@ -1,7 +1,7 @@
 package com.bookmanager.backend.serviceTeste;
 
 
-import com.bookmanager.backend.config.JWT.JwtService;
+import com.bookmanager.backend.config.jwt.JwtService;
 import com.bookmanager.backend.dto.request.LoginRequest;
 import com.bookmanager.backend.dto.request.RegisterRequest;
 import com.bookmanager.backend.dto.response.AuthenticationResponse;

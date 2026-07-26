@@ -1,8 +1,8 @@
 package com.bookmanager.backend.service;
 
-import com.bookmanager.backend.config.Exception.DuplicateResourceException;
-import com.bookmanager.backend.config.Exception.ResourceNotFoundException;
-import com.bookmanager.backend.config.JWT.JwtService;
+import com.bookmanager.backend.config.exception.DuplicateResourceException;
+import com.bookmanager.backend.config.exception.ResourceNotFoundException;
+import com.bookmanager.backend.config.jwt.JwtService;
 import com.bookmanager.backend.dto.request.LoginRequest;
 import com.bookmanager.backend.dto.request.RegisterRequest;
 import com.bookmanager.backend.dto.response.AuthenticationResponse;

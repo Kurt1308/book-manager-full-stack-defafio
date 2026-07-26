@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config.JWT;
+package com.bookmanager.backend.config.jwt;
 
 
 import com.bookmanager.backend.model.User;

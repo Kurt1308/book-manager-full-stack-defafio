@@ -2,7 +2,7 @@ package com.bookmanager.backend.service;
 
 import com.bookmanager.backend.dto.request.BookRequest;
 import com.bookmanager.backend.dto.response.BookResponse;
-import com.bookmanager.backend.config.Exception.ResourceNotFoundException;
+import com.bookmanager.backend.config.exception.ResourceNotFoundException;
 import com.bookmanager.backend.model.Book;
 import com.bookmanager.backend.model.User;
 import com.bookmanager.backend.repository.BookRepository;

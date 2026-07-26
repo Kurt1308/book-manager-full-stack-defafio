@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config.Exception;
+package com.bookmanager.backend.config.exception;
 
 
 import org.springframework.http.HttpStatus;

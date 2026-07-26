@@ -1,4 +1,4 @@
-package com.bookmanager.backend.config.Swagger;
+package com.bookmanager.backend.config.swagger;
 
 
 import io.swagger.v3.oas.models.OpenAPI;
