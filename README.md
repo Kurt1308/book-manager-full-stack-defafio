@@ -158,16 +158,6 @@ Banco de Dados
 
 O backend está organizado da seguinte forma:
 
-
-backend
-│
-└── src/main/java/com/bookmanager/backend
-│
-├── config
-│ ├── Exceção
-│ │ ├
-
-
 ---
 
 ## Responsabilidades
@@ -293,27 +283,6 @@ A arquitetura foi organizada buscando facilitar manutenção, escalabilidade e t
 
 # Backend
 
-Arquitetura baseada em camadas:
-
-
-Controlador
-|
-
-
-
-## Estrutura de pacotes:
-
-
-
-com.bookmanager.backend
-
-├── config
-│
-├──
-
-
-
----
 
 # Responsabilidades das camadas
 
@@ -729,16 +698,6 @@ Benefícios:
 ---
 
 # 📂 Estrutura do projeto
-
-
-Docs
-│
-├── login.png
-├── register.png
-├── home.png
-├── books-list.png
-├── book-form.png
-├── swagger.png
 
 
 ---
