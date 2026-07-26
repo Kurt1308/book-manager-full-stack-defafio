@@ -458,7 +458,9 @@ JWT_EXPIRATION=300000
 APP_SWAGGER_LAUNCH=true
 
 
-Variáveis de ambiente Frontend
+---
+
+## Variáveis de ambiente Fronend
 
 Arquivo:
 
@@ -467,6 +469,21 @@ frontend/.env
 Exemplo:
 
 VITE_API_URL=http://localhost:8080
+
+
+## Variáveis de ambiente Windows
+Abaixo estão os caminhos que usei no meu projeto, após o download verifique o local correto na sua máquina.
+
+JAVA_HOME - C:\Program Files\Java\jdk-21.0.11
+MAVEN_HOME - C:\Program Files\Apache\Maven\apache-maven-3.9.16
+
+PATH
+  C:\Program Files\PostgreSQL\18\bin
+  C:\Program Files\Git\cmd
+  C:\Program Files\Git\bin
+  C:\Program Files\Java\jdk-21.0.11\bin
+  C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
+  C:\Program Files\nodejs
 
 Para execução utilizando Docker:
 
