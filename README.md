@@ -116,7 +116,7 @@ Frontend armazena token
 v
 Requisições futuras enviam:
 
-Autorização: Token de Portador
+Autorização: Bearer Token
 
 
 ## Implementações de segurança:
@@ -383,14 +383,14 @@ O projeto utiliza PostgreSQL como banco de dados principal.
 
 Banco de dados: bookmanager
 
-Usuários
+users
 
 id
 name
 email
 password
 
-Livros
+books
 
 id
 title
@@ -456,6 +456,8 @@ JWT_EXPIRATION=300000
 
 
 APP_SWAGGER_LAUNCH=true
+
+
 Variáveis de ambiente Frontend
 
 Arquivo:
@@ -524,6 +526,8 @@ npm run dev
 Frontend disponível:
 
 http://localhost:5173
+
+
 🐳 Execução utilizando Docker
 
 O projeto possui configuração completa utilizando Docker Compose.
@@ -535,7 +539,7 @@ PostgreSQL	PostgreSQL 18	5432
 Backend	Bota de Mola	8080
 Frontend	Vue + Nginx	5173
 
-Executor:
+Execute:
 
 docker compose up -d
 
