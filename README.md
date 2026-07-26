@@ -849,7 +849,29 @@ Banco utilizado:
 
 Bookmanager
 
+## 🗄️ Criação do banco de dados
 
+Antes de executar a aplicação, crie apenas o banco de dados:
+
+```sql
+CREATE DATABASE bookmanager;
+```
+
+Não é necessário criar as tabelas manualmente.
+
+Na inicialização da aplicação, o Spring Boot executará automaticamente o arquivo `schema.sql` localizado em:
+
+```
+backend/src/main/resources/schema.sql
+```
+
+Além disso, o Hibernate está configurado com:
+
+```properties
+spring.jpa.hibernate.ddl-auto=update
+```
+
+garantindo que a estrutura do banco permaneça sincronizada com as entidades da aplicação.
 
 ## Estrutura principal
 
