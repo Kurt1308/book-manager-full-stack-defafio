@@ -443,49 +443,61 @@ SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/bookmanager
 
 SPRING_DATASOURCE_USERNAME=postgres
 
-SPRING_DATASOURCE_PASSWORD=SUA_SENHA  (Senha usada na configuração do banco de dados)
+SPRING_DATASOURCE_PASSWORD=SUA_SENHA
 
-
-JWT_SECRET=SUA_CHAVE_JWT_SEGURA (Configure uma chave segura, no meu projeto usei:
-
-JWT_SECRET=BookManagerJWTSecretKey2026ProductionSecureAuthenticationToken256Bits
-
-)
+JWT_SECRET=SUA_CHAVE_JWT_SEGURA
 
 JWT_EXPIRATION=300000
 
-
 APP_SWAGGER_LAUNCH=true
-
+```
 
 ---
 
-## Variáveis de ambiente Fronend
+## Variáveis de ambiente Frontend
 
 Arquivo:
 
+```
 frontend/.env
+```
 
 Exemplo:
 
+```env
 VITE_API_URL=http://localhost:8080
+```
 
+---
 
 ## Variáveis de ambiente Windows
-Abaixo estão os caminhos que usei no meu projeto, após o download verifique o local correto na sua máquina.
 
-JAVA_HOME - C:\Program Files\Java\jdk-21.0.11
-MAVEN_HOME - C:\Program Files\Apache\Maven\apache-maven-3.9.16
+Abaixo estão os caminhos que usei no meu projeto. Após o download, verifique o local correto na sua máquina.
 
-PATH
-  C:\Program Files\PostgreSQL\18\bin
-  C:\Program Files\Git\cmd
-  C:\Program Files\Git\bin
-  C:\Program Files\Java\jdk-21.0.11\bin
-  C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
-  C:\Program Files\nodejs
+JAVA_HOME:
 
-  ![Variáveis de ambiente Windows](Docs/Variaveis_Ambiente_Windows.png)
+```
+C:\Program Files\Java\jdk-21.0.11
+```
+
+MAVEN_HOME:
+
+```
+C:\Program Files\Apache\Maven\apache-maven-3.9.16
+```
+
+PATH:
+
+```
+C:\Program Files\PostgreSQL\18\bin
+C:\Program Files\Git\cmd
+C:\Program Files\Git\bin
+C:\Program Files\Java\jdk-21.0.11\bin
+C:\Program Files\Apache\Maven\apache-maven-3.9.16\bin
+C:\Program Files\nodejs
+```
+
+![Variáveis de ambiente Windows](./Docs/Variaveis_Ambiente_Windows.png)
 
 Para execução utilizando Docker:
 
