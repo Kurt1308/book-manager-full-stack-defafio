@@ -726,6 +726,120 @@ Benefícios:
 
 ---
 
+---
+
+# 📂 Estrutura do projeto
+
+
+Docs
+│
+├── login.png
+├── register.png
+├── home.png
+├── books-list.png
+├── book-form.png
+├── swagger.png
+
+
+---
+
+## Tela de Login
+
+Descrição:
+
+> Tela inicial da aplicação exibindo o formulário de autenticação com campos de e-mail e senha, botão de login e opção para cadastro de novo usuário.
+
+
+![Tela de Login](Docs/login.png)
+
+
+Tela de Cadastro
+
+Descrição:
+
+Tela de criação de usuário contendo nome, e-mail, senha e botão de cadastro.
+
+
+![Tela de Cadastro de usuário](Docs/register.png)
+
+
+Tela Home
+
+Descrição:
+
+Tela principal após autenticação mostrando a navegação da aplicação, acesso ao gerenciamento de livros e usuário autenticado.
+
+Inserir:
+
+![Tela Home](Docs/home.png)
+
+---
+
+## Tela de Gerenciamento de Livros
+
+Descrição:
+
+Tela responsável pelo gerenciamento da biblioteca pessoal do usuário autenticado.
+
+Funcionalidades apresentadas:
+
+- Visualização dos livros cadastrados
+- Busca por título
+- Acesso à edição
+- Exclusão de livros
+- Botão para cadastro de novos livros
+
+
+![Tela de Gerenciamento de livros](Docs/books-list.png)
+
+
+
+---
+
+## Tela de Cadastro de Livro
+
+Descrição:
+
+Formulário utilizado para adicionar um novo livro à biblioteca do usuário.
+
+Campos disponíveis:
+
+- Título
+- Autor
+- Ano de publicação
+- Descrição
+
+
+Cadastro de livro:
+
+![Tela de Cadastro](Docs/book-form.png)
+
+
+
+---
+
+## Documentação Swagger / OpenAPI
+
+Descrição:
+
+A API disponibiliza documentação interativa utilizando Swagger/OpenAPI.
+
+Através desta interface é possível:
+
+- Visualizar endpoints disponíveis
+- Testar requisições HTTP
+- Validar respostas da API
+- Testar autenticação JWT utilizando Bearer Token
+
+
+Inserir:
+
+![Swagger](Docs/swagger.png)
+
+
+
+---
+
 # 🗄️ Banco de dados
 
 O projeto utiliza PostgreSQL como banco de dados principal.
@@ -829,6 +943,7 @@ books.user_id
 
 # ⚙️ Configuração do ambiente
 
+![Variáveis de ambiente Windows](./Docs/Variaveis_Ambiente_Windows.png)
 
 ## Variáveis de ambiente Backend
 
@@ -865,6 +980,8 @@ Exemplo utilizado no projeto:
 JWT_SECRET=BookManagerJWTSecretKey2026ProductionSecureAuthenticationToken256Bits
 
 Recomenda-se utilizar uma chave própria em ambientes reais.
+
+
 
 Variáveis de ambiente Frontend
 
