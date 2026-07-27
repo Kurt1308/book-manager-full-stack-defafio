@@ -1,17 +1,69 @@
-# Java / Maven
+# =========================
+# Backend - Java / Maven
+# =========================
+
 backend/target/
 *.jar
+*.war
+*.class
 
-# Node / Vue
+# Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================
+# Frontend - Vue / Node
+# =========================
+
 frontend/node_modules/
 frontend/dist/
 
-# IDE
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# IDE / Editor
+# =========================
+
 .vscode/
 .idea/
+*.iml
 
+# =========================
+# Sistema Operacional
+# =========================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# =========================
 # Logs
+# =========================
+
 *.log
 
-# Environment
+# =========================
+# Environment Variables
+# =========================
+
 .env
+.env.*
+!.env.example
+
+# =========================
+# Spring Boot
+# =========================
+
+application-local.properties
+application-secret.properties
+
+# =========================
+# Vue / Vite
+# =========================
+
+.vite/
