@@ -1,3 +1,4 @@
+
 # 📚 Book Manager
 
 Aplicação Full-Stack para gerenciamento de livros desenvolvida como desafio técnico.
@@ -5,13 +6,12 @@ Aplicação Full-Stack para gerenciamento de livros desenvolvida como desafio t�
 ## Funcionalidades
 
 - Cadastro de usuários
-- Login com JWT
+- Login com autenticação JWT
 - CRUD completo de livros
 - Busca por título
 - Paginação
-- Proteção de rotas
-- Swagger/OpenAPI
-- Docker e Docker Compose
+- Proteção de rotas privadas
+- Documentação da API com Swagger/OpenAPI
 
 ## Tecnologias
 
@@ -19,8 +19,8 @@ Aplicação Full-Stack para gerenciamento de livros desenvolvida como desafio t�
 - Java 21
 - Spring Boot
 - Spring Security
-- JWT
 - Spring Data JPA
+- JWT
 - PostgreSQL
 - Maven
 
@@ -33,72 +33,76 @@ Aplicação Full-Stack para gerenciamento de livros desenvolvida como desafio t�
 - Axios
 - Bootstrap 5
 
-## Estrutura
+## Estrutura do Projeto
 
-```
+```text
 book-manager/
 ├── backend/
 ├── frontend/
-├── docker-compose.yml
-└── README.md
+├── README.md
+└── schema.sql
 ```
 
 ## Pré-requisitos
 
 - Java 21
-- Node.js 22+
 - Maven
-- Docker e Docker Compose (recomendado)
+- Node.js 22+
+- PostgreSQL
 
 ## Configuração
 
-Copie os arquivos de exemplo:
+### Backend
 
-Backend
+Copie:
 
-```
+```bash
 cp backend/.env.example backend/.env
 ```
 
-Frontend
+### Frontend
 
-```
+Copie:
+
+```bash
 cp frontend/.env.example frontend/.env
 ```
 
 No Windows, basta renomear `.env.example` para `.env`.
 
-## Executando com Docker
+## Banco de Dados
 
-```
-docker compose up --build
-```
+Crie um banco chamado `bookmanager`.
 
-A aplicação ficará disponível em:
+O arquivo `schema.sql` será executado automaticamente na inicialização da aplicação.
 
-- Frontend: http://localhost:5173
-- Backend: http://localhost:8080
-- Swagger: http://localhost:8080/swagger-ui/index.html
+## Executando o Backend
 
-O banco PostgreSQL é criado automaticamente pelo Docker através da variável `POSTGRES_DB`, não sendo necessário executar `CREATE DATABASE`.
-
-## Execução Local
-
-Backend:
-
-```
+```bash
 cd backend
 mvn clean install
 mvn spring-boot:run
 ```
 
-Frontend:
+Backend:
 
-```
+http://localhost:8080
+
+Swagger:
+
+http://localhost:8080/swagger-ui/index.html
+
+## Executando o Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
 ```
+
+Frontend:
+
+http://localhost:5173
 
 ## Endpoints
 
@@ -117,29 +121,32 @@ npm run dev
 
 ## Testes
 
-O backend possui testes automatizados para:
-
-- AuthService
-- BookService
-- BookController
+- AuthServiceTest
+- BookServiceTest
+- BookControllerTest
 
 ## Telas
 
-Inclua as imagens existentes na pasta `Docs/`:
+Adicione as imagens da pasta `Docs`:
 
 - Login
 - Cadastro
 - Home
-- Lista de Livros
-- Cadastro/Edição de Livro
+- Livros
+- Cadastro/Edição
 - Swagger
 
-## Melhorias futuras
+## Execução com Docker (Opcional)
+
+```bash
+docker compose up --build
+```
+
+## Melhorias Futuras
 
 - Refresh Token
-- Recuperação de senha
 - Upload de capa
-- Testes de frontend
+- Recuperação de senha
 - CI/CD
 - Deploy em nuvem
 

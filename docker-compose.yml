@@ -1,3 +1,5 @@
+name: bookmanager
+
 services:
 
   postgres:
@@ -7,7 +9,7 @@ services:
     environment:
       POSTGRES_DB: bookmanager
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Di@s1988
+      POSTGRES_PASSWORD: postgres
 
     ports:
       - "5432:5432"
@@ -25,12 +27,9 @@ services:
       timeout: 5s
       retries: 5
 
-    restart: always
-
-
+    restart: unless-stopped
 
   backend:
-
     image: bookmanager-backend
 
     build:
@@ -45,18 +44,15 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bookmanager
       SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: Di@s1988
+      SPRING_DATASOURCE_PASSWORD: postgres
       APP_SWAGGER_LAUNCH: false
 
     ports:
       - "8080:8080"
 
-    restart: always
-
-
+    restart: unless-stopped
 
   frontend:
-
     image: bookmanager-frontend
 
     build:
@@ -70,10 +66,7 @@ services:
     ports:
       - "5173:80"
 
-    restart: always
-
-
+    restart: unless-stopped
 
 volumes:
-
   postgres-data:
