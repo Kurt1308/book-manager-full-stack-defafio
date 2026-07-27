@@ -130,11 +130,17 @@ http://localhost:5173
 Adicione as imagens da pasta `Docs`:
 
 - Login
+![alt text](Docs/login.png)
 - Cadastro
+![alt text](Docs/register.png)
 - Home
-- Livros
-- Cadastro/Edição
+![alt text](Docs/home.png)
+- Lista de Livros
+![alt text](Docs/books-list.png)
+- Cadastro/Edição de Livro
+![alt text](Docs/book-form.png)
 - Swagger
+![alt text](Docs/swagger.png)
 
 ## Execução com Docker (Opcional)
 
