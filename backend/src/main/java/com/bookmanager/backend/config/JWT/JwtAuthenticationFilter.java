@@ -41,20 +41,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-
     public JwtAuthenticationFilter(
             JwtService jwtService,
             UserDetailsServiceImpl userDetailsService,
             UserRepository userRepository
     ) {
 
+
+        System.out.println(
+                "[JWT FILTER] Criando JwtAuthenticationFilter"
+        );
+
+
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
 
+
+        System.out.println(
+                "[JWT FILTER] Dependências carregadas"
+        );
+
     }
-
-
 
 
 
@@ -70,9 +78,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-        String path = request.getServletPath();
+        String path =
+                request.getServletPath();
 
 
+
+        System.out.println(
+                "=================JwtAuthenticationFilter====================="
+        );
+
+        System.out.println(
+                "[JWT FILTER] Nova requisição recebida"
+        );
+
+
+        System.out.println(
+                "[JWT FILTER] Método: "
+                +
+                request.getMethod()
+        );
+
+
+        System.out.println(
+                "[JWT FILTER] Endpoint: "
+                +
+                path
+        );
 
 
 
@@ -82,10 +113,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(path.startsWith("/auth")) {
 
 
+            System.out.println(
+                    "[JWT FILTER] Rota pública detectada"
+            );
+
+
+            System.out.println(
+                    "[JWT FILTER] JWT não será validado"
+            );
+
+
             filterChain.doFilter(
                     request,
                     response
             );
+
 
             return;
 
@@ -94,7 +136,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-
+        System.out.println(
+                "[JWT FILTER] Verificando Header Authorization"
+        );
 
 
 
@@ -103,22 +147,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-
-
-        /*
-         * Sem token continua o fluxo.
-         * O Spring Security bloqueará se necessário.
-         */
         if(
                 authHeader == null ||
                 !authHeader.startsWith("Bearer ")
         ) {
 
 
+            System.out.println(
+                    "[JWT FILTER] Token não encontrado"
+            );
+
+
+            System.out.println(
+                    "[JWT FILTER] Continuando fluxo para Spring Security"
+            );
+
+
             filterChain.doFilter(
                     request,
                     response
             );
+
 
             return;
 
@@ -127,7 +176,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
-
+        System.out.println(
+                "[JWT FILTER] Token encontrado"
+        );
 
 
 
@@ -136,18 +187,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+        System.out.println(
+                "[JWT FILTER] Token extraído"
+        );
 
 
 
         try {
 
 
-            /*
-             * Evita substituir uma autenticação já existente
-             */
+
             if(SecurityContextHolder
                     .getContext()
                     .getAuthentication() == null) {
+
+
+
+                System.out.println(
+                        "[JWT FILTER] Nenhuma autenticação existente"
+                );
+
+
+
+                System.out.println(
+                        "[JWT FILTER] Extraindo ID do usuário do JWT"
+                );
 
 
 
@@ -156,12 +220,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+                System.out.println(
+                        "[JWT FILTER] ID extraído: "
+                        +
+                        userId
+                );
+
+
 
                 Long id =
                         Long.parseLong(userId);
 
 
 
+
+                System.out.println(
+                        "[JWT FILTER] Buscando usuário no banco"
+                );
 
 
 
@@ -177,6 +252,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+                System.out.println(
+                        "[JWT FILTER] Usuário encontrado: "
+                        +
+                        user.getEmail()
+                );
+
+
+
+
+
+                System.out.println(
+                        "[JWT FILTER] Carregando UserDetails"
+                );
 
 
 
@@ -188,11 +276,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+                System.out.println(
+                        "[JWT FILTER] UserDetails carregado"
+                );
 
+
+
+
+
+                System.out.println(
+                        "[JWT FILTER] Validando JWT"
+                );
 
 
 
                 if(jwtService.isTokenValid(jwt, userDetails)) {
+
+
+
+                    System.out.println(
+                            "[JWT FILTER] Token JWT válido"
+                    );
 
 
 
@@ -202,6 +306,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     null,
                                     userDetails.getAuthorities()
                             );
+
+
+
+                    System.out.println(
+                            "[JWT FILTER] AuthenticationToken criado"
+                    );
 
 
 
@@ -215,19 +325,46 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+                    System.out.println(
+                            "[JWT FILTER] Dados da requisição adicionados"
+                    );
+
+
+
 
                     SecurityContextHolder
                             .getContext()
                             .setAuthentication(authToken);
 
 
+
+                    System.out.println(
+                            "[JWT FILTER] Usuário autenticado no SecurityContext"
+                    );
+
+
+                }
+                else {
+
+
+                    System.out.println(
+                            "[JWT FILTER] Token inválido"
+                    );
+
+
                 }
 
 
+            }
+            else {
+
+
+                System.out.println(
+                        "[JWT FILTER] Usuário já autenticado"
+                );
+
 
             }
-
-
 
 
 
@@ -236,8 +373,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         catch(Exception exception) {
 
 
+
+            System.err.println(
+                    "[JWT FILTER] Erro durante autenticação JWT"
+            );
+
+
+            System.err.println(
+                    exception.getMessage()
+            );
+
+
+
             SecurityContextHolder
                     .clearContext();
+
+
+            System.out.println(
+                    "[JWT FILTER] SecurityContext limpo"
+            );
 
 
         }
@@ -246,11 +400,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
 
+        System.out.println(
+                "[JWT FILTER] Continuando cadeia de filtros"
+        );
+
 
 
         filterChain.doFilter(
                 request,
                 response
+        );
+
+
+
+        System.out.println(
+                "[JWT FILTER] Requisição finalizada"
+        );
+
+
+        System.out.println(
+                "=================JwtAuthenticationFilter====================="
         );
 
 

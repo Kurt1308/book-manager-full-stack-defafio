@@ -37,14 +37,40 @@ public class SecurityConfig {
 
 
 
+
+
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             UserDetailsServiceImpl userDetailsService
     ) {
 
+
+        System.out.println(
+                "[SECURITY CONFIG] Inicializando SecurityConfig"
+        );
+
+
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+
         this.userDetailsService = userDetailsService;
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] JwtAuthenticationFilter recebido"
+        );
+
+
+        System.out.println(
+                "[SECURITY CONFIG] UserDetailsService recebido"
+        );
+
+
     }
+
+
+
+
 
 
 
@@ -56,61 +82,144 @@ public class SecurityConfig {
     ) throws Exception {
 
 
+
+        System.out.println(
+                "===================SecurityConfig==================="
+        );
+
+
+        System.out.println(
+                "[SECURITY CONFIG] Criando SecurityFilterChain"
+        );
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] Desabilitando CSRF"
+        );
+
+
+
         http
 
-            // API REST não utiliza CSRF
-            .csrf(csrf ->
-                    csrf.disable()
-            )
+            /*
+             * API REST não utiliza CSRF
+             */
+            .csrf(csrf -> {
+
+                    csrf.disable();
 
 
-            // Configuração CORS
-            .cors(cors ->
+                    System.out.println(
+                            "[SECURITY CONFIG] CSRF desabilitado"
+                    );
+
+            })
+
+
+
+            /*
+             * Configuração CORS
+             */
+            .cors(cors -> {
+
+
+                    System.out.println(
+                            "[SECURITY CONFIG] Configurando CORS"
+                    );
+
+
                     cors.configurationSource(
                             corsConfigurationSource()
-                    )
-            )
+                    );
 
 
-            // JWT é stateless
-            .sessionManagement(session ->
+            })
+
+
+
+            /*
+             * JWT trabalha sem sessão
+             */
+            .sessionManagement(session -> {
+
+
+                    System.out.println(
+                            "[SECURITY CONFIG] Configurando aplicação como STATELESS"
+                    );
+
+
                     session.sessionCreationPolicy(
                             SessionCreationPolicy.STATELESS
-                    )
-            )
+                    );
 
 
-            .authorizeHttpRequests(auth -> auth
+            })
 
 
-                    // Rotas públicas
-                    .requestMatchers(
+
+
+            .authorizeHttpRequests(auth -> {
+
+
+                    System.out.println(
+                            "[SECURITY CONFIG] Configurando regras de autorização"
+                    );
+
+
+
+                    System.out.println(
+                            "[SECURITY CONFIG] Liberando rotas /auth/**"
+                    );
+
+
+                    auth.requestMatchers(
                             "/auth/**"
-                    ).permitAll()
+                    ).permitAll();
 
 
 
-                    // Swagger público
-                    .requestMatchers(
+                    System.out.println(
+                            "[SECURITY CONFIG] Liberando Swagger"
+                    );
+
+
+                    auth.requestMatchers(
+
                             "/swagger-ui/**",
                             "/swagger-ui.html",
                             "/v3/api-docs/**",
                             "/v3/api-docs.yaml",
                             "/webjars/**"
-                    ).permitAll()
+
+                    ).permitAll();
 
 
 
-                    // Rotas protegidas
-                    .requestMatchers(
+                    System.out.println(
+                            "[SECURITY CONFIG] Protegendo rotas /books/**"
+                    );
+
+
+                    auth.requestMatchers(
                             "/books/**"
-                    ).authenticated()
+                    ).authenticated();
 
 
 
-                    // Qualquer outra rota exige autenticação
-                    .anyRequest().authenticated()
-            )
+
+                    System.out.println(
+                            "[SECURITY CONFIG] Demais rotas exigem autenticação"
+                    );
+
+
+                    auth.anyRequest()
+                            .authenticated();
+
+
+            })
+
+
 
 
 
@@ -120,14 +229,45 @@ public class SecurityConfig {
 
 
 
+
+
             .addFilterBefore(
                     jwtAuthenticationFilter,
                     UsernamePasswordAuthenticationFilter.class
             );
 
 
-        return http.build();
+
+        System.out.println(
+                "[SECURITY CONFIG] JwtAuthenticationFilter registrado antes do UsernamePasswordAuthenticationFilter"
+        );
+
+
+
+
+        SecurityFilterChain chain =
+                http.build();
+
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] SecurityFilterChain criada com sucesso"
+        );
+
+
+
+        System.out.println(
+                "===================SecurityConfig=================="
+        );
+
+
+
+        return chain;
+
     }
+
+
 
 
 
@@ -139,10 +279,24 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
 
 
+
+        System.out.println(
+                "[SECURITY CONFIG] Criando AuthenticationProvider"
+        );
+
+
+
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider(
                         userDetailsService
                 );
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] UserDetailsService conectado ao AuthenticationProvider"
+        );
+
 
 
         provider.setPasswordEncoder(
@@ -150,8 +304,18 @@ public class SecurityConfig {
         );
 
 
+
+        System.out.println(
+                "[SECURITY CONFIG] PasswordEncoder configurado no AuthenticationProvider"
+        );
+
+
+
         return provider;
+
     }
+
+
 
 
 
@@ -165,8 +329,28 @@ public class SecurityConfig {
     ) throws Exception {
 
 
-        return configuration.getAuthenticationManager();
+
+        System.out.println(
+                "[SECURITY CONFIG] Criando AuthenticationManager"
+        );
+
+
+
+        AuthenticationManager manager =
+                configuration.getAuthenticationManager();
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] AuthenticationManager criado com sucesso"
+        );
+
+
+
+        return manager;
+
     }
+
 
 
 
@@ -179,8 +363,29 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
 
 
-        return new BCryptPasswordEncoder();
+
+        System.out.println(
+                "[SECURITY CONFIG] Criando BCryptPasswordEncoder"
+        );
+
+
+
+        PasswordEncoder encoder =
+                new BCryptPasswordEncoder();
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] BCryptPasswordEncoder criado"
+        );
+
+
+
+        return encoder;
+
     }
+
+
 
 
 
@@ -192,12 +397,21 @@ public class SecurityConfig {
      * Configuração CORS
      *
      * Vue.js (localhost:5173)
+     *
      *          |
      *          v
+     *
      * Spring Boot (localhost:8080)
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] Iniciando configuração CORS"
+        );
+
 
 
         CorsConfiguration configuration =
@@ -205,10 +419,25 @@ public class SecurityConfig {
 
 
 
+
+        System.out.println(
+                "[SECURITY CONFIG] Origem permitida: http://localhost:5173"
+        );
+
+
+
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:5173"
                 )
+        );
+
+
+
+
+
+        System.out.println(
+                "[SECURITY CONFIG] Métodos HTTP permitidos configurados"
         );
 
 
@@ -225,11 +454,21 @@ public class SecurityConfig {
 
 
 
+
+
+        System.out.println(
+                "[SECURITY CONFIG] Headers permitidos configurados"
+        );
+
+
+
         configuration.setAllowedHeaders(
                 List.of(
                         "*"
                 )
         );
+
+
 
 
 
@@ -239,8 +478,16 @@ public class SecurityConfig {
 
 
 
+        System.out.println(
+                "[SECURITY CONFIG] Credentials habilitado"
+        );
+
+
+
+
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
+
 
 
 
@@ -251,7 +498,16 @@ public class SecurityConfig {
 
 
 
+
+        System.out.println(
+                "[SECURITY CONFIG] Configuração CORS registrada para /**"
+        );
+
+
+
         return source;
+
     }
+
 
 }

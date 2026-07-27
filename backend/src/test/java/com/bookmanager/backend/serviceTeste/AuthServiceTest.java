@@ -34,30 +34,24 @@ import static org.mockito.Mockito.*;
 class AuthServiceTest {
 
 
-
     @Mock
     private UserRepository userRepository;
-
 
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
 
-
     @Mock
     private JwtService jwtService;
-
 
 
     @Mock
     private AuthenticationManager authenticationManager;
 
 
-
     @InjectMocks
     private AuthService authService;
-
 
 
 
@@ -67,6 +61,9 @@ class AuthServiceTest {
 
     @BeforeEach
     void setup() {
+
+        System.out.println("\n==============AuthServiceTest=================");
+        System.out.println("\n[SETUP] Criando usuário de teste");
 
 
         user = new User(
@@ -78,7 +75,14 @@ class AuthServiceTest {
 
         user.setId(1L);
 
+
+        System.out.println(
+                "[SETUP] Usuário criado ID: "
+                + user.getId()
+        );
+
     }
+
 
 
 
@@ -88,6 +92,10 @@ class AuthServiceTest {
     @Test
     void register_DeveCadastrarUsuario() {
 
+System.out.println("\n==============AuthServiceTest=================");
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Cadastro de usuário");
+        System.out.println("==============================");
 
 
         RegisterRequest request =
@@ -96,6 +104,17 @@ class AuthServiceTest {
                         "lucas@email.com",
                         "123456"
                 );
+
+
+        System.out.println(
+                "[DEBUG] Nome: "
+                + request.getName()
+        );
+
+        System.out.println(
+                "[DEBUG] Email: "
+                + request.getEmail()
+        );
 
 
 
@@ -122,6 +141,7 @@ class AuthServiceTest {
 
 
 
+        System.out.println("[DEBUG] Mocks configurados");
 
 
         AuthenticationResponse response =
@@ -129,10 +149,15 @@ class AuthServiceTest {
 
 
 
+        System.out.println("[DEBUG] Resposta recebida");
+        System.out.println(
+                "[DEBUG] Token: "
+                + response.getToken()
+        );
+
 
 
         assertNotNull(response);
-
 
 
         assertEquals(
@@ -141,18 +166,18 @@ class AuthServiceTest {
         );
 
 
-
         verify(userRepository)
-                .save(
-                        any(User.class)
-                );
-
+                .save(any(User.class));
 
 
         verify(jwtService)
-                .generateToken(
-                        any(User.class)
-                );
+                .generateToken(any(User.class));
+
+
+
+        System.out.println(
+                "[RESULTADO] Cadastro realizado com sucesso"
+        );
 
     }
 
@@ -162,10 +187,13 @@ class AuthServiceTest {
 
 
 
-
-
     @Test
     void login_DeveRetornarTokenQuandoUsuarioExiste() {
+System.out.println("\n==============AuthServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Login usuário existente");
+        System.out.println("==============================");
 
 
 
@@ -174,7 +202,6 @@ class AuthServiceTest {
                         "lucas@email.com",
                         "123456"
                 );
-
 
 
 
@@ -196,6 +223,10 @@ class AuthServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Buscando usuário: "
+                + request.getEmail()
+        );
 
 
 
@@ -204,10 +235,14 @@ class AuthServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Token gerado: "
+                + response.getToken()
+        );
+
 
 
         assertNotNull(response);
-
 
 
         assertEquals(
@@ -223,11 +258,16 @@ class AuthServiceTest {
                 );
 
 
-
         verify(jwtService)
                 .generateToken(
                         any(User.class)
                 );
+
+
+
+        System.out.println(
+                "[RESULTADO] Login realizado com sucesso"
+        );
 
     }
 
@@ -242,6 +282,11 @@ class AuthServiceTest {
     @Test
     void login_DeveLancarExcecaoQuandoUsuarioNaoExiste() {
 
+System.out.println("\n==============AuthServiceTest=================");
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Login usuário inexistente");
+        System.out.println("==============================");
+
 
 
         LoginRequest request =
@@ -249,7 +294,6 @@ class AuthServiceTest {
                         "naoexiste@email.com",
                         "123456"
                 );
-
 
 
 
@@ -262,6 +306,10 @@ class AuthServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Tentando login: "
+                + request.getEmail()
+        );
 
 
 
@@ -272,6 +320,10 @@ class AuthServiceTest {
         );
 
 
+
+        System.out.println(
+                "[RESULTADO] Exceção lançada corretamente"
+        );
 
 
 

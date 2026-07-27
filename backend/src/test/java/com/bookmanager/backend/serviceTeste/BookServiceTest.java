@@ -29,6 +29,7 @@ import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 
@@ -64,6 +65,11 @@ class BookServiceTest {
     @BeforeEach
     void setup() {
 
+System.out.println("\n==============BookServiceTest=================");
+        System.out.println("\n==============================");
+        System.out.println("[SETUP] Preparando dados de teste");
+        System.out.println("==============================");
+
 
 
         user = new User(
@@ -78,6 +84,18 @@ class BookServiceTest {
                 user,
                 "id",
                 1L
+        );
+
+
+
+        System.out.println(
+                "[SETUP] Usuário criado ID: "
+                + user.getId()
+        );
+
+        System.out.println(
+                "[SETUP] Email: "
+                + user.getEmail()
         );
 
 
@@ -98,7 +116,21 @@ class BookServiceTest {
                 10L
         );
 
+
+
+        System.out.println(
+                "[SETUP] Livro criado ID: "
+                + book.getId()
+        );
+
+        System.out.println(
+                "[SETUP] Título: "
+                + book.getTitle()
+        );
+
     }
+
+
 
 
 
@@ -106,6 +138,11 @@ class BookServiceTest {
 
     @Test
     void shouldCreateBookSuccessfully() {
+
+System.out.println("\n==============BookServiceTest=================");
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Criar livro");
+        System.out.println("==============================");
 
 
 
@@ -119,6 +156,14 @@ class BookServiceTest {
 
 
 
+        System.out.println("[DEBUG] Request criado");
+        System.out.println(
+                "[DEBUG] Título: "
+                + request.getTitle()
+        );
+
+
+
         when(
                 userRepository.findByEmail(
                         "lucas@email.com"
@@ -128,10 +173,22 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Mock UserRepository configurado"
+        );
+
+
+
         when(
                 bookRepository.save(any(Book.class))
         )
         .thenReturn(book);
+
+
+
+        System.out.println(
+                "[DEBUG] Mock BookRepository.save configurado"
+        );
 
 
 
@@ -143,7 +200,15 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Livro retornado: "
+                + response.getTitle()
+        );
+
+
+
         assertNotNull(response);
+
 
 
         assertEquals(
@@ -152,10 +217,12 @@ class BookServiceTest {
         );
 
 
+
         assertEquals(
                 "Robert C. Martin",
                 response.getAuthor()
         );
+
 
 
         assertEquals(
@@ -171,7 +238,15 @@ class BookServiceTest {
         )
         .save(any(Book.class));
 
+
+
+        System.out.println(
+                "[RESULTADO] Livro criado com sucesso"
+        );
+
     }
+
+
 
 
 
@@ -179,6 +254,12 @@ class BookServiceTest {
 
     @Test
     void shouldReturnBooksByUser() {
+
+System.out.println("\n==============BookServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Listar livros do usuário");
+        System.out.println("==============================");
 
 
 
@@ -216,6 +297,11 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Mock busca por usuário configurado"
+        );
+
+
 
         Page<BookResponse> response =
                 bookService.findAll(
@@ -223,6 +309,13 @@ class BookServiceTest {
                         null,
                         pageable
                 );
+
+
+
+        System.out.println(
+                "[DEBUG] Quantidade encontrada: "
+                + response.getTotalElements()
+        );
 
 
 
@@ -240,7 +333,15 @@ class BookServiceTest {
                         .getTitle()
         );
 
+
+
+        System.out.println(
+                "[RESULTADO] Livros encontrados com sucesso"
+        );
+
     }
+
+
 
 
 
@@ -248,6 +349,12 @@ class BookServiceTest {
 
     @Test
     void shouldReturnBooksFilteredByTitle() {
+
+System.out.println("\n==============BookServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Buscar livros por título");
+        System.out.println("==============================");
 
 
 
@@ -286,12 +393,26 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Pesquisa: Clean"
+        );
+
+
+
         Page<BookResponse> response =
                 bookService.findAll(
                         "lucas@email.com",
                         "Clean",
                         pageable
                 );
+
+
+
+        System.out.println(
+                "[DEBUG] Resultado: "
+                + response.getTotalElements()
+                + " livro(s)"
+        );
 
 
 
@@ -311,7 +432,15 @@ class BookServiceTest {
                 pageable
         );
 
+
+
+        System.out.println(
+                "[RESULTADO] Filtro por título funcionando"
+        );
+
     }
+
+
 
 
 
@@ -319,6 +448,12 @@ class BookServiceTest {
 
     @Test
     void shouldFindBookByIdSuccessfully() {
+System.out.println("\n==============BookServiceTest=================");
+
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Buscar livro por ID");
+        System.out.println("==============================");
 
 
 
@@ -334,11 +469,24 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Buscando livro ID: 10"
+        );
+
+
+
         BookResponse response =
                 bookService.findById(
                         10L,
                         "lucas@email.com"
                 );
+
+
+
+        System.out.println(
+                "[DEBUG] Livro encontrado: "
+                + response.getTitle()
+        );
 
 
 
@@ -354,7 +502,15 @@ class BookServiceTest {
                 response.getTitle()
         );
 
+
+
+        System.out.println(
+                "[RESULTADO] Livro encontrado com sucesso"
+        );
+
     }
+
+
 
 
 
@@ -362,6 +518,12 @@ class BookServiceTest {
 
     @Test
     void shouldThrowExceptionWhenBookNotFound() {
+
+System.out.println("\n==============BookServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Livro inexistente");
+        System.out.println("==============================");
 
 
 
@@ -373,6 +535,12 @@ class BookServiceTest {
         )
         .thenReturn(
                 Optional.empty()
+        );
+
+
+
+        System.out.println(
+                "[DEBUG] Buscando livro ID: 99"
         );
 
 
@@ -389,9 +557,22 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Exceção recebida: "
+                + exception.getMessage()
+        );
+
+
+
         assertEquals(
                 "Livro não encontrado",
                 exception.getMessage()
+        );
+
+
+
+        System.out.println(
+                "[RESULTADO] Exceção validada corretamente"
         );
 
     }
@@ -400,8 +581,16 @@ class BookServiceTest {
 
 
 
+
+
     @Test
     void shouldUpdateBookSuccessfully() {
+
+System.out.println("\n==============BookServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Atualizar livro");
+        System.out.println("==============================");
 
 
 
@@ -445,12 +634,25 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Atualizando livro ID: 10"
+        );
+
+
+
         BookResponse response =
                 bookService.update(
                         10L,
                         request,
                         "lucas@email.com"
                 );
+
+
+
+        System.out.println(
+                "[DEBUG] Novo título: "
+                + response.getTitle()
+        );
 
 
 
@@ -466,7 +668,15 @@ class BookServiceTest {
         )
         .save(book);
 
+
+
+        System.out.println(
+                "[RESULTADO] Livro atualizado com sucesso"
+        );
+
     }
+
+
 
 
 
@@ -474,6 +684,12 @@ class BookServiceTest {
 
     @Test
     void shouldDeleteBookSuccessfully() {
+
+System.out.println("\n==============BookServiceTest=================");
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Deletar livro");
+        System.out.println("==============================");
 
 
 
@@ -500,6 +716,12 @@ class BookServiceTest {
 
 
 
+        System.out.println(
+                "[DEBUG] Removendo livro ID: 10"
+        );
+
+
+
         bookService.delete(
                 10L,
                 "lucas@email.com"
@@ -513,7 +735,15 @@ class BookServiceTest {
         )
         .delete(book);
 
+
+
+        System.out.println(
+                "[RESULTADO] Livro removido com sucesso"
+        );
+
     }
+
+
 
 
 
@@ -521,6 +751,12 @@ class BookServiceTest {
 
     @Test
     void shouldThrowExceptionWhenUserDoesNotExist() {
+
+
+System.out.println("\n==============BookServiceTest=================");
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Usuário inexistente");
+        System.out.println("==============================");
 
 
 
@@ -531,6 +767,12 @@ class BookServiceTest {
         )
         .thenReturn(
                 Optional.empty()
+        );
+
+
+
+        System.out.println(
+                "[DEBUG] Tentando criar livro com usuário inexistente"
         );
 
 
@@ -547,6 +789,12 @@ class BookServiceTest {
                                 ),
                                 "erro@email.com"
                         )
+        );
+
+
+
+        System.out.println(
+                "[RESULTADO] Exceção lançada corretamente"
         );
 
     }

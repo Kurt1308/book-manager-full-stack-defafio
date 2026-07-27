@@ -48,15 +48,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BookControllerTest {
 
 
-
     @Autowired
     private MockMvc mockMvc;
 
 
-
     @MockitoBean
     private BookService bookService;
-
 
 
     @Autowired
@@ -64,11 +61,14 @@ class BookControllerTest {
 
 
 
-
-
     @Test
     @WithMockUser(username = "teste@email.com")
     void shouldCreateBook() throws Exception {
+
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Criar Livro");
+        System.out.println("================BookControllerTest==============");
 
 
         BookRequest request =
@@ -78,6 +78,10 @@ class BookControllerTest {
                         2008,
                         "Livro sobre boas práticas"
                 );
+
+
+        System.out.println("[DEBUG] Dados enviados:");
+        System.out.println(request);
 
 
 
@@ -102,6 +106,11 @@ class BookControllerTest {
 
 
 
+        System.out.println("[DEBUG] Mock configurado");
+        System.out.println("[DEBUG] Executando POST /books");
+
+
+
         mockMvc.perform(
                 post("/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,8 +126,11 @@ class BookControllerTest {
                         .value("Clean Code")
         );
 
-    }
 
+
+        System.out.println("[RESULTADO] Livro criado com sucesso");
+
+    }
 
 
 
@@ -126,6 +138,11 @@ class BookControllerTest {
     @Test
     @WithMockUser(username = "teste@email.com")
     void shouldListBooks() throws Exception {
+
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Listar Livros");
+        System.out.println("==============BookControllerTest================");
 
 
 
@@ -158,6 +175,10 @@ class BookControllerTest {
 
 
 
+        System.out.println("[DEBUG] Mock configurado");
+        System.out.println("[DEBUG] Executando GET /books");
+
+
 
         mockMvc.perform(
                 get("/books")
@@ -170,6 +191,10 @@ class BookControllerTest {
                         .value("Clean Code")
         );
 
+
+
+        System.out.println("[RESULTADO] Livros encontrados com sucesso");
+
     }
 
 
@@ -180,6 +205,10 @@ class BookControllerTest {
     @WithMockUser(username = "teste@email.com")
     void shouldFindBookById() throws Exception {
 
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Buscar Livro por ID");
+        System.out.println("==============BookControllerTest================");
 
 
         BookResponse response =
@@ -203,6 +232,11 @@ class BookControllerTest {
 
 
 
+        System.out.println("[DEBUG] Buscando ID: 1");
+        System.out.println("[DEBUG] Executando GET /books/1");
+
+
+
         mockMvc.perform(
                 get("/books/1")
         )
@@ -219,6 +253,10 @@ class BookControllerTest {
                         .value("Clean Code")
         );
 
+
+
+        System.out.println("[RESULTADO] Livro encontrado");
+
     }
 
 
@@ -228,6 +266,11 @@ class BookControllerTest {
     @Test
     @WithMockUser(username = "teste@email.com")
     void shouldDeleteBook() throws Exception {
+
+
+        System.out.println("\n==============================");
+        System.out.println("TESTE: Deletar Livro");
+        System.out.println("===============BookControllerTest===============");
 
 
 
@@ -240,11 +283,20 @@ class BookControllerTest {
 
 
 
+        System.out.println("[DEBUG] Mock delete configurado");
+        System.out.println("[DEBUG] Executando DELETE /books/1");
+
+
+
         mockMvc.perform(
                 delete("/books/1")
         )
 
         .andExpect(status().isOk());
+
+
+
+        System.out.println("[RESULTADO] Livro deletado");
 
     }
 

@@ -28,16 +28,25 @@ public class JwtService {
 
 
 
-
     @Value("${jwt.secret}")
     private String secret;
-
 
 
     @Value("${jwt.expiration}")
     private long expiration;
 
 
+
+
+    public JwtService() {
+
+
+        System.out.println(
+                "[JWT SERVICE] JwtService criado pelo Spring"
+        );
+
+
+    }
 
 
 
@@ -47,16 +56,29 @@ public class JwtService {
     private SecretKey getSigningKey() {
 
 
-        return Keys.hmacShaKeyFor(
-
-                secret.getBytes(
-                        StandardCharsets.UTF_8
-                )
-
+        System.out.println(
+                "[JWT SERVICE] Criando chave de assinatura JWT"
         );
 
-    }
 
+        SecretKey key =
+                Keys.hmacShaKeyFor(
+
+                        secret.getBytes(
+                                StandardCharsets.UTF_8
+                        )
+
+                );
+
+
+        System.out.println(
+                "[JWT SERVICE] Chave de assinatura criada"
+        );
+
+
+        return key;
+
+    }
 
 
 
@@ -70,41 +92,89 @@ public class JwtService {
     ) {
 
 
-        return Jwts.builder()
+        System.out.println(
+                "===================JwtService.java==================="
+        );
 
 
-                /*
-                 * O ID identifica o usuário.
-                 */
+        System.out.println(
+                "[JWT SERVICE] Iniciando geração do token"
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Usuário ID: "
+                +
+                user.getId()
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Usuário nome: "
+                +
+                user.getName()
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Usuário email: "
+                +
+                user.getEmail()
+        );
+
+
+
+        Date issuedAt =
+                new Date();
+
+
+
+        Date expirationDate =
+                new Date(
+                        System.currentTimeMillis()
+                                + expiration
+                );
+
+
+
+        System.out.println(
+                "[JWT SERVICE] Data criação: "
+                +
+                issuedAt
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Data expiração: "
+                +
+                expirationDate
+        );
+
+
+
+        String token =
+                Jwts.builder()
+
+
                 .subject(
                         user.getId().toString()
                 )
 
 
-
-                /*
-                 * Informações não sensíveis
-                 */
                 .claim(
                         "name",
                         user.getName()
                 )
 
 
-
                 .issuedAt(
-                        new Date()
+                        issuedAt
                 )
-
 
 
                 .expiration(
-                        new Date(
-                                System.currentTimeMillis()
-                                        + expiration
-                        )
+                        expirationDate
                 )
-
 
 
                 .signWith(
@@ -112,12 +182,31 @@ public class JwtService {
                 )
 
 
-
                 .compact();
 
 
-    }
 
+        System.out.println(
+                "[JWT SERVICE] Token JWT gerado com sucesso"
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Token: "
+                +
+                token
+        );
+
+
+        System.out.println(
+                "==================JwtService.java===================="
+        );
+
+
+
+        return token;
+
+    }
 
 
 
@@ -131,13 +220,28 @@ public class JwtService {
     ) {
 
 
-        return extractClaim(
-                token,
-                Claims::getSubject
+        System.out.println(
+                "[JWT SERVICE] Extraindo ID do usuário"
         );
 
-    }
 
+        String userId =
+                extractClaim(
+                        token,
+                        Claims::getSubject
+                );
+
+
+        System.out.println(
+                "[JWT SERVICE] ID encontrado: "
+                +
+                userId
+        );
+
+
+        return userId;
+
+    }
 
 
 
@@ -151,20 +255,37 @@ public class JwtService {
     ) {
 
 
-        return extractClaim(
-
-                token,
-
-                claims ->
-                        claims.get(
-                                "name",
-                                String.class
-                        )
-
+        System.out.println(
+                "[JWT SERVICE] Extraindo nome do usuário"
         );
 
-    }
 
+
+        String name =
+                extractClaim(
+
+                        token,
+
+                        claims ->
+                                claims.get(
+                                        "name",
+                                        String.class
+                                )
+
+                );
+
+
+
+        System.out.println(
+                "[JWT SERVICE] Nome encontrado: "
+                +
+                name
+        );
+
+
+        return name;
+
+    }
 
 
 
@@ -178,17 +299,33 @@ public class JwtService {
     ) {
 
 
-        return extractClaim(
-
-                token,
-
-                Claims::getExpiration
-
+        System.out.println(
+                "[JWT SERVICE] Extraindo data de expiração"
         );
 
 
-    }
 
+        Date expiration =
+                extractClaim(
+
+                        token,
+
+                        Claims::getExpiration
+
+                );
+
+
+        System.out.println(
+                "[JWT SERVICE] Expiração: "
+                +
+                expiration
+        );
+
+
+        return expiration;
+
+
+    }
 
 
 
@@ -204,6 +341,13 @@ public class JwtService {
             Function<Claims,T> resolver
 
     ) {
+
+
+
+        System.out.println(
+                "[JWT SERVICE] Extraindo Claim do token"
+        );
+
 
 
         Claims claims =
@@ -225,13 +369,20 @@ public class JwtService {
 
 
 
-
     private Claims extractAllClaims(
             String token
     ) {
 
 
-        return Jwts.parser()
+
+        System.out.println(
+                "[JWT SERVICE] Validando assinatura JWT"
+        );
+
+
+
+        Claims claims =
+                Jwts.parser()
 
 
                 .verifyWith(
@@ -250,8 +401,22 @@ public class JwtService {
                 .getPayload();
 
 
-    }
 
+        System.out.println(
+                "[JWT SERVICE] Token decodificado com sucesso"
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Subject: "
+                +
+                claims.getSubject()
+        );
+
+
+        return claims;
+
+    }
 
 
 
@@ -265,14 +430,31 @@ public class JwtService {
     ) {
 
 
-        return extractExpiration(token)
-                .before(
-                        new Date()
-                );
+        System.out.println(
+                "[JWT SERVICE] Verificando expiração do token"
+        );
+
+
+
+        boolean expired =
+                extractExpiration(token)
+                        .before(
+                                new Date()
+                        );
+
+
+
+        System.out.println(
+                "[JWT SERVICE] Token expirado? "
+                +
+                expired
+        );
+
+
+        return expired;
 
 
     }
-
 
 
 
@@ -290,11 +472,35 @@ public class JwtService {
     ) {
 
 
-        return !isTokenExpired(token);
+        System.out.println(
+                "[JWT SERVICE] Iniciando validação JWT"
+        );
+
+
+        System.out.println(
+                "[JWT SERVICE] Usuário validado: "
+                +
+                userDetails.getUsername()
+        );
+
+
+
+        boolean valid =
+                !isTokenExpired(token);
+
+
+
+        System.out.println(
+                "[JWT SERVICE] Token válido? "
+                +
+                valid
+        );
+
+
+        return valid;
 
 
     }
-
 
 
 }

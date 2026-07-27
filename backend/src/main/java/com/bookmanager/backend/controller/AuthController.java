@@ -33,7 +33,11 @@ public class AuthController {
 
 
 
+
     private final AuthService authService;
+
+
+
 
 
 
@@ -41,8 +45,26 @@ public class AuthController {
             AuthService authService
     ) {
 
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Inicializando AuthController"
+        );
+
+
+
         this.authService = authService;
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] AuthService conectado"
+        );
+
+
     }
+
+
 
 
 
@@ -87,16 +109,96 @@ public class AuthController {
     ) {
 
 
+
+        System.out.println(
+                "==================AuthController===================="
+        );
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Requisição REGISTER recebida"
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Nome recebido: "
+                +
+                request.getName()
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Email recebido: "
+                +
+                request.getEmail()
+        );
+
+
+
+        /*
+         * Não imprimir senha em logs
+         *
+         * Mesmo em ambiente de debug,
+         * senha nunca deve aparecer.
+         */
+        System.out.println(
+                "[AUTH CONTROLLER] Senha recebida: ******"
+        );
+
+
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Chamando AuthService.register()"
+        );
+
+
+
         AuthenticationResponse response =
-                authService.register(request);
+
+                authService.register(
+                        request
+                );
+
+
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Usuário cadastrado com sucesso"
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] JWT retornado ao cliente"
+        );
+
+
+
+        System.out.println(
+                "=================AuthController====================="
+        );
+
+
 
 
 
         return ResponseEntity
+
                 .status(HttpStatus.CREATED)
+
                 .body(response);
 
     }
+
+
+
+
+
 
 
 
@@ -152,13 +254,73 @@ public class AuthController {
 
 
 
+        System.out.println(
+                "==================AuthController===================="
+        );
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Requisição LOGIN recebida"
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Email recebido: "
+                +
+                request.getEmail()
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Senha recebida: ******"
+        );
+
+
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Chamando AuthService.login()"
+        );
+
+
+
+
         AuthenticationResponse response =
-                authService.login(request);
+
+                authService.login(
+                        request
+                );
+
+
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] Login realizado com sucesso"
+        );
+
+
+
+        System.out.println(
+                "[AUTH CONTROLLER] JWT retornado ao cliente"
+        );
+
+
+
+        System.out.println(
+                "==================AuthController===================="
+        );
+
+
 
 
 
         return ResponseEntity.ok(response);
 
     }
+
 
 }
