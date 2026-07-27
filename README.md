@@ -125,14 +125,18 @@ O backend possui testes automatizados para:
 
 ## Telas
 
-Inclua as imagens existentes na pasta `Docs/`:
-
 - Login
+![alt text](Docs/login.png)
 - Cadastro
+![alt text](Docs/register.png)
 - Home
+![alt text](Docs/home.png)
 - Lista de Livros
+![alt text](Docs/books-list.png)
 - Cadastro/Edição de Livro
+![alt text](Docs/book-form.png)
 - Swagger
+![alt text](Docs/swagger.png)
 
 ## Melhorias futuras
 
