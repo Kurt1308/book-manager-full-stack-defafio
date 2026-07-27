@@ -133,187 +133,239 @@ O projeto foi desenvolvido utilizando separação de responsabilidades.
 
 A arquitetura segue o padrão de camadas, mantendo baixo acoplamento entre as responsabilidades da aplicação.
 
----
 
-# Backend
+🎨 Frontend
 
-## Arquitetura em camadas
+O frontend foi desenvolvido utilizando Vue 3, TypeScript e Vite, adotando uma arquitetura baseada em componentes para promover reutilização de código, organização e facilidade de manutenção.
 
+A aplicação é responsável pela interação com o usuário, consumo da API REST do backend e gerenciamento do estado da autenticação.
 
-Controlador
-|
-v
-Serviço
-|
-v
-Repositório
-|
-v
-Banco de Dados
+Responsabilidades das camadas
+Opiniões
 
+Responsáveis pelas páginas da aplicação.
 
----
+Cada View representa uma rota acessível pelo usuário e é composta por diversos componentes reutilizáveis.
 
-## Estrutura de pacotes
+Visualizações implementadas:
 
-O backend está organizado da seguinte forma:
+LoginView
+RegisterView
+HomeView
+BooksView
+BookFormView
+NotFoundView
 
+Responsabilidades:
 
-backend
-│
-└── src/main/java/com/bookmanager/backend
-│
-├── config
-│ ├── Exceção
-│ │ ├
+Exibir informações ao usuário
+Organizar os componentes da página
+Acionar Services quando necessário
+Controlar estados de carregamento
+Componentes
 
+Residência
 
----
+Os componentes encapsulam partes reutilizáveis da aplicação, evitando repetição de código.
 
-## Responsabilidades
+Exemplos:
 
-### Controller
+Navbar
+Nota lateral
+BookCard
+BookForm
+SearchBar
+Paginação
+Rotação de Carga
+ConfirmDiálogo
+
+Responsabilidades:
+
+Exibir elementos da interface
+Receber propriedades (Props)
+Emitir eventos (Emits)
+Reutilização entre páginas
+Roteador
+
+Responsável pelo gerenciamento das rotas da aplicação.
+
+Utilizando Vue Router, o sistema controla a navegação entre páginas públicas e privadas.
+
+Principais responsabilidades:
+
+Navegação SPA (Aplicação de Página Única)
+Proteção de rotas autenticadas
+Redirecionamento para Login
+Tratamento de rotas inexistentes (404)
+
+Exemplo de rotas:
+
+/
+
+login
+
+register
+
+books
+
+books/new
+
+books/:id/edit
+Lojas (Pinia)
+
+Responsáveis pelo gerenciamento global de estados da aplicação.
+
+A Store centraliza informações compartilhadas entre diversos componentes.
+
+Exemplo:
+
+AuthStore
 
 Responsável por:
 
-- Receber requisições HTTP
-- Validar entradas
-- Encaminhar chamadas para os serviços
-- Retornar respostas HTTP
+Armazenar o JWT
+Controlar usuário autenticado
+Logar
+Desconectar
+Persistência da sessão
+Serviços
 
+Responsáveis pela comunicação com o backend.
 
----
+Cada Service encapsula as chamadas HTTP utilizando Axios.
 
-### Service
+Services implementados:
 
-Responsável por:
-
-- Implementar regras de negócio
-- Processar dados
-- Controlar fluxo da aplicação
-- Comunicação entre Controller e Repository
-
-
----
-
-### Repository
+AuthService
 
 Responsável por:
 
-- Comunicação com banco de dados
-- Operações utilizando Spring Data JPA
-- Consultas utilizando Hibernate
+Cadastro
+Logar
+Desconectar
+BookService
 
+Responsável por:
 
----
+Listagem
+Busca
+Cadastro
+Atualização
+Exclusão de livros
 
-### DTO
+Benefícios:
 
-Utilizado para:
+Centralização das chamadas HTTP
+Reutilização de código
+Facilidade para manutenção
+Axios
 
-- Separação entre entidades e dados expostos pela API
-- Controle dos dados de entrada e saída
-- Evitar exposição direta das entidades JPA
+A comunicação entre frontend e backend é realizada através do Axios.
 
+Foi configurada uma instância personalizada contendo:
 
----
+URL base da API
+Tempo
+Headers padrão
+Interceptor de autenticação
 
-### Exception Handler
+O interceptor adiciona automaticamente o token JWT em todas as requisições autenticadas.
 
-A aplicação possui tratamento global de exceções utilizando:
+Authorization: Bearer <JWT_TOKEN>
 
-- `GlobalExceptionHandler`
-- Exceções personalizadas
-- Retornos padronizados para erros da API
+Além disso, respostas com erro 401 Unauthorized removem automaticamente o token inválido e redirecionam o usuário para a tela de login.
 
+Gerenciamento da autenticação
 
----
+O frontend controla toda a autenticação da aplicação através do JWT.
 
-### Swagger / OpenAPI
-
-A documentação da API foi configurada utilizando Swagger/OpenAPI permitindo:
-
-- Visualização dos endpoints
-- Testes das requisições
-- Validação das respostas
-- Autenticação JWT através do Bearer Token
-
-
----
-
-# 🔒 Segurança JWT
-
-A aplicação utiliza autenticação baseada em **JSON Web Token (JWT)**.
-
-O fluxo de autenticação funciona da seguinte forma:
+Fluxo:
 
 Usuário
-|
-v
-Realiza login
-|
-v
-Backend valida credenciais
-|
-v
-Backend gera JWT
-|
-v
-Frontend armazena token
-|
-v
-Requisições futuras enviam:
 
-Autorização: Bearer Token
+↓
 
+Login
 
-## Implementações de segurança:
+↓
 
-- Token Stateless
-- Expiração configurável
-- Secret configurado através de variável de ambiente
-- Token contendo apenas informações necessárias
-- Subject utilizando o ID do usuário
-- Nome do usuário armazenado como claim
-- Senhas protegidas utilizando BCrypt
-- Filtro JWT utilizando Spring Security
-- Interceptor Axios para envio automático do token
-- Remoção automática do token inválido no frontend
+Backend
 
+↓
 
----
+JWT
 
-# 🏗️ Arquitetura da aplicação
+↓
 
-O projeto foi desenvolvido utilizando separação de responsabilidades.
+Pinia
 
-A arquitetura foi organizada buscando facilitar manutenção, escalabilidade e testes automatizados.
+↓
 
+LocalStorage
+
+↓
+
+Interceptor Axios
+
+↓
+
+Requisições autenticadas
+Estrutura do projeto
+frontend/
+│
+├── public/
+│
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── views/
+│   ├── router/
+│   ├── stores/
+│   ├── services/
+│   ├── types/
+│   ├── interfaces/
+│   ├── layouts/
+│   ├── App.vue
+│   └── main.ts
+│
+├── .env
+├── vite.config.ts
+├── package.json
+└── tsconfig.json
+Fluxo da aplicação
+Usuário
+
+↓
+
+View
+
+↓
+
+Component
+
+↓
+
+Service
+
+↓
+
+Axios
+
+↓
+
+Backend REST API
+
+↓
+
+Resposta
+
+↓
+
+Atualização da Interface
 ---
 
 # Backend
 
-Arquitetura baseada em camadas:
-
-
-Controlador
-|
-
-
-
-## Estrutura de pacotes:
-
-
-
-com.bookmanager.backend
-
-├── config
-│
-├──
-
-
-
----
 
 # Responsabilidades das camadas
 
@@ -729,16 +781,6 @@ Benefícios:
 ---
 
 # 📂 Estrutura do projeto
-
-
-Docs
-│
-├── login.png
-├── register.png
-├── home.png
-├── books-list.png
-├── book-form.png
-├── swagger.png
 
 
 ---
